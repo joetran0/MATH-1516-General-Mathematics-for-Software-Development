@@ -1,0 +1,749 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Section 0.3: Choosing a Coding Environment | MATH 1516</title>
+  <style>
+    body {
+      max-width: 850px;
+      margin: 0 auto;
+      padding: 20px;
+      font-family: Arial, sans-serif;
+      line-height: 1.65;
+      color: #222;
+    }
+
+    header {
+      border-bottom: 2px solid #8c1d40;
+      margin-bottom: 30px;
+    }
+
+    nav {
+      margin: 15px 0;
+    }
+
+    nav a {
+      margin-right: 15px;
+    }
+
+    h1, h2, h3 {
+      line-height: 1.25;
+    }
+
+    h2 {
+      margin-top: 40px;
+      color: #8c1d40;
+      border-bottom: 1px solid #ddd;
+      padding-bottom: 5px;
+    }
+
+    h3 {
+      margin-top: 28px;
+    }
+
+    .objectives,
+    .steps,
+    .activity,
+    .note,
+    .warning,
+    .recommendation,
+    .summary {
+      padding: 15px 18px;
+      margin: 20px 0;
+      border-radius: 4px;
+    }
+
+    .objectives,
+    .summary {
+      background: #f7f7f7;
+      border: 1px solid #ccc;
+    }
+
+    .steps {
+      background: #f4f8fc;
+      border-left: 4px solid #2f6fa3;
+    }
+
+    .activity {
+      background: #fff8e6;
+      border-left: 4px solid #d18b00;
+    }
+
+    .note {
+      background: #f3f8f3;
+      border-left: 4px solid #4c8c4a;
+    }
+
+    .warning {
+      background: #fff3f3;
+      border-left: 4px solid #b64040;
+    }
+
+    .recommendation {
+      background: #f7f1fa;
+      border-left: 4px solid #7b3f98;
+    }
+
+    .steps h3,
+    .activity h3,
+    .note h3,
+    .warning h3,
+    .recommendation h3,
+    .summary h2 {
+      margin-top: 0;
+    }
+
+    pre {
+      overflow-x: auto;
+      padding: 14px;
+      background: #202124;
+      color: #f1f1f1;
+      border-radius: 4px;
+      line-height: 1.5;
+    }
+
+    code {
+      font-family: Consolas, Monaco, monospace;
+    }
+
+    p code,
+    li code,
+    td code {
+      background: #f0f0f0;
+      padding: 2px 5px;
+      border-radius: 3px;
+      color: #222;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 20px 0;
+    }
+
+    th,
+    td {
+      border: 1px solid #bbb;
+      padding: 10px;
+      text-align: left;
+      vertical-align: top;
+    }
+
+    th {
+      background: #f2f2f2;
+    }
+
+    details {
+      margin: 12px 0;
+    }
+
+    summary {
+      cursor: pointer;
+      font-weight: bold;
+    }
+
+    .page-navigation {
+      display: flex;
+      justify-content: space-between;
+      gap: 15px;
+      border-top: 1px solid #ccc;
+      margin-top: 45px;
+      padding-top: 20px;
+    }
+
+    footer {
+      margin-top: 35px;
+      color: #555;
+      font-size: 0.9rem;
+    }
+
+    @media (max-width: 600px) {
+      body {
+        padding: 14px;
+      }
+
+      table {
+        font-size: 0.9rem;
+      }
+
+      .page-navigation {
+        flex-direction: column;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <p><a href="index.html">&larr; Course Home</a></p>
+    <h1>Section 0.3: Choosing a Coding Environment</h1>
+    <p><strong>Part 0: Getting Started with Python</strong></p>
+
+    <nav aria-label="Section contents">
+      <a href="#environment">Environments</a>
+      <a href="#idle">IDLE</a>
+      <a href="#vscode">VS Code</a>
+      <a href="#jupyter">Jupyter</a>
+      <a href="#colab">Colab</a>
+      <a href="#recommendation">Recommendation</a>
+    </nav>
+  </header>
+
+  <main>
+    <section class="objectives">
+      <h2>Learning Objectives</h2>
+      <p>By the end of this section, you should be able to:</p>
+      <ul>
+        <li>explain the purpose of a coding environment;</li>
+        <li>distinguish between a Python interpreter, code editor, IDE, and notebook;</li>
+        <li>compare IDLE, Visual Studio Code, JupyterLab, and Google Colab;</li>
+        <li>create and run a short program in at least one environment;</li>
+        <li>select an appropriate Python interpreter in Visual Studio Code; and</li>
+        <li>open, run, rename, and save a notebook in Google Colab; and</li>
+        <li>explain why Google Colab is the recommended environment for these tutorials.</li>
+      </ul>
+    </section>
+
+    <section id="environment">
+      <h2>0.3.1 What Is a Coding Environment?</h2>
+
+      <p>
+        The Python interpreter is the program that executes Python code. A
+        <strong>coding environment</strong> provides a convenient place to write,
+        organize, run, and debug that code.
+      </p>
+
+      <p>
+        Different environments present Python in different ways. Some resemble a
+        traditional text editor, while others divide work into interactive cells.
+        The Python language remains the same, but the workflow changes.
+      </p>
+
+      <table>
+        <thead>
+          <tr>
+            <th>Term</th>
+            <th>Meaning</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Interpreter</strong></td>
+            <td>The program that reads and executes Python instructions.</td>
+          </tr>
+          <tr>
+            <td><strong>Code editor</strong></td>
+            <td>A text editor with features designed for writing source code.</td>
+          </tr>
+          <tr>
+            <td><strong>IDE</strong></td>
+            <td>An integrated development environment combining editing, execution, debugging, and project tools.</td>
+          </tr>
+          <tr>
+            <td><strong>Notebook</strong></td>
+            <td>An interactive document containing separate cells for code, text, mathematics, and output.</td>
+          </tr>
+          <tr>
+            <td><strong>Terminal</strong></td>
+            <td>A text-based interface for entering commands and running programs.</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="note">
+        <h3>The Environment Does Not Replace Python</h3>
+        <p>
+          Visual Studio Code does not contain the Python interpreter by itself.
+          Similarly, a notebook interface still requires a Python runtime. The
+          environment helps you interact with the interpreter.
+        </p>
+      </div>
+    </section>
+
+    <section>
+      <h2>0.3.2 Comparing the Main Options</h2>
+
+      <table>
+        <thead>
+          <tr>
+            <th>Environment</th>
+            <th>Installation</th>
+            <th>Best Use</th>
+            <th>Main Limitation</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>IDLE</strong></td>
+            <td>Usually included with Python</td>
+            <td>First programs and simple scripts</td>
+            <td>Limited project and notebook features</td>
+          </tr>
+          <tr>
+            <td><strong>Visual Studio Code</strong></td>
+            <td>Install VS Code and its Python extension</td>
+            <td>Organized files, larger programs, and debugging</td>
+            <td>Requires more initial configuration</td>
+          </tr>
+          <tr>
+            <td><strong>JupyterLab</strong></td>
+            <td>Install locally as a Python package</td>
+            <td>Mathematics, data analysis, graphs, and explanations</td>
+            <td>Cell order can create hidden state</td>
+          </tr>
+          <tr>
+            <td><strong>Google Colab</strong></td>
+            <td>No local installation; runs in a browser</td>
+            <td>Quick tutorial activities and shared notebooks</td>
+            <td>Requires internet and uses temporary runtimes</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <p>
+        There is no universally best environment. The correct choice depends on the
+        task, the available computer, and how the work will be submitted or shared.
+      </p>
+
+      <div class="recommendation">
+        <h3>Environment Used in MATH 1516 Tutorials</h3>
+        <p>
+          Unless an activity says otherwise, the coding activities for these
+          tutorials will use <strong>Google Colab</strong>. This gives every student
+          the same notebook-style environment and avoids differences between local
+          Python installations.
+        </p>
+      </div>
+    </section>
+
+    <section id="idle">
+      <h2>0.3.3 IDLE</h2>
+
+      <p>
+        IDLE is Python's Integrated Development and Learning Environment. It provides
+        both a Python Shell for interactive commands and an Editor for complete
+        <code>.py</code> files. It is cross-platform and is commonly included with
+        the official Python installation.
+      </p>
+
+      <h3>Opening IDLE</h3>
+
+      <ul>
+        <li><strong>Windows:</strong> open the Start menu and search for <em>IDLE</em>.</li>
+        <li><strong>macOS:</strong> open the Python folder in Applications and select <em>IDLE</em>.</li>
+        <li><strong>Terminal:</strong> try <code>python -m idlelib</code> on Windows or <code>python3 -m idlelib</code> on macOS/Linux.</li>
+      </ul>
+
+      <h3>The Shell and the Editor</h3>
+
+      <p>
+        The Shell displays the <code>&gt;&gt;&gt;</code> prompt and is useful for
+        testing one instruction at a time. The Editor is used for programs that
+        contain several lines and need to be saved.
+      </p>
+
+      <div class="steps">
+        <h3>Run a File in IDLE</h3>
+        <ol>
+          <li>Open IDLE.</li>
+          <li>Select <strong>File &gt; New File</strong>.</li>
+          <li>Enter the code shown below.</li>
+          <li>Select <strong>File &gt; Save As</strong> and save it as <code>environment_test.py</code>.</li>
+          <li>Select <strong>Run &gt; Run Module</strong>.</li>
+          <li>Read the output in the Shell window.</li>
+        </ol>
+      </div>
+
+      <pre><code>course = "MATH 1516"
+number_of_parts = 4
+
+print(course)
+print("Mathematical parts:", number_of_parts)</code></pre>
+
+      <p>The expected output is:</p>
+
+      <pre><code>MATH 1516
+Mathematical parts: 4</code></pre>
+
+      <p><strong>IDLE is a good choice when:</strong></p>
+      <ul>
+        <li>you are learning the difference between the Shell and a saved program;</li>
+        <li>you want a simple environment with few distractions; or</li>
+        <li>you want to confirm that the standard Python installation is working.</li>
+      </ul>
+    </section>
+
+    <section id="vscode">
+      <h2>0.3.4 Visual Studio Code</h2>
+
+      <p>
+        Visual Studio Code, usually called <strong>VS Code</strong>, is a general code
+        editor. For Python development, three separate components work together:
+      </p>
+
+      <ol>
+        <li><strong>VS Code</strong> provides the editor and workspace.</li>
+        <li><strong>The Microsoft Python extension</strong> adds Python-aware editing, running, and debugging features.</li>
+        <li><strong>The Python interpreter</strong> executes the code.</li>
+      </ol>
+
+      <div class="warning">
+        <h3>Installing VS Code Does Not Install Python</h3>
+        <p>
+          Complete Section 0.2 first. The Python extension connects VS Code to an
+          existing interpreter; it does not include the interpreter itself.
+        </p>
+      </div>
+
+      <div class="steps">
+        <h3>Basic VS Code Setup</h3>
+        <ol>
+          <li>Download VS Code from <a href="https://code.visualstudio.com/">code.visualstudio.com</a>.</li>
+          <li>Install and open VS Code.</li>
+          <li>Open the Extensions view.</li>
+          <li>Search for <strong>Python</strong> and install the extension published by Microsoft.</li>
+          <li>Create or open a folder for your MATH 1516 activities.</li>
+          <li>Create a file named <code>environment_test.py</code>.</li>
+          <li>Select the Python interpreter when prompted.</li>
+        </ol>
+      </div>
+
+      <h3>Selecting the Interpreter</h3>
+
+      <p>
+        Open the Command Palette and choose
+        <strong>Python: Select Interpreter</strong>. Select the stable Python 3
+        installation from Section 0.2. The selected version normally appears in the
+        status bar.
+      </p>
+
+      <div class="warning">
+        <h3>Wrong Interpreter, Missing Package</h3>
+        <p>
+          A computer can contain several Python installations. If code works in one
+          terminal but VS Code reports that a package is missing, first check which
+          interpreter VS Code has selected.
+        </p>
+      </div>
+
+      <h3>Running a Python File</h3>
+
+      <p>Enter the following code and save the file:</p>
+
+      <pre><code>x = 5
+y = 12
+distance = (x ** 2 + y ** 2) ** 0.5
+
+print("Distance:", distance)</code></pre>
+
+      <p>
+        Select the triangular <strong>Run Python File</strong> button in the top-right
+        corner of the editor. VS Code opens an integrated terminal and displays:
+      </p>
+
+      <pre><code>Distance: 13.0</code></pre>
+
+      <p><strong>VS Code is a good choice when:</strong></p>
+      <ul>
+        <li>you want to organize several Python files in folders;</li>
+        <li>you are developing a longer program;</li>
+        <li>you want autocompletion and debugging tools; or</li>
+        <li>you want an environment commonly used in software development.</li>
+      </ul>
+    </section>
+
+    <section id="jupyter">
+      <h2>0.3.5 JupyterLab and Jupyter Notebook</h2>
+
+      <p>
+        A Jupyter notebook is divided into <strong>cells</strong>. A code cell
+        contains executable Python, while a Markdown cell contains headings,
+        explanations, links, or mathematical notation. Output appears directly below
+        the cell that produced it.
+      </p>
+
+      <p>
+        This format is particularly useful when a mathematical explanation, a
+        calculation, and a graph need to appear together.
+      </p>
+
+      <h3>Installing JupyterLab</h3>
+
+      <p>In a terminal, enter:</p>
+
+      <pre><code># Windows
+python -m pip install jupyterlab
+
+# macOS or Linux
+python3 -m pip install jupyterlab</code></pre>
+
+      <p>After installation, start JupyterLab with:</p>
+
+      <pre><code>jupyter lab</code></pre>
+
+      <p>
+        JupyterLab normally opens in your web browser, but the Python process runs on
+        your own computer. Keep the terminal window open while JupyterLab is running.
+      </p>
+
+      <h3>Working with Cells</h3>
+
+      <ol>
+        <li>Create a new Python notebook.</li>
+        <li>Enter Python code in a code cell.</li>
+        <li>Run the cell using the Run button or <kbd>Shift</kbd>+<kbd>Enter</kbd>.</li>
+        <li>Add a Markdown cell to explain the result.</li>
+        <li>Save the notebook. Notebook filenames end with <code>.ipynb</code>.</li>
+      </ol>
+
+      <pre><code>values = [2, 4, 6, 8]
+average = sum(values) / len(values)
+average</code></pre>
+
+      <p>The output <code>5.0</code> appears beneath the cell.</p>
+
+      <div class="warning">
+        <h3>Notebook Cells Can Be Run Out of Order</h3>
+        <p>
+          A notebook remembers values created by previously executed cells. Running
+          cells in a different order can produce confusing results. Before submitting
+          a notebook, restart the kernel and run all cells from top to bottom.
+        </p>
+      </div>
+
+      <p><strong>Jupyter is a good choice when:</strong></p>
+      <ul>
+        <li>you want to combine mathematics, explanations, code, and graphs;</li>
+        <li>you want to test a calculation one step at a time;</li>
+        <li>you are exploring data; or</li>
+        <li>you want a record of both the code and its output.</li>
+      </ul>
+    </section>
+
+    <section id="colab">
+      <h2>0.3.6 Google Colab</h2>
+
+      <p>
+        Google Colab is a hosted Jupyter Notebook service. It runs in a web browser
+        and requires no local Python setup. Notebooks can be stored in Google Drive,
+        downloaded as <code>.ipynb</code> files, and shared with other users.
+      </p>
+
+      <div class="steps">
+        <h3>Create a Colab Notebook</h3>
+        <ol>
+          <li>Visit <a href="https://colab.research.google.com/">colab.research.google.com</a>.</li>
+          <li>Sign in with a Google account if prompted.</li>
+          <li>Create a new notebook.</li>
+          <li>Rename the notebook, for example <code>MATH1516_Environment_Test.ipynb</code>.</li>
+          <li>Enter the code below in the first code cell.</li>
+          <li>Run the cell using the play button.</li>
+        </ol>
+      </div>
+
+      <pre><code>numbers = [1, 3, 5, 7, 9]
+
+print("Count:", len(numbers))
+print("Sum:", sum(numbers))
+print("Mean:", sum(numbers) / len(numbers))</code></pre>
+
+      <p>The expected output is:</p>
+
+      <pre><code>Count: 5
+Sum: 25
+Mean: 5.0</code></pre>
+
+      <div class="warning">
+        <h3>Colab Runtimes Are Temporary</h3>
+        <p>
+          Your notebook document can be saved, but the remote runtime may disconnect
+          or reset. Variables, uploaded temporary files, and packages installed only
+          in that runtime may disappear. Run the notebook from the beginning after a
+          reset.
+        </p>
+      </div>
+
+      <p><strong>Colab is a good choice when:</strong></p>
+      <ul>
+        <li>you cannot install software on the computer you are using;</li>
+        <li>you want to begin an activity quickly during a tutorial;</li>
+        <li>you want to share a notebook; or</li>
+        <li>you are working on more than one computer.</li>
+      </ul>
+    </section>
+
+    <section id="recommendation">
+      <h2>0.3.7 Recommended Workflow for MATH 1516</h2>
+
+      <div class="recommendation">
+        <h3>Course Recommendation: Google Colab</h3>
+        <p>
+          Use <strong>Google Colab</strong> for the MATH 1516 tutorial coding
+          activities. Students can open a shared notebook in a browser, make their
+          own copy, run individual cells, and save the completed notebook without
+          configuring a local Python editor.
+        </p>
+        <p>
+          IDLE, Visual Studio Code, and local Jupyter remain useful alternatives for
+          independent practice. Visual Studio Code is especially helpful for students
+          who later want to organize larger software projects using ordinary
+          <code>.py</code> files.
+        </p>
+      </div>
+
+      <h3>Standard Tutorial Routine</h3>
+      <ol>
+        <li>Open the Colab link provided for the activity.</li>
+        <li>Select <strong>File &gt; Save a copy in Drive</strong>.</li>
+        <li>Rename the copy using the requested filename.</li>
+        <li>Read each explanation before running its code cell.</li>
+        <li>Predict the output, then run the cell.</li>
+        <li>Complete the marked exercises in your own copy.</li>
+        <li>Before finishing, select <strong>Runtime &gt; Restart session and run all</strong> when available, or restart and run the cells from top to bottom.</li>
+      </ol>
+
+      <table>
+        <thead>
+          <tr>
+            <th>Situation</th>
+            <th>Suggested Environment</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>First few Python commands</td>
+            <td>IDLE Shell or Colab</td>
+          </tr>
+          <tr>
+            <td>MATH 1516 tutorial activity</td>
+            <td><strong>Google Colab</strong></td>
+          </tr>
+          <tr>
+            <td>Several related Python files</td>
+            <td>Visual Studio Code</td>
+          </tr>
+          <tr>
+            <td>Data analysis with written explanations</td>
+            <td>JupyterLab or Colab</td>
+          </tr>
+          <tr>
+            <td>Computer does not allow installations</td>
+            <td>Google Colab</td>
+          </tr>
+          <tr>
+            <td>Learning debugging and project organization</td>
+            <td>Visual Studio Code</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="activity">
+        <h3>Activity: Compare Two Environments</h3>
+        <ol>
+          <li>Run the code below in two different environments.</li>
+          <li>Record how you created, ran, and saved the program in each environment.</li>
+          <li>Identify one advantage and one disadvantage of each environment.</li>
+          <li>Choose which environment you would prefer for future tutorial activities.</li>
+        </ol>
+
+        <pre><code>n = 10
+total = n * (n + 1) / 2
+
+print("The sum from 1 to", n, "is", total)</code></pre>
+      </div>
+    </section>
+
+    <section>
+      <h2>0.3.8 File Types and Saving Your Work</h2>
+
+      <table>
+        <thead>
+          <tr>
+            <th>File Type</th>
+            <th>Purpose</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><code>.py</code></td>
+            <td>A plain Python source-code file, commonly used in IDLE and VS Code</td>
+          </tr>
+          <tr>
+            <td><code>.ipynb</code></td>
+            <td>A notebook containing cells, outputs, and document metadata</td>
+          </tr>
+          <tr>
+            <td><code>.csv</code></td>
+            <td>A plain-text data table that Python can read using packages such as pandas</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <ul>
+        <li>Create one folder for MATH 1516 coding activities.</li>
+        <li>Use descriptive filenames such as <code>section_1_1_matrices.py</code>.</li>
+        <li>Avoid filenames such as <code>numpy.py</code>, <code>random.py</code>, or <code>pandas.py</code>, because they can conflict with package names.</li>
+        <li>Save your work before running it.</li>
+        <li>For notebooks, restart and run all cells before submitting or sharing.</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>0.3.9 Concept Check</h2>
+
+      <ol>
+        <li>What is the difference between Python and VS Code?</li>
+        <li>Why are notebooks useful for mathematical work?</li>
+        <li>What problem can occur when notebook cells are executed out of order?</li>
+        <li>Which environment would you choose on a computer where you cannot install software?</li>
+        <li>Why must VS Code have a Python interpreter selected?</li>
+      </ol>
+
+      <details>
+        <summary>Show suggested answers</summary>
+        <ol>
+          <li>Python is the language and interpreter; VS Code is an editor that can connect to the interpreter.</li>
+          <li>They combine explanations, mathematical notation, code, and output in one document.</li>
+          <li>The displayed output may depend on hidden values created by previously executed cells.</li>
+          <li>Google Colab, because it runs in a browser and requires no local Python setup.</li>
+          <li>The selected interpreter determines which Python version and installed packages run the code.</li>
+        </ol>
+      </details>
+    </section>
+
+    <section>
+      <h2>0.3.10 Official References</h2>
+      <ul>
+        <li><a href="https://docs.python.org/3/library/idle.html">Python IDLE Documentation</a></li>
+        <li><a href="https://code.visualstudio.com/docs/python/python-tutorial">Getting Started with Python in VS Code</a></li>
+        <li><a href="https://jupyter.org/install">Installing Jupyter</a></li>
+        <li><a href="https://research.google.com/colaboratory/faq.html">Google Colab FAQ</a></li>
+      </ul>
+    </section>
+
+    <section class="summary">
+      <h2>Section Summary</h2>
+      <ul>
+        <li>A coding environment helps you write, run, organize, and debug Python code.</li>
+        <li>IDLE provides a simple Shell and Editor and is commonly included with Python.</li>
+        <li>VS Code requires Python, the editor, and the Microsoft Python extension.</li>
+        <li>Jupyter notebooks combine executable cells, text, mathematics, and output.</li>
+        <li>Google Colab provides hosted notebooks without local installation.</li>
+        <li>Google Colab is the recommended environment for MATH 1516 tutorial activities.</li>
+        <li>VS Code remains useful for students who want experience with larger software projects.</li>
+        <li>The selected interpreter controls which Python version and packages are used.</li>
+      </ul>
+    </section>
+
+    <nav class="page-navigation" aria-label="Page navigation">
+      <a href="section-0-2.html">&larr; Previous: Section 0.2</a>
+      <a href="index.html">Course Contents</a>
+      <a href="section-0-4.html">Next: Section 0.4 &rarr;</a>
+    </nav>
+  </main>
+
+  <footer>
+    <p>MATH 1516 Coding Activities — Prepared by Joe Tran</p>
+  </footer>
+</body>
+</html>

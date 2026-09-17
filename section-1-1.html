@@ -1,0 +1,981 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Section 1.1: Creating Vectors and Matrices | MATH 1516</title>
+  <style>
+    body {
+      max-width: 850px;
+      margin: 0 auto;
+      padding: 20px;
+      font-family: Arial, sans-serif;
+      line-height: 1.65;
+      color: #222;
+    }
+
+    header {
+      border-bottom: 2px solid #8c1d40;
+      margin-bottom: 30px;
+    }
+
+    nav {
+      margin: 15px 0;
+    }
+
+    nav a {
+      margin-right: 15px;
+    }
+
+    h1, h2, h3 {
+      line-height: 1.25;
+    }
+
+    h2 {
+      margin-top: 40px;
+      color: #8c1d40;
+      border-bottom: 1px solid #ddd;
+      padding-bottom: 5px;
+    }
+
+    h3 {
+      margin-top: 28px;
+    }
+
+    .objectives,
+    .steps,
+    .activity,
+    .note,
+    .warning,
+    .example,
+    .summary {
+      padding: 15px 18px;
+      margin: 20px 0;
+      border-radius: 4px;
+    }
+
+    .objectives,
+    .summary {
+      background: #f7f7f7;
+      border: 1px solid #ccc;
+    }
+
+    .steps {
+      background: #f4f8fc;
+      border-left: 4px solid #2f6fa3;
+    }
+
+    .activity {
+      background: #fff8e6;
+      border-left: 4px solid #d18b00;
+    }
+
+    .note {
+      background: #f3f8f3;
+      border-left: 4px solid #4c8c4a;
+    }
+
+    .warning {
+      background: #fff3f3;
+      border-left: 4px solid #b64040;
+    }
+
+    .example {
+      background: #f7f1fa;
+      border-left: 4px solid #7b3f98;
+    }
+
+    .steps h3,
+    .activity h3,
+    .note h3,
+    .warning h3,
+    .example h3,
+    .summary h2 {
+      margin-top: 0;
+    }
+
+    pre {
+      overflow-x: auto;
+      padding: 14px;
+      background: #202124;
+      color: #f1f1f1;
+      border-radius: 4px;
+      line-height: 1.5;
+    }
+
+    code {
+      font-family: Consolas, Monaco, monospace;
+    }
+
+    p code,
+    li code,
+    td code {
+      background: #f0f0f0;
+      padding: 2px 5px;
+      border-radius: 3px;
+      color: #222;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 20px 0;
+    }
+
+    th,
+    td {
+      border: 1px solid #bbb;
+      padding: 10px;
+      text-align: left;
+      vertical-align: top;
+    }
+
+    th {
+      background: #f2f2f2;
+    }
+
+    details {
+      margin: 12px 0;
+    }
+
+    summary {
+      cursor: pointer;
+      font-weight: bold;
+    }
+
+    .page-navigation {
+      display: flex;
+      justify-content: space-between;
+      gap: 15px;
+      border-top: 1px solid #ccc;
+      margin-top: 45px;
+      padding-top: 20px;
+    }
+
+    footer {
+      margin-top: 35px;
+      color: #555;
+      font-size: 0.9rem;
+    }
+
+    @media (max-width: 600px) {
+      body {
+        padding: 14px;
+      }
+
+      table {
+        font-size: 0.9rem;
+      }
+
+      .page-navigation {
+        flex-direction: column;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <p><a href="index.html">&larr; Course Home</a></p>
+    <h1>Section 1.1: Creating Vectors and Matrices</h1>
+    <p><strong>Part 1: Linear Systems and Matrices</strong></p>
+
+    <nav aria-label="Section contents">
+      <a href="#numpy">NumPy</a>
+      <a href="#vectors">Vectors</a>
+      <a href="#matrices">Matrices</a>
+      <a href="#attributes">Attributes</a>
+      <a href="#indexing">Indexing</a>
+      <a href="#activity">Activity</a>
+    </nav>
+  </header>
+
+  <main>
+    <section class="objectives">
+      <h2>Learning Objectives</h2>
+      <p>By the end of this section, you should be able to:</p>
+      <ul>
+        <li>explain why NumPy arrays are useful for numerical mathematics;</li>
+        <li>import NumPy using the conventional alias <code>np</code>;</li>
+        <li>create one-dimensional arrays, row vectors, column vectors, and matrices;</li>
+        <li>interpret the attributes <code>ndim</code>, <code>shape</code>, <code>size</code>, and <code>dtype</code>;</li>
+        <li>create arrays using <code>zeros()</code>, <code>ones()</code>, <code>arange()</code>, and <code>linspace()</code>;</li>
+        <li>reshape an array without changing its number of elements;</li>
+        <li>access individual entries, rows, columns, and submatrices; and</li>
+        <li>modify selected entries of an array.</li>
+      </ul>
+    </section>
+
+    <section id="numpy">
+      <h2>1.1.1 Why Use NumPy?</h2>
+
+      <p>
+        <strong>NumPy</strong>, short for Numerical Python, is a Python package for
+        numerical and scientific computing. Its central data structure is the
+        <code>ndarray</code>, an N-dimensional array whose elements normally share a
+        common data type.
+      </p>
+
+      <p>
+        Ordinary Python lists are flexible general-purpose containers. NumPy arrays
+        are designed for homogeneous numerical data and provide convenient tools for
+        vectors, matrices, linear algebra, statistics, and later graphing tasks.
+      </p>
+
+      <table>
+        <thead>
+          <tr>
+            <th>Python List</th>
+            <th>NumPy Array</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Can freely mix unrelated data types</td>
+            <td>Normally stores one common data type</td>
+          </tr>
+          <tr>
+            <td>Excellent general-purpose container</td>
+            <td>Designed for efficient numerical operations</td>
+          </tr>
+          <tr>
+            <td>Nested lists can represent rows</td>
+            <td>Has built-in dimensions, shapes, and multidimensional indexing</td>
+          </tr>
+          <tr>
+            <td>Arithmetic behaviour may not match vector arithmetic</td>
+            <td>Supports elementwise operations and linear-algebra functions</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h3>Import NumPy</h3>
+
+      <pre><code>import numpy as np</code></pre>
+
+      <p>
+        The alias <code>np</code> is the standard convention. It keeps code concise
+        while making it clear that a function or object comes from NumPy.
+      </p>
+
+      <div class="steps">
+        <h3>Start a Colab Notebook</h3>
+        <ol>
+          <li>Create a Google Colab notebook.</li>
+          <li>Rename it <code>MATH1516_Section_1_1.ipynb</code>.</li>
+          <li>Add a Markdown heading named <strong>Creating Vectors and Matrices</strong>.</li>
+          <li>Place <code>import numpy as np</code> in the first code cell.</li>
+          <li>Run the import cell before running the examples below.</li>
+        </ol>
+      </div>
+    </section>
+
+    <section id="vectors">
+      <h2>1.1.2 Creating One-Dimensional Arrays</h2>
+
+      <p>
+        Pass a Python list to <code>np.array()</code> to create a NumPy array:
+      </p>
+
+      <pre><code>v = np.array([2, -1, 4])
+print(v)</code></pre>
+
+      <p>The output is:</p>
+
+      <pre><code>[ 2 -1  4]</code></pre>
+
+      <p>
+        In many introductory calculations, a one-dimensional array is used to store
+        the components of a vector. Its shape is <code>(3,)</code>, which means one
+        axis containing three elements.
+      </p>
+
+      <pre><code>print(v.ndim)
+print(v.shape)
+print(v.size)</code></pre>
+
+      <p>The output is:</p>
+
+      <pre><code>1
+(3,)
+3</code></pre>
+
+      <div class="warning">
+        <h3>A 1-D Array Is Not Explicitly a Row or Column</h3>
+        <p>
+          The shape <code>(3,)</code> is neither <code>(1, 3)</code> nor
+          <code>(3, 1)</code>. This distinction matters in matrix multiplication.
+          When orientation matters, create a two-dimensional row or column vector.
+        </p>
+      </div>
+
+      <h3>Row and Column Vectors</h3>
+
+      <pre><code>row_vector = np.array([[2, -1, 4]])
+
+column_vector = np.array([
+    [2],
+    [-1],
+    [4]
+])
+
+print("Row shape:", row_vector.shape)
+print("Column shape:", column_vector.shape)</code></pre>
+
+      <p>The shapes are <code>(1, 3)</code> and <code>(3, 1)</code>, respectively.</p>
+
+      <table>
+        <thead>
+          <tr>
+            <th>Object</th>
+            <th>NumPy Construction</th>
+            <th>Shape</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>1-D array with three entries</td>
+            <td><code>np.array([2, -1, 4])</code></td>
+            <td><code>(3,)</code></td>
+          </tr>
+          <tr>
+            <td>One-row array</td>
+            <td><code>np.array([[2, -1, 4]])</code></td>
+            <td><code>(1, 3)</code></td>
+          </tr>
+          <tr>
+            <td>One-column array</td>
+            <td><code>np.array([[2], [-1], [4]])</code></td>
+            <td><code>(3, 1)</code></td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section id="matrices">
+      <h2>1.1.3 Creating Matrices</h2>
+
+      <p>
+        A matrix can be represented by a two-dimensional NumPy array. Supply a nested
+        list in which each inner list represents one row.
+      </p>
+
+      <pre><code>A = np.array([
+    [1, 2, 3],
+    [4, 5, 6]
+])
+
+print(A)</code></pre>
+
+      <p>The output is:</p>
+
+      <pre><code>[[1 2 3]
+ [4 5 6]]</code></pre>
+
+      <p>
+        The array has two rows and three columns. Its shape is therefore
+        <code>(2, 3)</code>.
+      </p>
+
+      <div class="note">
+        <h3>Rows Must Have Equal Length</h3>
+        <p>
+          A numerical matrix is rectangular. Each row must contain the same number
+          of entries. A nested list with unequal row lengths does not define an
+          ordinary numerical matrix.
+        </p>
+      </div>
+
+      <h3>From Mathematical Notation to NumPy</h3>
+
+      <table>
+        <thead>
+          <tr>
+            <th>Mathematical Description</th>
+            <th>NumPy Code</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>First row: 1, 2, 3</td>
+            <td><code>[1, 2, 3]</code></td>
+          </tr>
+          <tr>
+            <td>Second row: 4, 5, 6</td>
+            <td><code>[4, 5, 6]</code></td>
+          </tr>
+          <tr>
+            <td>Two-row matrix</td>
+            <td><code>np.array([[1, 2, 3], [4, 5, 6]])</code></td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h3>Decimal Entries</h3>
+
+      <pre><code>B = np.array([
+    [1.5, 0.0],
+    [-2.0, 3.25]
+])
+
+print(B)
+print(B.dtype)</code></pre>
+
+      <p>
+        Because the entries include decimals, NumPy stores the array using a
+        floating-point data type.
+      </p>
+    </section>
+
+    <section id="attributes">
+      <h2>1.1.4 Array Attributes</h2>
+
+      <p>
+        NumPy arrays contain metadata describing their structure. These attributes
+        are especially useful when checking whether an array has the required
+        dimensions for a calculation.
+      </p>
+
+      <pre><code>A = np.array([
+    [1, 2, 3],
+    [4, 5, 6]
+])
+
+print("Dimensions:", A.ndim)
+print("Shape:", A.shape)
+print("Number of entries:", A.size)
+print("Data type:", A.dtype)</code></pre>
+
+      <table>
+        <thead>
+          <tr>
+            <th>Attribute</th>
+            <th>Meaning</th>
+            <th>Value for <code>A</code></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><code>A.ndim</code></td>
+            <td>Number of axes or dimensions</td>
+            <td><code>2</code></td>
+          </tr>
+          <tr>
+            <td><code>A.shape</code></td>
+            <td>Number of entries along each axis</td>
+            <td><code>(2, 3)</code></td>
+          </tr>
+          <tr>
+            <td><code>A.size</code></td>
+            <td>Total number of entries</td>
+            <td><code>6</code></td>
+          </tr>
+          <tr>
+            <td><code>A.dtype</code></td>
+            <td>Stored data type</td>
+            <td>An integer type, such as <code>int64</code></td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="note">
+        <h3>Data-Type Names Can Differ</h3>
+        <p>
+          The exact displayed type can depend on the computer and NumPy build. For
+          this course, the important distinction is usually whether the entries are
+          integers or floating-point numbers.
+        </p>
+      </div>
+    </section>
+
+    <section>
+      <h2>1.1.5 Creating Common Arrays</h2>
+
+      <h3>Arrays of Zeros and Ones</h3>
+
+      <pre><code>Z = np.zeros((2, 3))
+O = np.ones((3, 2))
+
+print(Z)
+print(O)</code></pre>
+
+      <p>
+        The tuple gives the desired shape. Unless another data type is requested,
+        these functions usually create floating-point entries.
+      </p>
+
+      <pre><code>Z_int = np.zeros((2, 3), dtype=int)
+print(Z_int)</code></pre>
+
+      <h3>Constant Arrays</h3>
+
+      <pre><code>C = np.full((2, 4), 7)
+print(C)</code></pre>
+
+      <p>This creates a 2 by 4 array in which every entry equals 7.</p>
+
+      <h3>Sequences with <code>arange()</code></h3>
+
+      <pre><code>even_numbers = np.arange(2, 11, 2)
+print(even_numbers)</code></pre>
+
+      <p>
+        The starting value is included and the stopping value is excluded. The output
+        is <code>[2 4 6 8 10]</code>.
+      </p>
+
+      <h3>Evenly Spaced Values with <code>linspace()</code></h3>
+
+      <pre><code>points = np.linspace(0, 1, 5)
+print(points)</code></pre>
+
+      <p>
+        This creates five evenly spaced values from 0 through 1, including both
+        endpoints.
+      </p>
+
+      <table>
+        <thead>
+          <tr>
+            <th>Function</th>
+            <th>Main Question</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><code>np.arange(start, stop, step)</code></td>
+            <td>What step size should separate consecutive values?</td>
+          </tr>
+          <tr>
+            <td><code>np.linspace(start, stop, number)</code></td>
+            <td>How many evenly spaced values should be created?</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section>
+      <h2>1.1.6 Reshaping Arrays</h2>
+
+      <p>
+        The <code>reshape()</code> method changes the arrangement of an array without
+        changing its entries.
+      </p>
+
+      <pre><code>values = np.arange(1, 13)
+A = values.reshape(3, 4)
+
+print(values)
+print(A)</code></pre>
+
+      <p>The output matrix is:</p>
+
+      <pre><code>[[ 1  2  3  4]
+ [ 5  6  7  8]
+ [ 9 10 11 12]]</code></pre>
+
+      <p>
+        The original array has 12 entries, and the requested shape also contains
+        3 times 4 = 12 entries.
+      </p>
+
+      <div class="warning">
+        <h3>The Number of Entries Must Match</h3>
+        <p>
+          An array with 12 entries cannot be reshaped to <code>(5, 2)</code>, because
+          that shape contains only 10 positions. A compatible shape must have the
+          same total size.
+        </p>
+      </div>
+
+      <h3>Let NumPy Infer One Dimension</h3>
+
+      <pre><code>values = np.arange(1, 13)
+A = values.reshape(4, -1)
+
+print(A)
+print(A.shape)</code></pre>
+
+      <p>
+        The value <code>-1</code> asks NumPy to infer the missing dimension. Since 12
+        entries are arranged into four rows, the result has three columns and shape
+        <code>(4, 3)</code>.
+      </p>
+    </section>
+
+    <section id="indexing">
+      <h2>1.1.7 Accessing Entries, Rows, and Columns</h2>
+
+      <p>Consider the matrix:</p>
+
+      <pre><code>A = np.array([
+    [2, 4, 6],
+    [1, 3, 5],
+    [7, 8, 9]
+])</code></pre>
+
+      <h3>Individual Entries</h3>
+
+      <pre><code>print(A[0, 0])  # First row, first column: 2
+print(A[1, 2])  # Second row, third column: 5
+print(A[-1, -1])  # Final row, final column: 9</code></pre>
+
+      <p>
+        NumPy uses zero-based indexing. The first index identifies the row and the
+        second identifies the column.
+      </p>
+
+      <h3>Rows</h3>
+
+      <pre><code>first_row = A[0, :]
+second_row = A[1, :]
+
+print(first_row)
+print(second_row)</code></pre>
+
+      <p>
+        The colon means “select every entry” along that axis. The shorter expression
+        <code>A[0]</code> also selects the first row.
+      </p>
+
+      <h3>Columns</h3>
+
+      <pre><code>first_column = A[:, 0]
+third_column = A[:, 2]
+
+print(first_column)
+print(third_column)</code></pre>
+
+      <p>
+        These selections are one-dimensional arrays. To preserve an explicit column
+        shape, use a slice:
+      </p>
+
+      <pre><code>column = A[:, 0:1]
+
+print(column)
+print(column.shape)</code></pre>
+
+      <p>The shape is <code>(3, 1)</code>.</p>
+
+      <h3>Submatrices</h3>
+
+      <pre><code>top_left = A[0:2, 0:2]
+print(top_left)</code></pre>
+
+      <p>The result is:</p>
+
+      <pre><code>[[2 4]
+ [1 3]]</code></pre>
+
+      <div class="note">
+        <h3>Slices Often Produce Views</h3>
+        <p>
+          A basic NumPy slice can refer to the same underlying data as the original
+          array. Modifying the slice may therefore modify the original. Use
+          <code>.copy()</code> when an independent array is required.
+        </p>
+      </div>
+
+      <pre><code>independent_block = A[0:2, 0:2].copy()</code></pre>
+    </section>
+
+    <section>
+      <h2>1.1.8 Modifying Array Entries</h2>
+
+      <p>NumPy arrays are mutable, so selected entries can be replaced.</p>
+
+      <pre><code>A = np.array([
+    [1, 2],
+    [3, 4]
+])
+
+A[0, 1] = 10
+print(A)</code></pre>
+
+      <p>The output is:</p>
+
+      <pre><code>[[ 1 10]
+ [ 3  4]]</code></pre>
+
+      <h3>Replace an Entire Row or Column</h3>
+
+      <pre><code>A[1, :] = [7, 8]
+A[:, 0] = [5, 6]
+
+print(A)</code></pre>
+
+      <p>
+        The replacement must be compatible with the selected shape. A row with two
+        positions cannot receive three values.
+      </p>
+
+      <div class="warning">
+        <h3>Integer Arrays Truncate Decimal Assignments</h3>
+        <p>
+          If an array was created from integers, assigning <code>2.7</code> to one of
+          its entries may store <code>2</code>. Create the array with decimal entries
+          or use <code>dtype=float</code> when decimals are required.
+        </p>
+      </div>
+
+      <pre><code>A = np.array([[1, 2], [3, 4]], dtype=float)
+A[0, 0] = 2.7
+print(A)</code></pre>
+    </section>
+
+    <section>
+      <h2>1.1.9 Arrays Are Not the Same as Lists</h2>
+
+      <p>Compare the effect of multiplication:</p>
+
+      <pre><code>python_list = [1, 2, 3]
+numpy_array = np.array([1, 2, 3])
+
+print(python_list * 2)
+print(numpy_array * 2)</code></pre>
+
+      <p>The output is:</p>
+
+      <pre><code>[1, 2, 3, 1, 2, 3]
+[2 4 6]</code></pre>
+
+      <p>
+        Multiplying a list by 2 repeats it. Multiplying a NumPy array by 2 scales
+        each entry. This is one reason arrays are more natural for numerical work.
+      </p>
+
+      <div class="warning">
+        <h3>Array Multiplication Is Usually Elementwise</h3>
+        <p>
+          For arrays, <code>A * B</code> multiplies corresponding entries. It does not
+          perform matrix multiplication. Section 1.3 will introduce the matrix
+          product using <code>A @ B</code>.
+        </p>
+      </div>
+    </section>
+
+    <section id="activity">
+      <h2>1.1.10 Tutorial Activity: Build and Inspect Arrays</h2>
+
+      <div class="activity">
+        <h3>Part A: Create the Data</h3>
+        <ol>
+          <li>Create the 1-D array <code>v = [3, -2, 5, 1]</code>.</li>
+          <li>Create a one-row version of <code>v</code>.</li>
+          <li>Create a one-column version of <code>v</code>.</li>
+          <li>Print the shape of all three arrays.</li>
+          <li>Explain why the shapes differ even though the entries are the same.</li>
+        </ol>
+
+        <h3>Part B: Create a Matrix</h3>
+        <ol>
+          <li>Create the matrix with rows <code>[2, 0, -1]</code>, <code>[4, 3, 5]</code>, and <code>[1, 6, 2]</code>.</li>
+          <li>Print its dimensions, shape, size, and data type.</li>
+          <li>Extract the second row.</li>
+          <li>Extract the third column.</li>
+          <li>Extract the upper-left 2 by 2 submatrix.</li>
+          <li>Replace the centre entry with 10.</li>
+        </ol>
+
+        <h3>Part C: Generate a Matrix</h3>
+        <ol>
+          <li>Use <code>np.arange()</code> to create the integers 1 through 12.</li>
+          <li>Reshape the result into a 3 by 4 matrix.</li>
+          <li>Predict its final row before displaying it.</li>
+        </ol>
+      </div>
+
+      <details>
+        <summary>Show a sample solution</summary>
+        <pre><code># Part A
+v = np.array([3, -2, 5, 1])
+row_v = np.array([[3, -2, 5, 1]])
+column_v = np.array([[3], [-2], [5], [1]])
+
+print(v.shape)
+print(row_v.shape)
+print(column_v.shape)
+
+# Part B
+A = np.array([
+    [2, 0, -1],
+    [4, 3, 5],
+    [1, 6, 2]
+])
+
+print(A.ndim)
+print(A.shape)
+print(A.size)
+print(A.dtype)
+
+print(A[1, :])
+print(A[:, 2])
+print(A[0:2, 0:2])
+
+A[1, 1] = 10
+print(A)
+
+# Part C
+B = np.arange(1, 13).reshape(3, 4)
+print(B)
+print(B[-1, :])</code></pre>
+      </details>
+    </section>
+
+    <section>
+      <h2>1.1.11 Common Errors</h2>
+
+      <table>
+        <thead>
+          <tr>
+            <th>Problem</th>
+            <th>Cause</th>
+            <th>Correction</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><code>NameError: name 'np' is not defined</code></td>
+            <td>The NumPy import cell was not run.</td>
+            <td>Run <code>import numpy as np</code>.</td>
+          </tr>
+          <tr>
+            <td><code>IndexError</code></td>
+            <td>A requested row or column index is outside the array.</td>
+            <td>Inspect <code>A.shape</code> and remember that indices begin at zero.</td>
+          </tr>
+          <tr>
+            <td><code>ValueError</code> during <code>reshape()</code></td>
+            <td>The new shape has a different number of positions.</td>
+            <td>Check that the product of the new dimensions equals <code>A.size</code>.</td>
+          </tr>
+          <tr>
+            <td>Unexpected shape <code>(n,)</code></td>
+            <td>A 1-D array was created instead of a row or column.</td>
+            <td>Use nested brackets or reshape to <code>(1, n)</code> or <code>(n, 1)</code>.</td>
+          </tr>
+          <tr>
+            <td>A decimal assignment becomes an integer</td>
+            <td>The array has an integer data type.</td>
+            <td>Create it with <code>dtype=float</code>.</td>
+          </tr>
+          <tr>
+            <td>Changing a slice changes the original</td>
+            <td>Basic slicing returned a view of the original data.</td>
+            <td>Use <code>.copy()</code> when an independent array is required.</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section>
+      <h2>1.1.12 Concept Check</h2>
+
+      <ol>
+        <li>What does the abbreviation NumPy mean?</li>
+        <li>What shape does <code>np.array([1, 2, 3, 4])</code> have?</li>
+        <li>How would you create an explicit 4 by 1 column vector?</li>
+        <li>What is the difference between <code>ndim</code>, <code>shape</code>, and <code>size</code>?</li>
+        <li>What entry does <code>A[1, 2]</code> select?</li>
+        <li>How do <code>A[:, 0]</code> and <code>A[:, 0:1]</code> differ?</li>
+        <li>Why might a slice be followed by <code>.copy()</code>?</li>
+      </ol>
+
+      <details>
+        <summary>Show suggested answers</summary>
+        <ol>
+          <li>Numerical Python.</li>
+          <li><code>(4,)</code>.</li>
+          <li>Use nested single-entry rows, such as <code>np.array([[1], [2], [3], [4]])</code>, or reshape a four-entry array to <code>(4, 1)</code>.</li>
+          <li><code>ndim</code> counts axes, <code>shape</code> gives the length of each axis, and <code>size</code> counts all entries.</li>
+          <li>The entry in the second row and third column.</li>
+          <li>The first has shape <code>(m,)</code>; the slice preserves a column shape <code>(m, 1)</code>.</li>
+          <li>To create independent data rather than a view that may modify the original array.</li>
+        </ol>
+      </details>
+    </section>
+
+    <section>
+      <h2>1.1.13 Practice Exercises</h2>
+
+      <ol>
+        <li>Create a one-dimensional array containing <code>-3, 0, 2, 7, 9</code>.</li>
+        <li>Create a 2 by 3 matrix whose first row is <code>1, 0, 4</code> and second row is <code>-2, 5, 3</code>.</li>
+        <li>Report the matrix's dimensions, shape, size, and data type.</li>
+        <li>Create a 4 by 5 zero matrix with integer entries.</li>
+        <li>Create seven evenly spaced values from -3 through 3.</li>
+        <li>Create the integers 1 through 20 and reshape them into a 4 by 5 matrix.</li>
+        <li>From the matrix in Exercise 6, extract the second row, fourth column, and bottom-right 2 by 2 block.</li>
+        <li>Change every entry of the first column to zero.</li>
+      </ol>
+
+      <details>
+        <summary>Show sample solutions</summary>
+        <pre><code># 1
+v = np.array([-3, 0, 2, 7, 9])
+
+# 2
+A = np.array([
+    [1, 0, 4],
+    [-2, 5, 3]
+])
+
+# 3
+print(A.ndim, A.shape, A.size, A.dtype)
+
+# 4
+Z = np.zeros((4, 5), dtype=int)
+
+# 5
+points = np.linspace(-3, 3, 7)
+
+# 6
+B = np.arange(1, 21).reshape(4, 5)
+
+# 7
+second_row = B[1, :]
+fourth_column = B[:, 3]
+bottom_right = B[2:4, 3:5]
+
+# 8
+B[:, 0] = 0
+print(B)</code></pre>
+      </details>
+    </section>
+
+    <section>
+      <h2>1.1.14 Official References</h2>
+      <ul>
+        <li><a href="https://numpy.org/doc/stable/user/absolute_beginners.html">NumPy: The Absolute Basics for Beginners</a></li>
+        <li><a href="https://numpy.org/doc/stable/user/quickstart.html">NumPy Quickstart</a></li>
+        <li><a href="https://numpy.org/doc/stable/reference/generated/numpy.array.html"><code>numpy.array</code> Reference</a></li>
+      </ul>
+    </section>
+
+    <section class="summary">
+      <h2>Section Summary</h2>
+      <ul>
+        <li>NumPy provides efficient N-dimensional arrays for numerical computing.</li>
+        <li><code>np.array()</code> converts a Python sequence into an array.</li>
+        <li>A 1-D array with <code>n</code> entries has shape <code>(n,)</code>.</li>
+        <li>Explicit row and column arrays have shapes <code>(1, n)</code> and <code>(n, 1)</code>.</li>
+        <li>A matrix is represented by a 2-D rectangular array.</li>
+        <li><code>ndim</code>, <code>shape</code>, <code>size</code>, and <code>dtype</code> describe an array.</li>
+        <li><code>zeros()</code>, <code>ones()</code>, <code>full()</code>, <code>arange()</code>, and <code>linspace()</code> create useful arrays.</li>
+        <li>Indexing uses row first and column second, with both indices beginning at zero.</li>
+        <li>Basic slices can be views, so use <code>.copy()</code> when independent data is required.</li>
+      </ul>
+    </section>
+
+    <nav class="page-navigation" aria-label="Page navigation">
+      <a href="section-0-7.html">&larr; Previous: Section 0.7</a>
+      <a href="index.html">Course Contents</a>
+      <span>Next: Section 1.2 — Matrix Terminology and Dimensions</span>
+    </nav>
+  </main>
+
+  <footer>
+    <p>MATH 1516 Coding Activities — Prepared by Joe Tran</p>
+  </footer>
+</body>
+</html>

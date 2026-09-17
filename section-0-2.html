@@ -1,0 +1,605 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Section 0.2: Installing Python | MATH 1516</title>
+  <style>
+    body {
+      max-width: 850px;
+      margin: 0 auto;
+      padding: 20px;
+      font-family: Arial, sans-serif;
+      line-height: 1.65;
+      color: #222;
+    }
+
+    header {
+      border-bottom: 2px solid #8c1d40;
+      margin-bottom: 30px;
+    }
+
+    nav {
+      margin: 15px 0;
+    }
+
+    nav a {
+      margin-right: 15px;
+    }
+
+    h1, h2, h3 {
+      line-height: 1.25;
+    }
+
+    h2 {
+      margin-top: 40px;
+      color: #8c1d40;
+      border-bottom: 1px solid #ddd;
+      padding-bottom: 5px;
+    }
+
+    h3 {
+      margin-top: 28px;
+    }
+
+    .objectives,
+    .steps,
+    .activity,
+    .note,
+    .warning,
+    .summary {
+      padding: 15px 18px;
+      margin: 20px 0;
+      border-radius: 4px;
+    }
+
+    .objectives,
+    .summary {
+      background: #f7f7f7;
+      border: 1px solid #ccc;
+    }
+
+    .steps {
+      background: #f4f8fc;
+      border-left: 4px solid #2f6fa3;
+    }
+
+    .activity {
+      background: #fff8e6;
+      border-left: 4px solid #d18b00;
+    }
+
+    .note {
+      background: #f3f8f3;
+      border-left: 4px solid #4c8c4a;
+    }
+
+    .warning {
+      background: #fff3f3;
+      border-left: 4px solid #b64040;
+    }
+
+    .steps h3,
+    .activity h3,
+    .note h3,
+    .warning h3,
+    .summary h2 {
+      margin-top: 0;
+    }
+
+    pre {
+      overflow-x: auto;
+      padding: 14px;
+      background: #202124;
+      color: #f1f1f1;
+      border-radius: 4px;
+      line-height: 1.5;
+    }
+
+    code {
+      font-family: Consolas, Monaco, monospace;
+    }
+
+    p code,
+    li code,
+    td code {
+      background: #f0f0f0;
+      padding: 2px 5px;
+      border-radius: 3px;
+      color: #222;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 20px 0;
+    }
+
+    th,
+    td {
+      border: 1px solid #bbb;
+      padding: 10px;
+      text-align: left;
+      vertical-align: top;
+    }
+
+    th {
+      background: #f2f2f2;
+    }
+
+    details {
+      margin: 12px 0;
+    }
+
+    summary {
+      cursor: pointer;
+      font-weight: bold;
+    }
+
+    .checklist li {
+      margin-bottom: 8px;
+    }
+
+    .page-navigation {
+      display: flex;
+      justify-content: space-between;
+      gap: 15px;
+      border-top: 1px solid #ccc;
+      margin-top: 45px;
+      padding-top: 20px;
+    }
+
+    footer {
+      margin-top: 35px;
+      color: #555;
+      font-size: 0.9rem;
+    }
+
+    @media (max-width: 600px) {
+      body {
+        padding: 14px;
+      }
+
+      .page-navigation {
+        flex-direction: column;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <p><a href="index.html">&larr; Course Home</a></p>
+    <h1>Section 0.2: Installing Python</h1>
+    <p><strong>Part 0: Getting Started with Python</strong></p>
+
+    <nav aria-label="Section contents">
+      <a href="#before">Before Installing</a>
+      <a href="#windows">Windows</a>
+      <a href="#macos">macOS</a>
+      <a href="#linux">Linux</a>
+      <a href="#verify">Verification</a>
+      <a href="#troubleshooting">Troubleshooting</a>
+    </nav>
+  </header>
+
+  <main>
+    <section class="objectives">
+      <h2>Learning Objectives</h2>
+      <p>By the end of this section, you should be able to:</p>
+      <ul>
+        <li>identify the correct official source for downloading Python;</li>
+        <li>install a stable version of Python on Windows, macOS, or Linux;</li>
+        <li>open a terminal or command-line window;</li>
+        <li>verify the installed Python version;</li>
+        <li>start and exit the interactive Python interpreter; and</li>
+        <li>diagnose several common installation problems.</li>
+      </ul>
+    </section>
+
+    <section id="before">
+      <h2>0.2.1 Before Installing Python</h2>
+
+      <p>
+        Python consists of the <strong>interpreter</strong>, which reads and executes
+        Python instructions, and the <strong>standard library</strong>, which provides
+        many commonly used tools. Installing Python gives your computer the ability
+        to run programs saved in files ending with <code>.py</code>.
+      </p>
+
+      <h3>Use the Official Python Website</h3>
+
+      <p>
+        Download Python from
+        <a href="https://www.python.org/downloads/">python.org/downloads</a>.
+        The download page lists active releases and identifies whether each release
+        is stable, in prerelease testing, receiving bug fixes, or receiving only
+        security updates.
+      </p>
+
+      <div class="note">
+        <h3>Recommended Version for This Course</h3>
+        <p>
+          Install the latest <strong>stable</strong> Python 3 release offered on the
+          official download page. As of September 2026, Python 3.14 is the current
+          stable feature series, while Python 3.15 is still a prerelease. Do not
+          install a prerelease, experimental, or free-threaded build for these
+          activities unless you have a specific reason to test it.
+        </p>
+      </div>
+
+      <h3>Check Whether Python Is Already Installed</h3>
+
+      <p>Open a terminal and try one of the commands below:</p>
+
+      <table>
+        <thead>
+          <tr>
+            <th>Operating System</th>
+            <th>Command</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Windows</td>
+            <td><code>python --version</code></td>
+          </tr>
+          <tr>
+            <td>Windows alternative</td>
+            <td><code>py --version</code></td>
+          </tr>
+          <tr>
+            <td>macOS or Linux</td>
+            <td><code>python3 --version</code></td>
+          </tr>
+        </tbody>
+      </table>
+
+      <p>
+        If the command displays a supported Python 3 version, you may already have
+        what you need. If the command is not found, or it reports an old installation
+        that you do not intend to use, follow the instructions for your operating
+        system.
+      </p>
+    </section>
+
+    <section id="windows">
+      <h2>0.2.2 Installing Python on Windows</h2>
+
+      <p>
+        Current Python documentation recommends the
+        <strong>Python Install Manager</strong>. It installs and manages Python
+        runtimes and makes the <code>python</code> and <code>py</code> commands
+        available from a terminal.
+      </p>
+
+      <div class="steps">
+        <h3>Installation Steps</h3>
+        <ol>
+          <li>Visit <a href="https://www.python.org/downloads/">python.org/downloads</a>.</li>
+          <li>Download the Python Install Manager for Windows. The Microsoft Store version is also an official option.</li>
+          <li>Open the downloaded installer and select <strong>Install</strong>.</li>
+          <li>After installation, open <strong>Windows Terminal</strong>, <strong>PowerShell</strong>, or <strong>Command Prompt</strong>.</li>
+          <li>Enter <code>python</code>. If no Python runtime is installed yet, the manager can install the current stable release.</li>
+          <li>Enter <code>python --version</code> to confirm the installation.</li>
+        </ol>
+      </div>
+
+      <p>A successful version check will look similar to:</p>
+
+      <pre><code>Python 3.14.7</code></pre>
+
+      <p>
+        Your patch number may be different. For example, both
+        <code>Python 3.14.6</code> and <code>Python 3.14.7</code> belong to the same
+        Python 3.14 feature series.
+      </p>
+
+      <div class="note">
+        <h3>The <code>python</code> and <code>py</code> Commands</h3>
+        <p>
+          For ordinary course work, use <code>python</code>. The <code>py</code>
+          command is useful when several Python versions are installed. You can enter
+          <code>py list</code> to see the runtimes known to the Install Manager.
+        </p>
+      </div>
+
+      <div class="warning">
+        <h3>If Windows Opens the Microsoft Store</h3>
+        <p>
+          Confirm that the Python Install Manager is installed. Then search Windows
+          Settings for <strong>Manage app execution aliases</strong> and confirm that
+          the aliases for Python are enabled. You can also test whether
+          <code>py</code> works.
+        </p>
+      </div>
+    </section>
+
+    <section id="macos">
+      <h2>0.2.3 Installing Python on macOS</h2>
+
+      <p>
+        The Python Software Foundation provides a signed and notarized
+        <code>.pkg</code> installer that supports compatible Intel and Apple Silicon
+        Macs.
+      </p>
+
+      <div class="steps">
+        <h3>Installation Steps</h3>
+        <ol>
+          <li>Visit <a href="https://www.python.org/downloads/macos/">Python Releases for macOS</a>.</li>
+          <li>Choose the latest stable Python 3 release and download the macOS installer package.</li>
+          <li>Open the downloaded <code>.pkg</code> file.</li>
+          <li>Follow the installer prompts. The standard installation options are appropriate for this course.</li>
+          <li>Open the new Python folder in <code>/Applications</code>.</li>
+          <li>Double-click <strong>Install Certificates.command</strong> and wait for the completion message.</li>
+          <li>Open <strong>Terminal</strong> and enter <code>python3 --version</code>.</li>
+        </ol>
+      </div>
+
+      <p>A successful version check will look similar to:</p>
+
+      <pre><code>Python 3.14.7</code></pre>
+
+      <div class="warning">
+        <h3>Do Not Remove Apple's System Python</h3>
+        <p>
+          Some versions of macOS provide an Apple-controlled
+          <code>/usr/bin/python3</code> for developer tools. Do not modify or delete
+          that installation. The Python downloaded from python.org can coexist with
+          it, and the standard installer normally configures the newer
+          <code>python3</code> command for you.
+        </p>
+      </div>
+
+      <div class="note">
+        <h3>Finding the Python Command</h3>
+        <p>To see which Python installation your terminal is using, enter:</p>
+        <pre><code>which python3</code></pre>
+        <p>
+          A python.org installation commonly places a link in
+          <code>/usr/local/bin</code>.
+        </p>
+      </div>
+    </section>
+
+    <section id="linux">
+      <h2>0.2.4 Python on Linux</h2>
+
+      <p>
+        Most Linux distributions already include Python 3 or provide it through the
+        distribution's package manager. First, open a terminal and enter:
+      </p>
+
+      <pre><code>python3 --version</code></pre>
+
+      <p>
+        If Python 3 is available, no additional installation may be necessary. If it
+        is missing, use the instructions provided by your Linux distribution. Common
+        commands include:
+      </p>
+
+      <table>
+        <thead>
+          <tr>
+            <th>Distribution Family</th>
+            <th>Typical Commands</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Ubuntu or Debian</td>
+            <td><code>sudo apt update</code><br><code>sudo apt install python3 python3-pip</code></td>
+          </tr>
+          <tr>
+            <td>Fedora</td>
+            <td><code>sudo dnf install python3 python3-pip</code></td>
+          </tr>
+          <tr>
+            <td>OpenSUSE</td>
+            <td><code>sudo zypper install python3 python3-pip</code></td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="warning">
+        <h3>Do Not Replace the System Python</h3>
+        <p>
+          Linux system tools may depend on the Python installation supplied by the
+          distribution. Avoid deleting it or manually replacing
+          <code>/usr/bin/python3</code>. For this introductory course, use the
+          distribution package unless you have a clear reason to maintain another
+          installation.
+        </p>
+      </div>
+    </section>
+
+    <section id="verify">
+      <h2>0.2.5 Verifying the Installation</h2>
+
+      <h3>Step 1: Check the Version</h3>
+
+      <p>Use the appropriate command:</p>
+
+      <pre><code># Windows
+python --version
+
+# macOS or Linux
+python3 --version</code></pre>
+
+      <h3>Step 2: Start Interactive Python</h3>
+
+      <p>Enter <code>python</code> on Windows or <code>python3</code> on macOS/Linux.</p>
+
+      <pre><code>Python 3.14.7 ...
+Type "help", "copyright", "credits" or "license" for more information.
+&gt;&gt;&gt;</code></pre>
+
+      <p>
+        The <code>&gt;&gt;&gt;</code> symbol is the Python prompt. It means Python is
+        waiting for an instruction.
+      </p>
+
+      <h3>Step 3: Run a Test Calculation</h3>
+
+      <pre><code>&gt;&gt;&gt; 2 + 3
+5
+&gt;&gt;&gt; print("Python is working!")
+Python is working!</code></pre>
+
+      <h3>Step 4: Exit Python</h3>
+
+      <pre><code>&gt;&gt;&gt; exit()</code></pre>
+
+      <p>
+        You should return to the ordinary terminal prompt. On Windows, pressing
+        <kbd>Ctrl</kbd>+<kbd>Z</kbd> and then <kbd>Enter</kbd> also exits. On
+        macOS/Linux, press <kbd>Ctrl</kbd>+<kbd>D</kbd>.
+      </p>
+
+      <div class="activity">
+        <h3>Installation Check</h3>
+        <p>Confirm that you can complete every item:</p>
+        <ul class="checklist">
+          <li>&#9744; Open a terminal or command-line window.</li>
+          <li>&#9744; Display a Python 3 version.</li>
+          <li>&#9744; Start the Python interpreter.</li>
+          <li>&#9744; Calculate <code>12 ** 2</code> and obtain <code>144</code>.</li>
+          <li>&#9744; Print your name using <code>print</code>.</li>
+          <li>&#9744; Exit the interpreter.</li>
+        </ul>
+      </div>
+    </section>
+
+    <section>
+      <h2>0.2.6 Running a Python File</h2>
+
+      <p>
+        Open a plain-text editor and create a file named <code>installation_test.py</code>.
+        Enter the following:
+      </p>
+
+      <pre><code>print("My Python installation works.")
+
+x = 6
+y = 7
+print("The product is", x * y)</code></pre>
+
+      <p>
+        Save the file. In a terminal, move to the folder containing the file and run
+        one of the following:
+      </p>
+
+      <pre><code># Windows
+python installation_test.py
+
+# macOS or Linux
+python3 installation_test.py</code></pre>
+
+      <p>The expected output is:</p>
+
+      <pre><code>My Python installation works.
+The product is 42</code></pre>
+
+      <div class="note">
+        <h3>Terminal Folder</h3>
+        <p>
+          The terminal must be working in the folder containing your file, or you
+          must provide the file's complete path. Section 0.3 will introduce coding
+          environments that make creating and running files easier.
+        </p>
+      </div>
+    </section>
+
+    <section id="troubleshooting">
+      <h2>0.2.7 Common Installation Problems</h2>
+
+      <table>
+        <thead>
+          <tr>
+            <th>Problem</th>
+            <th>What to Check</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><code>python</code> is not recognized on Windows</td>
+            <td>Try <code>py</code>. Confirm the Install Manager is installed and its app execution aliases are enabled.</td>
+          </tr>
+          <tr>
+            <td><code>python</code> is not found on macOS/Linux</td>
+            <td>Use <code>python3</code>. These systems commonly reserve or omit the unnumbered command.</td>
+          </tr>
+          <tr>
+            <td>The displayed version is not the one expected</td>
+            <td>Use <code>py list</code> on Windows or <code>which python3</code> on macOS/Linux to identify the selected installation.</td>
+          </tr>
+          <tr>
+            <td>The terminal appears stuck at <code>&gt;&gt;&gt;</code></td>
+            <td>You are inside interactive Python. Enter <code>exit()</code> to return to the terminal.</td>
+          </tr>
+          <tr>
+            <td>A file opens as text but does not run</td>
+            <td>Run it from the terminal using <code>python filename.py</code> or <code>python3 filename.py</code>.</td>
+          </tr>
+          <tr>
+            <td>You cannot install software on a managed computer</td>
+            <td>Ask the institution's technical support team or use a browser-based environment discussed in Section 0.3.</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="activity">
+        <h3>Concept Check</h3>
+        <ol>
+          <li>Why should you choose a stable release instead of a prerelease?</li>
+          <li>Which version command should you normally try on macOS?</li>
+          <li>What does the <code>&gt;&gt;&gt;</code> prompt mean?</li>
+          <li>Why should you avoid deleting a system-provided Python installation?</li>
+        </ol>
+        <details>
+          <summary>Show suggested answers</summary>
+          <ol>
+            <li>Stable releases are intended for regular use and are less likely to contain unfinished or incompatible features.</li>
+            <li><code>python3 --version</code>.</li>
+            <li>The interactive Python interpreter is running and waiting for an instruction.</li>
+            <li>The operating system or installed tools may rely on that Python installation.</li>
+          </ol>
+        </details>
+      </div>
+    </section>
+
+    <section>
+      <h2>0.2.8 Official References</h2>
+      <ul>
+        <li><a href="https://www.python.org/downloads/">Python Downloads</a></li>
+        <li><a href="https://docs.python.org/3/using/windows.html">Using Python on Windows</a></li>
+        <li><a href="https://docs.python.org/3/using/mac.html">Using Python on macOS</a></li>
+        <li><a href="https://docs.python.org/3/using/unix.html">Using Python on Unix Platforms</a></li>
+      </ul>
+    </section>
+
+    <section class="summary">
+      <h2>Section Summary</h2>
+      <ul>
+        <li>Download Python from the official Python website.</li>
+        <li>Choose the latest stable Python 3 release, not a prerelease build.</li>
+        <li>Windows uses the Python Install Manager and commonly runs Python with <code>python</code>.</li>
+        <li>macOS and Linux commonly run Python with <code>python3</code>.</li>
+        <li>Use <code>--version</code> to verify the selected installation.</li>
+        <li>The <code>&gt;&gt;&gt;</code> prompt indicates that interactive Python is running.</li>
+        <li>Do not remove an operating-system-controlled Python installation.</li>
+      </ul>
+    </section>
+
+    <nav class="page-navigation" aria-label="Page navigation">
+      <a href="section-0-1.html">&larr; Previous: Section 0.1</a>
+      <a href="index.html">Course Contents</a>
+      <a href="section-0-3.html">Next: Section 0.3 — Choosing a Coding Environment &rarr;</a>
+    </nav>
+  </main>
+
+  <footer>
+    <p>MATH 1516 Coding Activities — Prepared by Joe Tran</p>
+  </footer>
+</body>
+</html>

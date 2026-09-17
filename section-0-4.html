@@ -1,0 +1,755 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Section 0.4: Installing Python Packages | MATH 1516</title>
+  <style>
+    body {
+      max-width: 850px;
+      margin: 0 auto;
+      padding: 20px;
+      font-family: Arial, sans-serif;
+      line-height: 1.65;
+      color: #222;
+    }
+
+    header {
+      border-bottom: 2px solid #8c1d40;
+      margin-bottom: 30px;
+    }
+
+    nav {
+      margin: 15px 0;
+    }
+
+    nav a {
+      margin-right: 15px;
+    }
+
+    h1, h2, h3 {
+      line-height: 1.25;
+    }
+
+    h2 {
+      margin-top: 40px;
+      color: #8c1d40;
+      border-bottom: 1px solid #ddd;
+      padding-bottom: 5px;
+    }
+
+    h3 {
+      margin-top: 28px;
+    }
+
+    .objectives,
+    .steps,
+    .activity,
+    .note,
+    .warning,
+    .recommendation,
+    .summary {
+      padding: 15px 18px;
+      margin: 20px 0;
+      border-radius: 4px;
+    }
+
+    .objectives,
+    .summary {
+      background: #f7f7f7;
+      border: 1px solid #ccc;
+    }
+
+    .steps {
+      background: #f4f8fc;
+      border-left: 4px solid #2f6fa3;
+    }
+
+    .activity {
+      background: #fff8e6;
+      border-left: 4px solid #d18b00;
+    }
+
+    .note {
+      background: #f3f8f3;
+      border-left: 4px solid #4c8c4a;
+    }
+
+    .warning {
+      background: #fff3f3;
+      border-left: 4px solid #b64040;
+    }
+
+    .recommendation {
+      background: #f7f1fa;
+      border-left: 4px solid #7b3f98;
+    }
+
+    .steps h3,
+    .activity h3,
+    .note h3,
+    .warning h3,
+    .recommendation h3,
+    .summary h2 {
+      margin-top: 0;
+    }
+
+    pre {
+      overflow-x: auto;
+      padding: 14px;
+      background: #202124;
+      color: #f1f1f1;
+      border-radius: 4px;
+      line-height: 1.5;
+    }
+
+    code {
+      font-family: Consolas, Monaco, monospace;
+    }
+
+    p code,
+    li code,
+    td code {
+      background: #f0f0f0;
+      padding: 2px 5px;
+      border-radius: 3px;
+      color: #222;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 20px 0;
+    }
+
+    th,
+    td {
+      border: 1px solid #bbb;
+      padding: 10px;
+      text-align: left;
+      vertical-align: top;
+    }
+
+    th {
+      background: #f2f2f2;
+    }
+
+    details {
+      margin: 12px 0;
+    }
+
+    summary {
+      cursor: pointer;
+      font-weight: bold;
+    }
+
+    .page-navigation {
+      display: flex;
+      justify-content: space-between;
+      gap: 15px;
+      border-top: 1px solid #ccc;
+      margin-top: 45px;
+      padding-top: 20px;
+    }
+
+    footer {
+      margin-top: 35px;
+      color: #555;
+      font-size: 0.9rem;
+    }
+
+    @media (max-width: 600px) {
+      body {
+        padding: 14px;
+      }
+
+      table {
+        font-size: 0.9rem;
+      }
+
+      .page-navigation {
+        flex-direction: column;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <p><a href="index.html">&larr; Course Home</a></p>
+    <h1>Section 0.4: Installing Python Packages</h1>
+    <p><strong>Part 0: Getting Started with Python</strong></p>
+
+    <nav aria-label="Section contents">
+      <a href="#packages">Packages</a>
+      <a href="#course-packages">Course Packages</a>
+      <a href="#colab">Google Colab</a>
+      <a href="#examples">Examples</a>
+      <a href="#local">Local Installation</a>
+      <a href="#activity">Activity</a>
+    </nav>
+  </header>
+
+  <main>
+    <section class="objectives">
+      <h2>Learning Objectives</h2>
+      <p>By the end of this section, you should be able to:</p>
+      <ul>
+        <li>explain the difference between the standard library and a third-party package;</li>
+        <li>distinguish between installing a package and importing it;</li>
+        <li>identify the five main packages used in MATH 1516;</li>
+        <li>import common packages in Google Colab;</li>
+        <li>install a missing package with <code>%pip</code>;</li>
+        <li>check an installed package's version; and</li>
+        <li>diagnose common package installation and import errors.</li>
+      </ul>
+    </section>
+
+    <section id="packages">
+      <h2>0.4.1 What Is a Python Package?</h2>
+
+      <p>
+        Python contains many useful built-in features, but no single programming
+        language includes every possible tool. A <strong>package</strong> is a
+        collection of reusable Python code that adds features to Python. Packages
+        can provide tools for matrices, graphs, symbolic algebra, data tables,
+        statistics, probability, and much more.
+      </p>
+
+      <p>Python tools are commonly grouped into three categories:</p>
+
+      <table>
+        <thead>
+          <tr>
+            <th>Category</th>
+            <th>Description</th>
+            <th>Example</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Built-in feature</strong></td>
+            <td>Available immediately without an <code>import</code> statement.</td>
+            <td><code>print()</code>, <code>len()</code>, <code>sum()</code></td>
+          </tr>
+          <tr>
+            <td><strong>Standard library</strong></td>
+            <td>Installed with Python, but imported when needed.</td>
+            <td><code>math</code>, <code>random</code>, <code>statistics</code></td>
+          </tr>
+          <tr>
+            <td><strong>Third-party package</strong></td>
+            <td>Developed separately and installed when needed.</td>
+            <td><code>numpy</code>, <code>matplotlib</code>, <code>sympy</code></td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h3>Installing and Importing Are Different</h3>
+
+      <p>
+        <strong>Installing</strong> places a package in a Python environment.
+        <strong>Importing</strong> makes that installed package available to the
+        current program or notebook session.
+      </p>
+
+      <pre><code># Installation command: normally run once for an environment
+%pip install numpy
+
+# Python instruction: run in each new notebook or program
+import numpy as np</code></pre>
+
+      <div class="note">
+        <h3>A Package Usually Needs Only One Installation</h3>
+        <p>
+          You do not normally reinstall a package every time you use it. You do,
+          however, import it in each new program or notebook session. Google Colab is
+          a special case because its temporary runtime can be replaced or reset.
+        </p>
+      </div>
+    </section>
+
+    <section id="course-packages">
+      <h2>0.4.2 Packages Used in MATH 1516</h2>
+
+      <p>
+        The course activities will mainly use the following five packages. Many
+        Google Colab runtimes already include them.
+      </p>
+
+      <table>
+        <thead>
+          <tr>
+            <th>Package</th>
+            <th>Typical Import</th>
+            <th>Use in This Course</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>NumPy</strong></td>
+            <td><code>import numpy as np</code></td>
+            <td>Arrays, vectors, matrices, and numerical calculations</td>
+          </tr>
+          <tr>
+            <td><strong>Matplotlib</strong></td>
+            <td><code>import matplotlib.pyplot as plt</code></td>
+            <td>Graphs, scatter plots, histograms, and other visualizations</td>
+          </tr>
+          <tr>
+            <td><strong>SymPy</strong></td>
+            <td><code>import sympy as sp</code></td>
+            <td>Symbolic expressions, equations, and calculus</td>
+          </tr>
+          <tr>
+            <td><strong>pandas</strong></td>
+            <td><code>import pandas as pd</code></td>
+            <td>Data tables, CSV files, and statistical summaries</td>
+          </tr>
+          <tr>
+            <td><strong>SciPy</strong></td>
+            <td><code>from scipy import stats</code></td>
+            <td>Probability distributions and scientific calculations</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="note">
+        <h3>Why Use Short Names?</h3>
+        <p>
+          The names <code>np</code>, <code>plt</code>, <code>sp</code>, and
+          <code>pd</code> are widely used conventions. An alias makes later code
+          shorter while still showing which package provides a function.
+        </p>
+      </div>
+    </section>
+
+    <section id="colab">
+      <h2>0.4.3 Recommended Method: Google Colab</h2>
+
+      <div class="recommendation">
+        <h3>Try the Import First</h3>
+        <p>
+          In Google Colab, begin by importing the package. Many commonly used
+          packages are already installed. Install a package only if the import fails
+          or an activity asks for a specific package or version.
+        </p>
+      </div>
+
+      <div class="steps">
+        <h3>Standard Colab Workflow</h3>
+        <ol>
+          <li>Open the activity notebook.</li>
+          <li>Run the import cell near the beginning of the notebook.</li>
+          <li>If the import works, continue with the activity.</li>
+          <li>If you see <code>ModuleNotFoundError</code>, add an installation cell.</li>
+          <li>Run <code>%pip install package_name</code>.</li>
+          <li>Run the import cell again.</li>
+          <li>Restart the runtime only if Colab or the installer tells you to do so.</li>
+        </ol>
+      </div>
+
+      <h3>The Standard Import Cell</h3>
+
+      <p>
+        The following cell imports the main course packages. A tutorial notebook may
+        import only the packages required for that activity.
+      </p>
+
+      <pre><code>import numpy as np
+import matplotlib.pyplot as plt
+import sympy as sp
+import pandas as pd
+from scipy import stats
+
+print("Packages imported successfully.")</code></pre>
+
+      <p>If the cell runs without an error, the packages are ready to use.</p>
+
+      <h3>Installing a Missing Package</h3>
+
+      <p>
+        In a Colab or Jupyter code cell, replace <code>package_name</code> with the
+        actual package name:
+      </p>
+
+      <pre><code>%pip install package_name</code></pre>
+
+      <p>For example, to install SymPy:</p>
+
+      <pre><code>%pip install sympy</code></pre>
+
+      <p>Several packages can be installed in one command:</p>
+
+      <pre><code>%pip install numpy matplotlib sympy pandas scipy</code></pre>
+
+      <div class="note">
+        <h3>Why Use <code>%pip</code> in a Notebook?</h3>
+        <p>
+          The percent sign marks an IPython command. In Jupyter and Colab,
+          <code>%pip</code> runs the installer for the current notebook kernel. This
+          reduces the chance of installing a package into a different Python
+          environment.
+        </p>
+      </div>
+
+      <div class="warning">
+        <h3>Colab Runtimes Are Temporary</h3>
+        <p>
+          A custom package installed during one Colab session may disappear after
+          the runtime resets. Keep required installation cells near the top of the
+          notebook so the activity can be reproduced later or by another student.
+        </p>
+      </div>
+
+      <h3>Installing a Specific Version</h3>
+
+      <p>
+        Occasionally, an activity may require one exact version. Use two equals signs
+        between the package name and version number:
+      </p>
+
+      <pre><code>%pip install "package_name==1.2.3"</code></pre>
+
+      <p>
+        Do not select an older version without a reason. Use the version stated in
+        the activity, if one is provided.
+      </p>
+    </section>
+
+    <section id="examples">
+      <h2>0.4.4 Testing the Course Packages</h2>
+
+      <p>
+        An import confirms that Python can find a package. A small calculation gives
+        stronger evidence that its main features are working.
+      </p>
+
+      <h3>NumPy: Create a Matrix</h3>
+
+      <pre><code>import numpy as np
+
+A = np.array([[1, 2],
+              [3, 4]])
+
+print(A)
+print("Shape:", A.shape)</code></pre>
+
+      <p>The matrix has two rows and two columns, so its shape is <code>(2, 2)</code>.</p>
+
+      <h3>Matplotlib: Draw a Line</h3>
+
+      <pre><code>import matplotlib.pyplot as plt
+
+x = [0, 1, 2, 3]
+y = [0, 1, 4, 9]
+
+plt.plot(x, y, marker="o")
+plt.xlabel("x")
+plt.ylabel("x squared")
+plt.title("A Simple Plot")
+plt.grid(True)
+plt.show()</code></pre>
+
+      <p>A line graph should appear directly below the cell in Colab.</p>
+
+      <h3>SymPy: Differentiate an Expression</h3>
+
+      <pre><code>import sympy as sp
+
+x = sp.symbols("x")
+f = x**3 + 2*x
+derivative = sp.diff(f, x)
+
+print(derivative)</code></pre>
+
+      <p>The output is <code>3*x**2 + 2</code>.</p>
+
+      <h3>pandas: Create a Data Table</h3>
+
+      <pre><code>import pandas as pd
+
+data = {
+    "Tutorial": [1, 2, 3],
+    "Score": [8, 10, 9]
+}
+
+table = pd.DataFrame(data)
+print(table)
+print("Mean score:", table["Score"].mean())</code></pre>
+
+      <p>The mean score is <code>9.0</code>.</p>
+
+      <h3>SciPy: Calculate a Binomial Probability</h3>
+
+      <pre><code>from scipy import stats
+
+# Probability of exactly 3 successes in 5 trials when p = 0.5
+probability = stats.binom.pmf(3, n=5, p=0.5)
+print(probability)</code></pre>
+
+      <p>The output is <code>0.3125</code>.</p>
+    </section>
+
+    <section>
+      <h2>0.4.5 Checking Package Versions</h2>
+
+      <p>
+        Version numbers are useful when diagnosing a problem or reproducing an
+        activity. Most packages make their version available through
+        <code>__version__</code>.
+      </p>
+
+      <pre><code>import numpy as np
+import matplotlib
+import sympy as sp
+import pandas as pd
+import scipy
+
+print("NumPy:", np.__version__)
+print("Matplotlib:", matplotlib.__version__)
+print("SymPy:", sp.__version__)
+print("pandas:", pd.__version__)
+print("SciPy:", scipy.__version__)</code></pre>
+
+      <p>
+        Your version numbers may differ from those shown by another student. This is
+        usually acceptable unless the activity requires a particular version.
+      </p>
+    </section>
+
+    <section id="local">
+      <h2>0.4.6 Optional Local Installation</h2>
+
+      <p>
+        Google Colab is recommended for the tutorial activities. If you choose to
+        work locally, install packages into the same Python environment used by your
+        editor or notebook.
+      </p>
+
+      <h3>Windows</h3>
+
+      <pre><code>py -m pip install numpy matplotlib sympy pandas scipy</code></pre>
+
+      <h3>macOS or Linux</h3>
+
+      <pre><code>python3 -m pip install numpy matplotlib sympy pandas scipy</code></pre>
+
+      <p>To check that <code>pip</code> is connected to Python:</p>
+
+      <pre><code># Windows
+py -m pip --version
+
+# macOS or Linux
+python3 -m pip --version</code></pre>
+
+      <div class="note">
+        <h3>Why Use <code>python -m pip</code>?</h3>
+        <p>
+          A computer may contain more than one Python installation. Running
+          <code>pip</code> through a specific Python command makes it clearer which
+          interpreter receives the package.
+        </p>
+      </div>
+
+      <h3>Virtual Environments</h3>
+
+      <p>
+        A virtual environment is an isolated Python environment for one project. It
+        keeps a project's packages separate from the computer's system installation.
+        Virtual environments are useful for larger projects, but they are not
+        required when completing these tutorials in Google Colab.
+      </p>
+
+      <div class="warning">
+        <h3>Avoid Administrator Installation Unless Required</h3>
+        <p>
+          Do not add <code>sudo</code> or run a terminal as administrator merely to
+          install a package. A user installation or virtual environment is usually
+          safer. On a managed school or workplace computer, use Google Colab or ask
+          the system administrator for assistance.
+        </p>
+      </div>
+    </section>
+
+    <section>
+      <h2>0.4.7 Common Errors and Solutions</h2>
+
+      <table>
+        <thead>
+          <tr>
+            <th>Problem</th>
+            <th>Likely Cause</th>
+            <th>Suggested Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><code>ModuleNotFoundError</code></td>
+            <td>The package is not installed in the current environment, or its name is misspelled.</td>
+            <td>Check the spelling, run <code>%pip install package_name</code>, and try the import again.</td>
+          </tr>
+          <tr>
+            <td><code>SyntaxError</code> on an installation command</td>
+            <td>A shell-style command was entered as ordinary Python.</td>
+            <td>In Colab, place <code>%pip install ...</code> in its own code cell.</td>
+          </tr>
+          <tr>
+            <td>Installation succeeds but import still fails</td>
+            <td>The notebook may need a restart, or a local editor may be using a different interpreter.</td>
+            <td>Follow any restart message. Locally, confirm the selected Python interpreter.</td>
+          </tr>
+          <tr>
+            <td><code>NameError: name 'np' is not defined</code></td>
+            <td>The import cell was not run, or a different alias was used.</td>
+            <td>Run <code>import numpy as np</code> before using <code>np</code>.</td>
+          </tr>
+          <tr>
+            <td>A package disappears from Colab</td>
+            <td>The temporary runtime was reset or replaced.</td>
+            <td>Run the notebook's installation and import cells again.</td>
+          </tr>
+          <tr>
+            <td>An import name differs from the install name</td>
+            <td>Some projects use different package and module names.</td>
+            <td>Use the installation and import instructions provided by the package.</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="warning">
+        <h3>Do Not Name Your File After a Package</h3>
+        <p>
+          A file named <code>numpy.py</code>, <code>pandas.py</code>,
+          <code>sympy.py</code>, or <code>scipy.py</code> can hide the real package
+          from Python. Give your own files descriptive names such as
+          <code>matrix_activity.py</code>.
+        </p>
+      </div>
+    </section>
+
+    <section id="activity">
+      <h2>0.4.8 Tutorial Activity: Package Check</h2>
+
+      <div class="activity">
+        <h3>Prepare a Colab Notebook</h3>
+        <ol>
+          <li>Create a new Google Colab notebook.</li>
+          <li>Rename it <code>MATH1516_Package_Check.ipynb</code>.</li>
+          <li>Add a Markdown heading named <strong>Package Check</strong>.</li>
+          <li>Run the standard import cell from Section 0.4.3.</li>
+          <li>Run each of the five short examples from Section 0.4.4.</li>
+          <li>Add a final code cell that displays all five package versions.</li>
+          <li>Restart the session and run all cells from top to bottom.</li>
+          <li>Confirm that every cell runs without an error.</li>
+        </ol>
+      </div>
+
+      <h3>Extension</h3>
+
+      <p>
+        Modify the examples so that the NumPy matrix has three rows, the Matplotlib
+        graph contains five points, the SymPy expression is <code>x**4 - 3*x</code>,
+        and the pandas table contains four tutorial scores.
+      </p>
+    </section>
+
+    <section>
+      <h2>0.4.9 Concept Check</h2>
+
+      <ol>
+        <li>What is the difference between installing and importing a package?</li>
+        <li>Why should you try an import before installing a package in Colab?</li>
+        <li>Which package would you use to create a matrix?</li>
+        <li>Which package would you use to differentiate an algebraic expression?</li>
+        <li>Why should a custom installation cell remain near the top of a Colab notebook?</li>
+        <li>What does the alias <code>pd</code> usually represent?</li>
+      </ol>
+
+      <details>
+        <summary>Show suggested answers</summary>
+        <ol>
+          <li>Installing adds the package to an environment; importing makes it available in the current program or session.</li>
+          <li>Many common packages are already installed in Colab, so another installation may be unnecessary.</li>
+          <li>NumPy.</li>
+          <li>SymPy.</li>
+          <li>Colab runtimes are temporary, so the cell allows the notebook to recreate its required environment after a reset.</li>
+          <li>pandas.</li>
+        </ol>
+      </details>
+    </section>
+
+    <section>
+      <h2>0.4.10 Practice Exercises</h2>
+
+      <ol>
+        <li>Write the import statement that gives NumPy the alias <code>np</code>.</li>
+        <li>Write the Colab command that installs Matplotlib.</li>
+        <li>Create a NumPy array containing the values 2, 4, 6, and 8.</li>
+        <li>Create a pandas DataFrame with columns named <code>Name</code> and <code>Score</code>.</li>
+        <li>Use SymPy to find the derivative of <code>5*x**2 + 4*x - 7</code>.</li>
+        <li>Explain why code may work in a terminal but report a missing package in VS Code.</li>
+      </ol>
+
+      <details>
+        <summary>Show sample solutions</summary>
+        <pre><code># 1
+import numpy as np
+
+# 2
+%pip install matplotlib
+
+# 3
+values = np.array([2, 4, 6, 8])
+
+# 4
+table = pd.DataFrame({
+    "Name": ["A", "B"],
+    "Score": [8, 10]
+})
+
+# 5
+x = sp.symbols("x")
+sp.diff(5*x**2 + 4*x - 7, x)</code></pre>
+        <p>
+          For Exercise 6, VS Code may have selected a different Python interpreter
+          from the one used by the terminal. Packages belong to particular Python
+          environments.
+        </p>
+      </details>
+    </section>
+
+    <section>
+      <h2>0.4.11 Official References</h2>
+      <ul>
+        <li><a href="https://packaging.python.org/en/latest/tutorials/installing-packages/">Python Packaging User Guide: Installing Packages</a></li>
+        <li><a href="https://ipython.readthedocs.io/en/stable/interactive/magics.html#magic-pip">IPython Documentation: <code>%pip</code></a></li>
+        <li><a href="https://research.google.com/colaboratory/faq.html">Google Colab FAQ</a></li>
+      </ul>
+    </section>
+
+    <section class="summary">
+      <h2>Section Summary</h2>
+      <ul>
+        <li>Packages add reusable tools to Python.</li>
+        <li>Installation adds a package to an environment; importing makes it available to a program.</li>
+        <li>MATH 1516 uses NumPy, Matplotlib, SymPy, pandas, and SciPy.</li>
+        <li>Google Colab already includes many common packages, so try the import first.</li>
+        <li>Use <code>%pip install package_name</code> to install a missing package in Colab.</li>
+        <li>Keep custom installation cells near the top because Colab runtimes are temporary.</li>
+        <li>For local work, use <code>py -m pip</code> on Windows or <code>python3 -m pip</code> on macOS and Linux.</li>
+        <li>If an import fails locally, confirm that the package and editor use the same Python interpreter.</li>
+      </ul>
+    </section>
+
+    <nav class="page-navigation" aria-label="Page navigation">
+      <a href="section-0-3.html">&larr; Previous: Section 0.3</a>
+      <a href="index.html">Course Contents</a>
+      <a href="section-0-5.html">Next: Section 0.5 &rarr;</a>
+    </nav>
+  </main>
+
+  <footer>
+    <p>MATH 1516 Coding Activities — Prepared by Joe Tran</p>
+  </footer>
+</body>
+</html>

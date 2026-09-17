@@ -1,0 +1,922 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Section 0.7: Common Errors and Troubleshooting | MATH 1516</title>
+  <style>
+    body {
+      max-width: 850px;
+      margin: 0 auto;
+      padding: 20px;
+      font-family: Arial, sans-serif;
+      line-height: 1.65;
+      color: #222;
+    }
+
+    header {
+      border-bottom: 2px solid #8c1d40;
+      margin-bottom: 30px;
+    }
+
+    nav {
+      margin: 15px 0;
+    }
+
+    nav a {
+      margin-right: 15px;
+    }
+
+    h1, h2, h3 {
+      line-height: 1.25;
+    }
+
+    h2 {
+      margin-top: 40px;
+      color: #8c1d40;
+      border-bottom: 1px solid #ddd;
+      padding-bottom: 5px;
+    }
+
+    h3 {
+      margin-top: 28px;
+    }
+
+    .objectives,
+    .steps,
+    .activity,
+    .note,
+    .warning,
+    .example,
+    .summary {
+      padding: 15px 18px;
+      margin: 20px 0;
+      border-radius: 4px;
+    }
+
+    .objectives,
+    .summary {
+      background: #f7f7f7;
+      border: 1px solid #ccc;
+    }
+
+    .steps {
+      background: #f4f8fc;
+      border-left: 4px solid #2f6fa3;
+    }
+
+    .activity {
+      background: #fff8e6;
+      border-left: 4px solid #d18b00;
+    }
+
+    .note {
+      background: #f3f8f3;
+      border-left: 4px solid #4c8c4a;
+    }
+
+    .warning {
+      background: #fff3f3;
+      border-left: 4px solid #b64040;
+    }
+
+    .example {
+      background: #f7f1fa;
+      border-left: 4px solid #7b3f98;
+    }
+
+    .steps h3,
+    .activity h3,
+    .note h3,
+    .warning h3,
+    .example h3,
+    .summary h2 {
+      margin-top: 0;
+    }
+
+    pre {
+      overflow-x: auto;
+      padding: 14px;
+      background: #202124;
+      color: #f1f1f1;
+      border-radius: 4px;
+      line-height: 1.5;
+    }
+
+    code {
+      font-family: Consolas, Monaco, monospace;
+    }
+
+    p code,
+    li code,
+    td code {
+      background: #f0f0f0;
+      padding: 2px 5px;
+      border-radius: 3px;
+      color: #222;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 20px 0;
+    }
+
+    th,
+    td {
+      border: 1px solid #bbb;
+      padding: 10px;
+      text-align: left;
+      vertical-align: top;
+    }
+
+    th {
+      background: #f2f2f2;
+    }
+
+    details {
+      margin: 12px 0;
+    }
+
+    summary {
+      cursor: pointer;
+      font-weight: bold;
+    }
+
+    .page-navigation {
+      display: flex;
+      justify-content: space-between;
+      gap: 15px;
+      border-top: 1px solid #ccc;
+      margin-top: 45px;
+      padding-top: 20px;
+    }
+
+    footer {
+      margin-top: 35px;
+      color: #555;
+      font-size: 0.9rem;
+    }
+
+    @media (max-width: 600px) {
+      body {
+        padding: 14px;
+      }
+
+      table {
+        font-size: 0.9rem;
+      }
+
+      .page-navigation {
+        flex-direction: column;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <p><a href="index.html">&larr; Course Home</a></p>
+    <h1>Section 0.7: Common Errors and Troubleshooting</h1>
+    <p><strong>Part 0: Getting Started with Python</strong></p>
+
+    <nav aria-label="Section contents">
+      <a href="#errors">Errors</a>
+      <a href="#tracebacks">Tracebacks</a>
+      <a href="#common-errors">Common Errors</a>
+      <a href="#logic-errors">Logic Errors</a>
+      <a href="#colab">Colab</a>
+      <a href="#activity">Bug Clinic</a>
+    </nav>
+  </header>
+
+  <main>
+    <section class="objectives">
+      <h2>Learning Objectives</h2>
+      <p>By the end of this section, you should be able to:</p>
+      <ul>
+        <li>distinguish between syntax, runtime, and logic errors;</li>
+        <li>identify the error type and message in a traceback;</li>
+        <li>locate the relevant line of code;</li>
+        <li>diagnose common Python errors;</li>
+        <li>use <code>print()</code> and <code>type()</code> to inspect a program;</li>
+        <li>resolve common Google Colab state and package problems;</li>
+        <li>test a correction without changing unrelated code; and</li>
+        <li>apply a systematic debugging process.</li>
+      </ul>
+    </section>
+
+    <section id="errors">
+      <h2>0.7.1 Errors Are Information</h2>
+
+      <p>
+        Every programmer encounters errors. An error message is not a judgment about
+        the programmer; it is evidence about what Python could not do. Debugging is
+        the process of using that evidence to find and correct a problem.
+      </p>
+
+      <table>
+        <thead>
+          <tr>
+            <th>Error Category</th>
+            <th>Meaning</th>
+            <th>Example</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Syntax error</strong></td>
+            <td>Python cannot understand the structure of the code.</td>
+            <td>A missing parenthesis, quotation mark, or colon</td>
+          </tr>
+          <tr>
+            <td><strong>Runtime error</strong></td>
+            <td>The code begins running but encounters an invalid operation.</td>
+            <td>Dividing by zero or accessing a missing list element</td>
+          </tr>
+          <tr>
+            <td><strong>Logic error</strong></td>
+            <td>The code runs but produces an incorrect result.</td>
+            <td>Using addition where multiplication was required</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="note">
+        <h3>An Error Message Is Usually a Starting Point</h3>
+        <p>
+          The line named in a traceback is where Python noticed the problem. The
+          underlying cause may be on that line or on an earlier line that created an
+          incorrect value.
+        </p>
+      </div>
+    </section>
+
+    <section id="tracebacks">
+      <h2>0.7.2 Reading a Traceback</h2>
+
+      <p>
+        When a runtime error occurs, Python displays a <strong>traceback</strong>. A
+        traceback records the sequence of function calls that led to the error and
+        ends with the error type and message.
+      </p>
+
+      <p>Suppose this code is run:</p>
+
+      <pre><code>scores = [8, 10, 7]
+mean = sum(scores) / count
+print(mean)</code></pre>
+
+      <p>A simplified traceback looks like this:</p>
+
+      <pre><code>---------------------------------------------------------------------------
+NameError                                 Traceback (most recent call last)
+Cell In[1], line 2
+      1 scores = [8, 10, 7]
+----&gt; 2 mean = sum(scores) / count
+      3 print(mean)
+
+NameError: name 'count' is not defined</code></pre>
+
+      <div class="steps">
+        <h3>Read from the Bottom Up</h3>
+        <ol>
+          <li>Read the final line: <code>NameError</code> is the error type.</li>
+          <li>Read the message: <code>count</code> has not been defined.</li>
+          <li>Find the highlighted line where Python detected the problem.</li>
+          <li>Inspect the variables used on that line.</li>
+          <li>Make the smallest reasonable correction.</li>
+          <li>Run the cell again and check the result.</li>
+        </ol>
+      </div>
+
+      <p>One correction is:</p>
+
+      <pre><code>scores = [8, 10, 7]
+count = len(scores)
+mean = sum(scores) / count
+print(mean)</code></pre>
+
+      <div class="warning">
+        <h3>Do Not Change Code at Random</h3>
+        <p>
+          Random edits can hide the original cause or introduce new errors. Use the
+          traceback to form a specific explanation, then test one correction at a
+          time.
+        </p>
+      </div>
+    </section>
+
+    <section id="common-errors">
+      <h2>0.7.3 <code>SyntaxError</code></h2>
+
+      <p>
+        A <code>SyntaxError</code> means that Python cannot parse the code. The program
+        does not begin running.
+      </p>
+
+      <h3>Missing Parenthesis</h3>
+
+      <pre><code># Incorrect
+print("MATH 1516"
+
+# Correct
+print("MATH 1516")</code></pre>
+
+      <h3>Missing Quotation Mark</h3>
+
+      <pre><code># Incorrect
+course = "MATH 1516
+
+# Correct
+course = "MATH 1516"</code></pre>
+
+      <h3>Missing Colon</h3>
+
+      <pre><code># Incorrect
+for value in [1, 2, 3]
+    print(value)
+
+# Correct
+for value in [1, 2, 3]:
+    print(value)</code></pre>
+
+      <p>
+        The caret symbol in a syntax message points near the place where Python
+        became unable to continue. Check the indicated position and the code
+        immediately before it.
+      </p>
+    </section>
+
+    <section>
+      <h2>0.7.4 <code>IndentationError</code></h2>
+
+      <p>
+        Indentation identifies the body of a loop, function, or conditional block.
+        Inconsistent or missing indentation can produce an
+        <code>IndentationError</code>.
+      </p>
+
+      <pre><code># Incorrect
+for value in [1, 2, 3]:
+print(value)
+
+# Correct
+for value in [1, 2, 3]:
+    print(value)</code></pre>
+
+      <p>A second common problem is accidentally placing too much code inside a loop:</p>
+
+      <pre><code># The total is printed during every iteration.
+total = 0
+
+for value in [1, 2, 3]:
+    total = total + value
+    print("Final total:", total)
+
+# The final result is printed once after the loop.
+total = 0
+
+for value in [1, 2, 3]:
+    total = total + value
+
+print("Final total:", total)</code></pre>
+
+      <div class="note">
+        <h3>Indentation Can Cause a Logic Error</h3>
+        <p>
+          The first version is valid Python, so no exception occurs. Its indentation
+          changes the program's behaviour and produces three output lines instead of
+          one.
+        </p>
+      </div>
+    </section>
+
+    <section>
+      <h2>0.7.5 <code>NameError</code></h2>
+
+      <p>
+        A <code>NameError</code> occurs when Python cannot find a variable or function
+        with the requested name.
+      </p>
+
+      <pre><code># Incorrect: the variable was defined as score.
+score = 18
+print(Score)
+
+# Correct
+score = 18
+print(score)</code></pre>
+
+      <p>Common causes include:</p>
+
+      <ul>
+        <li>a spelling mistake;</li>
+        <li>different capitalization;</li>
+        <li>using a variable before assigning it;</li>
+        <li>forgetting to run the cell that defines it; or</li>
+        <li>restarting a Colab runtime and losing stored variables.</li>
+      </ul>
+
+      <div class="steps">
+        <h3>Check a Missing Name</h3>
+        <ol>
+          <li>Copy the missing name from the final traceback line.</li>
+          <li>Search the notebook for where it should be defined.</li>
+          <li>Compare the spelling and capitalization exactly.</li>
+          <li>Run the definition cell before the cell that uses the name.</li>
+        </ol>
+      </div>
+    </section>
+
+    <section>
+      <h2>0.7.6 <code>TypeError</code> and <code>ValueError</code></h2>
+
+      <h3><code>TypeError</code></h3>
+
+      <p>
+        A <code>TypeError</code> occurs when an operation receives a value of an
+        inappropriate type.
+      </p>
+
+      <pre><code># Incorrect: input() returns a string.
+age = input("Enter your age: ")
+next_age = age + 1
+
+# Correct
+age = int(input("Enter your age: "))
+next_age = age + 1</code></pre>
+
+      <p>Use <code>type()</code> to inspect a value:</p>
+
+      <pre><code>age = input("Enter your age: ")
+print(age)
+print(type(age))</code></pre>
+
+      <h3><code>ValueError</code></h3>
+
+      <p>
+        A <code>ValueError</code> occurs when the type of an argument is acceptable,
+        but its value cannot be processed as requested.
+      </p>
+
+      <pre><code>number = int("twelve")</code></pre>
+
+      <p>
+        The argument is a string, which <code>int()</code> accepts, but the characters
+        in <code>"twelve"</code> do not represent an integer. Use
+        <code>int("12")</code> or enter numerical input.
+      </p>
+
+      <table>
+        <thead>
+          <tr>
+            <th>Error</th>
+            <th>Question to Ask</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><code>TypeError</code></td>
+            <td>Are the operands or arguments the expected types?</td>
+          </tr>
+          <tr>
+            <td><code>ValueError</code></td>
+            <td>Can this particular value be converted or processed?</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section>
+      <h2>0.7.7 Index and Arithmetic Errors</h2>
+
+      <h3><code>IndexError</code></h3>
+
+      <pre><code>values = [4, 7, 9]
+print(values[3])</code></pre>
+
+      <p>
+        The valid indices are 0, 1, and 2. Use <code>values[2]</code> for the third
+        element or <code>values[-1]</code> for the last element.
+      </p>
+
+      <p>Useful checks include:</p>
+
+      <pre><code>print("Length:", len(values))
+print("Requested index:", 3)</code></pre>
+
+      <h3><code>ZeroDivisionError</code></h3>
+
+      <pre><code>scores = []
+mean = sum(scores) / len(scores)</code></pre>
+
+      <p>
+        The empty list has length zero. A mean is not defined for an empty dataset,
+        so the program must obtain data before performing the calculation.
+      </p>
+
+      <pre><code>scores = [8, 10, 7]
+mean = sum(scores) / len(scores)
+print(mean)</code></pre>
+    </section>
+
+    <section>
+      <h2>0.7.8 Import and Package Errors</h2>
+
+      <h3><code>ModuleNotFoundError</code></h3>
+
+      <p>
+        This error means that Python cannot find the requested package or module in
+        the current environment.
+      </p>
+
+      <pre><code>ModuleNotFoundError: No module named 'sympy'</code></pre>
+
+      <p>In Google Colab:</p>
+
+      <pre><code>%pip install sympy
+import sympy as sp</code></pre>
+
+      <p>Also check:</p>
+
+      <ul>
+        <li>the spelling of the package and module name;</li>
+        <li>whether the runtime was recently reset;</li>
+        <li>whether the installation cell ran successfully; and</li>
+        <li>for local work, whether the editor selected the same Python environment where the package was installed.</li>
+      </ul>
+
+      <h3><code>ImportError</code> or Missing Name</h3>
+
+      <p>
+        A package may exist while a requested name does not. Check the import
+        statement and the package's documented spelling.
+      </p>
+
+      <div class="warning">
+        <h3>Check Your Filenames</h3>
+        <p>
+          Do not name your own file <code>numpy.py</code>, <code>pandas.py</code>,
+          <code>sympy.py</code>, <code>random.py</code>, or another package name.
+          Python may import your file instead of the intended module.
+        </p>
+      </div>
+    </section>
+
+    <section id="logic-errors">
+      <h2>0.7.9 Logic Errors</h2>
+
+      <p>
+        A logic error does not necessarily produce a traceback. The program runs,
+        but the answer is wrong. Mathematical reasoning and carefully selected tests
+        are essential for detecting these errors.
+      </p>
+
+      <div class="example">
+        <h3>Example: Incorrect Mean</h3>
+
+        <pre><code>scores = [6, 8, 10]
+mean = sum(scores) / 2
+print(mean)</code></pre>
+
+        <p>
+          The code runs and prints 12.0, but there are three values. The denominator
+          should be <code>len(scores)</code>:
+        </p>
+
+        <pre><code>mean = sum(scores) / len(scores)</code></pre>
+      </div>
+
+      <h3>Test with a Known Answer</h3>
+
+      <p>
+        Choose a small input whose correct result can be calculated by hand. A mean
+        function can be tested with <code>[2, 4, 6]</code>, whose mean is 4.
+      </p>
+
+      <pre><code>def calculate_mean(values):
+    return sum(values) / len(values)
+
+test_values = [2, 4, 6]
+print("Expected: 4")
+print("Actual:", calculate_mean(test_values))</code></pre>
+
+      <h3>Inspect Intermediate Values</h3>
+
+      <pre><code>radius = 5
+pi = 3.14159
+area = 2 * pi * radius ** 2  # Incorrect formula
+
+print("radius =", radius)
+print("radius squared =", radius ** 2)
+print("area =", area)</code></pre>
+
+      <p>
+        Temporary print statements help identify the first point where the actual
+        calculation differs from the intended mathematics. Remove or simplify them
+        after the problem is resolved.
+      </p>
+    </section>
+
+    <section id="colab">
+      <h2>0.7.10 Troubleshooting Google Colab</h2>
+
+      <table>
+        <thead>
+          <tr>
+            <th>Symptom</th>
+            <th>Likely Cause</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>A variable is missing</td>
+            <td>Its cell was not run, or the runtime restarted</td>
+            <td>Run the definition cell, then run cells from top to bottom.</td>
+          </tr>
+          <tr>
+            <td>Old output remains visible</td>
+            <td>The code changed but the cell was not rerun</td>
+            <td>Run the edited cell and any dependent cells again.</td>
+          </tr>
+          <tr>
+            <td>Results change unexpectedly</td>
+            <td>Cells were executed out of order</td>
+            <td>Restart the session and run all cells in order.</td>
+          </tr>
+          <tr>
+            <td>A custom package disappeared</td>
+            <td>A new temporary runtime was assigned</td>
+            <td>Rerun the installation and import cells.</td>
+          </tr>
+          <tr>
+            <td>A cell runs indefinitely</td>
+            <td>An infinite loop or slow calculation</td>
+            <td>Stop the cell and inspect the loop condition.</td>
+          </tr>
+          <tr>
+            <td>The runtime disconnected</td>
+            <td>Inactivity, session limits, or a browser/network interruption</td>
+            <td>Reconnect and rerun the notebook from the beginning.</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="steps">
+        <h3>Clean Notebook Test</h3>
+        <ol>
+          <li>Save the notebook.</li>
+          <li>Restart the runtime or session.</li>
+          <li>Run all cells from top to bottom.</li>
+          <li>Stop at the first error rather than continuing past it.</li>
+          <li>Confirm that the displayed outputs match the current code.</li>
+        </ol>
+      </div>
+
+      <p>
+        If a notebook only works after cells are run in a special order, it is not
+        yet reproducible. Move definitions and setup cells before the code that uses
+        them.
+      </p>
+    </section>
+
+    <section>
+      <h2>0.7.11 A Systematic Debugging Process</h2>
+
+      <div class="steps">
+        <h3>Debugging Checklist</h3>
+        <ol>
+          <li><strong>Reproduce the problem.</strong> Run the smallest relevant cell or code block.</li>
+          <li><strong>Read the final traceback line.</strong> Record the error type and message.</li>
+          <li><strong>Locate the line.</strong> Inspect the highlighted instruction and nearby definitions.</li>
+          <li><strong>Check names and types.</strong> Verify spelling, capitalization, values, and <code>type()</code>.</li>
+          <li><strong>Check the mathematics.</strong> Compare the implemented formula with the intended one.</li>
+          <li><strong>Simplify.</strong> Replace complicated input with a small known example.</li>
+          <li><strong>Make one change.</strong> Test a specific correction.</li>
+          <li><strong>Rerun dependencies.</strong> In Colab, execute required earlier cells.</li>
+          <li><strong>Test again.</strong> Use both an ordinary case and an edge case.</li>
+          <li><strong>Run from the beginning.</strong> Confirm the complete notebook is reproducible.</li>
+        </ol>
+      </div>
+
+      <h3>Reduce the Problem</h3>
+
+      <p>
+        If a long program fails, create a smaller example that still produces the
+        same error. For example, replace a large dataset with three values. This
+        removes distractions and makes the cause easier to see.
+      </p>
+
+      <h3>Ask for Help Effectively</h3>
+
+      <p>When asking a tutorial leader or classmate for help, provide:</p>
+
+      <ul>
+        <li>the smallest code that reproduces the problem;</li>
+        <li>the complete error type and message;</li>
+        <li>what you expected to happen;</li>
+        <li>what actually happened; and</li>
+        <li>the corrections you already tried.</li>
+      </ul>
+
+      <div class="warning">
+        <h3>Do Not Share Secrets</h3>
+        <p>
+          Before sharing a notebook or screenshot, remove passwords, API keys,
+          private links, student information, and other sensitive data.
+        </p>
+      </div>
+    </section>
+
+    <section>
+      <h2>0.7.12 Handling Expected Input Errors</h2>
+
+      <p>
+        Some errors can be anticipated. A <code>try</code> and <code>except</code>
+        block allows a program to respond to a specific exception.
+      </p>
+
+      <pre><code>try:
+    radius = float(input("Enter the radius: "))
+    area = 3.14159 * radius ** 2
+    print(f"Area: {area:.2f}")
+except ValueError:
+    print("Please enter a numerical value.")</code></pre>
+
+      <p>
+        Only the statements that might raise the expected error belong inside the
+        <code>try</code> block. Catch the specific error type rather than hiding every
+        possible exception.
+      </p>
+
+      <div class="warning">
+        <h3>Exception Handling Does Not Replace Debugging</h3>
+        <p>
+          Do not surround an entire notebook with a broad <code>except</code> block.
+          Unexpected errors should remain visible so their causes can be corrected.
+        </p>
+      </div>
+    </section>
+
+    <section id="activity">
+      <h2>0.7.13 Tutorial Activity: Python Bug Clinic</h2>
+
+      <div class="activity">
+        <h3>Diagnose Before You Repair</h3>
+        <p>For each program below:</p>
+        <ol>
+          <li>predict the error type or incorrect output;</li>
+          <li>identify the line that causes the problem;</li>
+          <li>explain the cause in one sentence;</li>
+          <li>make the smallest correction; and</li>
+          <li>run the corrected program in Colab.</li>
+        </ol>
+      </div>
+
+      <h3>Bug A</h3>
+
+      <pre><code>values = [2, 4, 6]
+print(values[3])</code></pre>
+
+      <h3>Bug B</h3>
+
+      <pre><code>score = input("Enter the score: ")
+percentage = score / 20 * 100
+print(percentage)</code></pre>
+
+      <h3>Bug C</h3>
+
+      <pre><code>def square(x):
+return x ** 2
+
+print(square(5))</code></pre>
+
+      <h3>Bug D</h3>
+
+      <pre><code>numbers = [1, 2, 3, 4]
+mean = sum(numbers) / 3
+print(mean)</code></pre>
+
+      <h3>Bug E</h3>
+
+      <pre><code>import numpy as np
+
+values = np.array([1, 2, 3])
+print(numpy.mean(values))</code></pre>
+
+      <details>
+        <summary>Show diagnoses and corrections</summary>
+
+        <h4>Bug A</h4>
+        <p>
+          <code>IndexError</code>: index 3 refers to a nonexistent fourth element.
+          Use <code>values[2]</code> or <code>values[-1]</code>.
+        </p>
+
+        <h4>Bug B</h4>
+        <p>
+          <code>TypeError</code>: <code>input()</code> returned a string. Convert the
+          input using <code>float(input(...))</code>.
+        </p>
+
+        <h4>Bug C</h4>
+        <p>
+          <code>IndentationError</code>: the <code>return</code> statement must be
+          indented beneath the function header.
+        </p>
+
+        <h4>Bug D</h4>
+        <p>
+          Logic error: four numbers are divided by 3. Use
+          <code>sum(numbers) / len(numbers)</code>.
+        </p>
+
+        <h4>Bug E</h4>
+        <p>
+          <code>NameError</code>: NumPy was imported using the alias <code>np</code>.
+          Use <code>np.mean(values)</code>.
+        </p>
+      </details>
+    </section>
+
+    <section>
+      <h2>0.7.14 Concept Check</h2>
+
+      <ol>
+        <li>What is the difference between a runtime error and a logic error?</li>
+        <li>Which part of a traceback should usually be read first?</li>
+        <li>What does a <code>NameError</code> indicate?</li>
+        <li>Why can numerical input produce a <code>TypeError</code>?</li>
+        <li>What is a useful test input for a mean function?</li>
+        <li>Why should a Colab notebook be restarted and run from top to bottom?</li>
+        <li>Why should only one suspected problem be changed at a time?</li>
+      </ol>
+
+      <details>
+        <summary>Show suggested answers</summary>
+        <ol>
+          <li>A runtime error stops execution with an exception; a logic error allows execution but produces the wrong result.</li>
+          <li>The final line, which gives the error type and message.</li>
+          <li>Python cannot find the requested variable or function name.</li>
+          <li><code>input()</code> returns a string unless the result is converted.</li>
+          <li>A small list with an easily verified mean, such as <code>[2, 4, 6]</code>.</li>
+          <li>It reveals missing setup, hidden state, and cells that depend on an unusual execution order.</li>
+          <li>Changing one factor makes it possible to determine whether that correction solved the problem.</li>
+        </ol>
+      </details>
+    </section>
+
+    <section>
+      <h2>0.7.15 Practice Exercises</h2>
+
+      <ol>
+        <li>Correct the syntax error in <code>print("Result:", 4 ** 2</code>.</li>
+        <li>Correct the name error in <code>radius = 3; print(radiuss)</code>.</li>
+        <li>Explain why <code>float("3.5")</code> works but <code>int("3.5")</code> raises a <code>ValueError</code>.</li>
+        <li>Correct the index error in <code>letters = ["a", "b"]; print(letters[2])</code>.</li>
+        <li>Find the logic error in a rectangle-area calculation that uses <code>2 * (length + width)</code>.</li>
+        <li>Write two test cases for a function that calculates the square of a number.</li>
+        <li>Create a short debugging report containing the error type, cause, correction, and successful test.</li>
+      </ol>
+
+      <details>
+        <summary>Show sample solutions</summary>
+        <ol>
+          <li>Add the closing parenthesis: <code>print("Result:", 4 ** 2)</code>.</li>
+          <li>Use the defined name: <code>print(radius)</code>.</li>
+          <li><code>"3.5"</code> represents a valid floating-point number but not a base-10 integer literal. One conversion is <code>int(float("3.5"))</code>, which gives 3.</li>
+          <li>Use <code>letters[1]</code> or <code>letters[-1]</code>.</li>
+          <li>The expression calculates perimeter. Rectangle area is <code>length * width</code>.</li>
+          <li>For example, <code>square(3)</code> should return 9 and <code>square(-2)</code> should return 4.</li>
+          <li>A complete report should identify one reproducible problem and show that the corrected code gives the expected result.</li>
+        </ol>
+      </details>
+    </section>
+
+    <section class="summary">
+      <h2>Section Summary</h2>
+      <ul>
+        <li>Syntax errors prevent Python from understanding the code.</li>
+        <li>Runtime errors occur during execution and produce exceptions.</li>
+        <li>Logic errors produce incorrect results without necessarily producing a traceback.</li>
+        <li>Read the final traceback line first, then inspect the highlighted code.</li>
+        <li>Common exceptions include <code>NameError</code>, <code>TypeError</code>, <code>ValueError</code>, <code>IndexError</code>, and <code>ZeroDivisionError</code>.</li>
+        <li>Use small known examples, <code>print()</code>, and <code>type()</code> to inspect a program.</li>
+        <li>Colab notebooks should run correctly from top to bottom after a clean restart.</li>
+        <li>Effective debugging changes one suspected cause at a time and verifies the correction.</li>
+      </ul>
+    </section>
+
+    <nav class="page-navigation" aria-label="Page navigation">
+      <a href="section-0-6.html">&larr; Previous: Section 0.6</a>
+      <a href="index.html">Course Contents</a>
+      <a href="section-1-1.html">Next: Section 1.1 &rarr;</a>
+    </nav>
+  </main>
+
+  <footer>
+    <p>MATH 1516 Coding Activities — Prepared by Joe Tran</p>
+  </footer>
+</body>
+</html>

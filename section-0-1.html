@@ -1,0 +1,659 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Section 0.1: Introduction to Python | MATH 1516</title>
+  <style>
+    body {
+      max-width: 850px;
+      margin: 0 auto;
+      padding: 20px;
+      font-family: Arial, sans-serif;
+      line-height: 1.65;
+      color: #222;
+    }
+
+    header {
+      border-bottom: 2px solid #8c1d40;
+      margin-bottom: 30px;
+    }
+
+    nav {
+      margin: 15px 0;
+    }
+
+    nav a {
+      margin-right: 15px;
+    }
+
+    h1, h2, h3 {
+      line-height: 1.25;
+    }
+
+    h2 {
+      margin-top: 40px;
+      color: #8c1d40;
+      border-bottom: 1px solid #ddd;
+      padding-bottom: 5px;
+    }
+
+    h3 {
+      margin-top: 28px;
+    }
+
+    .objectives,
+    .example,
+    .activity,
+    .note,
+    .warning,
+    .summary {
+      padding: 15px 18px;
+      margin: 20px 0;
+      border-radius: 4px;
+    }
+
+    .objectives,
+    .summary {
+      background: #f7f7f7;
+      border: 1px solid #ccc;
+    }
+
+    .example {
+      background: #f4f8fc;
+      border-left: 4px solid #2f6fa3;
+    }
+
+    .activity {
+      background: #fff8e6;
+      border-left: 4px solid #d18b00;
+    }
+
+    .note {
+      background: #f3f8f3;
+      border-left: 4px solid #4c8c4a;
+    }
+
+    .warning {
+      background: #fff3f3;
+      border-left: 4px solid #b64040;
+    }
+
+    .example h3,
+    .activity h3,
+    .note h3,
+    .warning h3,
+    .summary h2 {
+      margin-top: 0;
+    }
+
+    pre {
+      overflow-x: auto;
+      padding: 14px;
+      background: #202124;
+      color: #f1f1f1;
+      border-radius: 4px;
+      line-height: 1.5;
+    }
+
+    code {
+      font-family: Consolas, Monaco, monospace;
+    }
+
+    p code,
+    li code {
+      background: #f0f0f0;
+      padding: 2px 5px;
+      border-radius: 3px;
+      color: #222;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 20px 0;
+    }
+
+    th,
+    td {
+      border: 1px solid #bbb;
+      padding: 10px;
+      text-align: left;
+      vertical-align: top;
+    }
+
+    th {
+      background: #f2f2f2;
+    }
+
+    details {
+      margin: 12px 0;
+    }
+
+    summary {
+      cursor: pointer;
+      font-weight: bold;
+    }
+
+    .page-navigation {
+      display: flex;
+      justify-content: space-between;
+      gap: 15px;
+      border-top: 1px solid #ccc;
+      margin-top: 45px;
+      padding-top: 20px;
+    }
+
+    footer {
+      margin-top: 35px;
+      color: #555;
+      font-size: 0.9rem;
+    }
+
+    @media (max-width: 600px) {
+      body {
+        padding: 14px;
+      }
+
+      .page-navigation {
+        flex-direction: column;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <p><a href="index.html">&larr; Course Home</a></p>
+    <h1>Section 0.1: Introduction to Python</h1>
+    <p><strong>Part 0: Getting Started with Python</strong></p>
+
+    <nav aria-label="Section contents">
+      <a href="#programming">Programming</a>
+      <a href="#python">Python</a>
+      <a href="#first-look">First Look</a>
+      <a href="#examples">Examples</a>
+      <a href="#exercises">Exercises</a>
+    </nav>
+  </header>
+
+  <main>
+    <section class="objectives">
+      <h2>Learning Objectives</h2>
+      <p>By the end of this section, you should be able to:</p>
+      <ul>
+        <li>explain what a computer program is;</li>
+        <li>describe Python and identify several reasons for using it;</li>
+        <li>distinguish between source code, input, processing, and output;</li>
+        <li>read simple Python statements involving <code>print</code>, arithmetic, and variables;</li>
+        <li>predict the output of a short Python program; and</li>
+        <li>recognize that code must follow precise rules called syntax.</li>
+      </ul>
+    </section>
+
+    <section id="programming">
+      <h2>0.1.1 What Is Programming?</h2>
+
+      <p>
+        A <strong>computer program</strong> is a sequence of instructions that tells a
+        computer how to complete a task. <strong>Programming</strong> is the process of
+        designing, writing, testing, and improving those instructions.
+      </p>
+
+      <p>
+        A computer does not automatically understand a mathematical idea written in
+        ordinary language. The idea must be translated into clear steps. For example,
+        suppose we want to calculate the average of three test scores. A possible
+        algorithm is:
+      </p>
+
+      <ol>
+        <li>Read the three scores.</li>
+        <li>Add the scores.</li>
+        <li>Divide the total by 3.</li>
+        <li>Display the result.</li>
+      </ol>
+
+      <p>
+        An <strong>algorithm</strong> is a finite sequence of well-defined steps for
+        solving a problem. A program is an implementation of an algorithm in a
+        programming language.
+      </p>
+
+      <div class="note">
+        <h3>Mathematics and Programming</h3>
+        <p>
+          In mathematics, we often describe a method using a formula or a sequence of
+          logical steps. Programming requires the same kind of precise reasoning.
+          The main difference is that every instruction must be written in a form the
+          computer can interpret.
+        </p>
+      </div>
+
+      <h3>Input, Processing, and Output</h3>
+
+      <p>Many programs can be understood using the following three-stage model:</p>
+
+      <table>
+        <thead>
+          <tr>
+            <th>Stage</th>
+            <th>Meaning</th>
+            <th>Example</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Input</strong></td>
+            <td>Information supplied to the program</td>
+            <td>Three test scores</td>
+          </tr>
+          <tr>
+            <td><strong>Processing</strong></td>
+            <td>Calculations or decisions performed by the program</td>
+            <td>Add the scores and divide by 3</td>
+          </tr>
+          <tr>
+            <td><strong>Output</strong></td>
+            <td>Information produced by the program</td>
+            <td>The average score</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section id="python">
+      <h2>0.1.2 What Is Python?</h2>
+
+      <p>
+        <strong>Python</strong> is a general-purpose programming language. It can be
+        used to create applications, automate tasks, analyze data, perform scientific
+        calculations, and build mathematical models.
+      </p>
+
+      <p>
+        Python is called a <strong>high-level language</strong> because its commands
+        are designed to be readable by people. Consider the instruction below:
+      </p>
+
+      <pre><code>print("Hello, MATH 1516!")</code></pre>
+
+      <p>
+        Even without previous programming experience, you can probably predict that
+        this instruction displays the message:
+      </p>
+
+      <pre><code>Hello, MATH 1516!</code></pre>
+
+      <h3>Why Use Python?</h3>
+
+      <ul>
+        <li><strong>Readable syntax:</strong> Python code is generally concise and close to ordinary mathematical thinking.</li>
+        <li><strong>Free and widely available:</strong> Python can be installed and used without purchasing a licence.</li>
+        <li><strong>Large collection of packages:</strong> Additional tools are available for mathematics, statistics, visualization, and scientific computing.</li>
+        <li><strong>Useful beyond this course:</strong> Python is used in software development, data science, artificial intelligence, research, and automation.</li>
+        <li><strong>Interactive experimentation:</strong> You can change a value, run the code again, and immediately observe the effect.</li>
+      </ul>
+
+      <h3>Python in MATH 1516</h3>
+
+      <p>We will use Python to support the four mathematical parts of the course:</p>
+
+      <table>
+        <thead>
+          <tr>
+            <th>Course Part</th>
+            <th>Possible Uses of Python</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Linear Systems</td>
+            <td>Create matrices, perform matrix operations, solve systems, and visualize matrix entries</td>
+          </tr>
+          <tr>
+            <td>Differential Calculus</td>
+            <td>Plot functions, approximate derivatives, and perform symbolic differentiation</td>
+          </tr>
+          <tr>
+            <td>Statistics</td>
+            <td>Summarize datasets and create histograms, box plots, and scatter plots</td>
+          </tr>
+          <tr>
+            <td>Probability</td>
+            <td>Simulate random experiments and investigate probability distributions</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="note">
+        <h3>Python Supports the Mathematics</h3>
+        <p>
+          Python will not replace mathematical reasoning. It will help us calculate,
+          visualize, experiment, and check our understanding. You should still be able
+          to explain what the code is doing and why the result makes sense.
+        </p>
+      </div>
+    </section>
+
+    <section id="first-look">
+      <h2>0.1.3 A First Look at Python Code</h2>
+
+      <h3>Displaying Output</h3>
+
+      <p>
+        The <code>print</code> function displays information. Text must be placed
+        inside quotation marks.
+      </p>
+
+      <pre><code>print("Welcome to Python")
+print(2 + 3)</code></pre>
+
+      <p>The output is:</p>
+
+      <pre><code>Welcome to Python
+5</code></pre>
+
+      <p>
+        The first line prints text. The second line asks Python to calculate
+        <code>2 + 3</code> and print the result.
+      </p>
+
+      <h3>Python as a Calculator</h3>
+
+      <table>
+        <thead>
+          <tr>
+            <th>Operation</th>
+            <th>Python Symbol</th>
+            <th>Example</th>
+            <th>Result</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>Addition</td><td><code>+</code></td><td><code>7 + 4</code></td><td>11</td></tr>
+          <tr><td>Subtraction</td><td><code>-</code></td><td><code>7 - 4</code></td><td>3</td></tr>
+          <tr><td>Multiplication</td><td><code>*</code></td><td><code>7 * 4</code></td><td>28</td></tr>
+          <tr><td>Division</td><td><code>/</code></td><td><code>7 / 4</code></td><td>1.75</td></tr>
+          <tr><td>Exponentiation</td><td><code>**</code></td><td><code>2 ** 3</code></td><td>8</td></tr>
+          <tr><td>Remainder</td><td><code>%</code></td><td><code>7 % 4</code></td><td>3</td></tr>
+        </tbody>
+      </table>
+
+      <div class="warning">
+        <h3>Multiplication Must Be Written Explicitly</h3>
+        <p>
+          In mathematics, we may write (3x). In Python, multiplication must use an
+          asterisk: <code>3 * x</code>. Writing <code>3x</code> produces an error.
+        </p>
+      </div>
+
+      <h3>Variables</h3>
+
+      <p>
+        A <strong>variable</strong> is a name that refers to a stored value. The
+        equals sign assigns the value on the right to the name on the left.
+      </p>
+
+      <pre><code>length = 8
+width = 5
+area = length * width
+
+print(area)</code></pre>
+
+      <p>The output is:</p>
+
+      <pre><code>40</code></pre>
+
+      <p>
+        This program stores the values 8 and 5, multiplies them, stores the result
+        using the name <code>area</code>, and then displays that result.
+      </p>
+
+      <div class="activity">
+        <h3>Try It 0.1A</h3>
+        <p>Without running the code, predict the output:</p>
+        <pre><code>x = 4
+y = 3
+z = x ** 2 + y ** 2
+print(z)</code></pre>
+        <details>
+          <summary>Check your prediction</summary>
+          <p>The output is <code>25</code> because (4^2 + 3^2 = 16 + 9 = 25).</p>
+        </details>
+      </div>
+
+      <h3>Comments</h3>
+
+      <p>
+        A comment is a note for a person reading the program. Python ignores any text
+        on a line after the number sign <code>#</code>.
+      </p>
+
+      <pre><code># Calculate the area of a rectangle
+length = 8
+width = 5
+area = length * width
+
+print(area)</code></pre>
+
+      <p>
+        Comments can explain the purpose of a calculation, record an assumption, or
+        make longer programs easier to understand.
+      </p>
+
+      <h3>Syntax</h3>
+
+      <p>
+        Every programming language has rules that determine how instructions must be
+        written. These rules are called <strong>syntax</strong>. For example, the
+        following statement is missing a closing quotation mark:
+      </p>
+
+      <pre><code>print("Hello)</code></pre>
+
+      <p>
+        Python cannot interpret the instruction and reports a
+        <code>SyntaxError</code>. Error messages are not signs of failure; they are
+        information that helps us locate and correct a problem.
+      </p>
+    </section>
+
+    <section id="examples">
+      <h2>0.1.4 Worked Examples</h2>
+
+      <div class="example">
+        <h3>Example 1: Evaluating a Mathematical Expression</h3>
+        <p>Use Python to evaluate</p>
+        <p><strong>3(5 + 2)<sup>2</sup> - 4.</strong></p>
+
+        <pre><code>result = 3 * (5 + 2) ** 2 - 4
+print(result)</code></pre>
+
+        <p>
+          Python follows the usual order of operations. It first calculates
+          <code>5 + 2</code>, then squares the result, multiplies by 3, and subtracts
+          4. The output is:
+        </p>
+
+        <pre><code>143</code></pre>
+      </div>
+
+      <div class="example">
+        <h3>Example 2: Converting Temperature</h3>
+        <p>
+          The formula for converting a temperature from Celsius to Fahrenheit is
+        </p>
+        <p><strong>F = (9/5)C + 32.</strong></p>
+
+        <pre><code>celsius = 20
+fahrenheit = (9 / 5) * celsius + 32
+
+print(fahrenheit)</code></pre>
+
+        <p>The program produces the output <code>68.0</code>.</p>
+
+        <p>
+          In this example, the input is the value stored in <code>celsius</code>, the
+          processing is the temperature formula, and the output is the value stored
+          in <code>fahrenheit</code>.
+        </p>
+      </div>
+
+      <div class="example">
+        <h3>Example 3: Distance Between Two Points</h3>
+        <p>
+          The distance between ((x_1,y_1)) and ((x_2,y_2)) is
+        </p>
+        <p><strong>d = √((x<sub>2</sub> - x<sub>1</sub>)<sup>2</sup> + (y<sub>2</sub> - y<sub>1</sub>)<sup>2</sup>).</strong></p>
+
+        <pre><code>x1 = 1
+y1 = 2
+x2 = 4
+y2 = 6
+
+distance_squared = (x2 - x1) ** 2 + (y2 - y1) ** 2
+distance = distance_squared ** 0.5
+
+print(distance)</code></pre>
+
+        <p>
+          Since the horizontal change is 3 and the vertical change is 4, the program
+          calculates (sqrt{3^2+4^2}=5). The output is <code>5.0</code>.
+        </p>
+      </div>
+
+      <div class="activity">
+        <h3>Try It 0.1B</h3>
+        <p>
+          Modify Example 3 so that it calculates the distance between
+          ((-2,1)) and ((3,13)). Predict the answer before running the program.
+        </p>
+        <details>
+          <summary>Show answer</summary>
+          <p>
+            The changes are (3-(-2)=5) and (13-1=12). Therefore, the distance is
+            (sqrt{5^2+12^2}=sqrt{169}=13).
+          </p>
+        </details>
+      </div>
+    </section>
+
+    <section>
+      <h2>0.1.5 The Programming Process</h2>
+
+      <p>Writing code is usually an iterative process:</p>
+
+      <ol>
+        <li><strong>Understand the problem.</strong> Identify what is known and what must be found.</li>
+        <li><strong>Design an algorithm.</strong> Write the required steps in a logical order.</li>
+        <li><strong>Translate the algorithm into code.</strong> Express each step using valid Python syntax.</li>
+        <li><strong>Run the program.</strong> Allow Python to execute the instructions.</li>
+        <li><strong>Test the result.</strong> Try values for which the expected answer is known.</li>
+        <li><strong>Debug and improve.</strong> Correct errors and make the program clearer.</li>
+      </ol>
+
+      <p>
+        <strong>Debugging</strong> is the process of finding and correcting errors in
+        a program. Even experienced programmers debug their code regularly.
+      </p>
+
+      <div class="activity">
+        <h3>Concept Check</h3>
+        <ol>
+          <li>What is the difference between an algorithm and a program?</li>
+          <li>In the temperature example, identify the input, processing, and output.</li>
+          <li>Why does Python require <code>3 * x</code> instead of <code>3x</code>?</li>
+          <li>What is the purpose of a comment?</li>
+        </ol>
+        <details>
+          <summary>Show suggested answers</summary>
+          <ol>
+            <li>An algorithm is a sequence of steps; a program expresses those steps in a programming language.</li>
+            <li>The input is the Celsius temperature, the processing is the conversion formula, and the output is the Fahrenheit temperature.</li>
+            <li>Python syntax requires the multiplication operator to be written explicitly.</li>
+            <li>A comment explains code to a human reader and is ignored by Python.</li>
+          </ol>
+        </details>
+      </div>
+    </section>
+
+    <section id="exercises">
+      <h2>0.1.6 Exercises</h2>
+
+      <h3>Understanding</h3>
+      <ol>
+        <li>In your own words, explain what a computer program is.</li>
+        <li>Give two reasons why Python is useful for a mathematics course.</li>
+        <li>Describe the roles of input, processing, and output in a program.</li>
+        <li>What is syntax? Give one example of a Python syntax rule.</li>
+      </ol>
+
+      <h3>Predict the Output</h3>
+      <ol start="5">
+        <li>
+          <pre><code>a = 6
+b = 2
+print(a + b * 3)</code></pre>
+        </li>
+        <li>
+          <pre><code>radius = 4
+area = 3.14 * radius ** 2
+print(area)</code></pre>
+        </li>
+        <li>
+          <pre><code>x = 10
+x = x + 5
+print(x)</code></pre>
+        </li>
+      </ol>
+
+      <h3>Write or Modify Code</h3>
+      <ol start="8">
+        <li>Write a program that stores your name in a variable and prints a greeting.</li>
+        <li>Write a program that calculates the perimeter of a rectangle with length 12 and width 7.</li>
+        <li>Write a program that converts 25 degrees Celsius to Fahrenheit.</li>
+        <li>Modify the distance program to calculate the distance between two points of your choice.</li>
+        <li>
+          A taxi fare consists of a base charge of $4.25 and an additional $1.75 per
+          kilometre. Write a program that calculates the cost of an 8-kilometre trip.
+        </li>
+      </ol>
+
+      <details>
+        <summary>Selected exercise answers</summary>
+        <ol start="5">
+          <li><code>12</code></li>
+          <li><code>50.24</code></li>
+          <li><code>15</code></li>
+          <li value="9"><code>perimeter = 2 * (12 + 7)</code>, which gives <code>38</code>.</li>
+          <li><code>fahrenheit = (9 / 5) * 25 + 32</code>, which gives <code>77.0</code>.</li>
+          <li value="12"><code>fare = 4.25 + 1.75 * 8</code>, which gives <code>18.25</code>.</li>
+        </ol>
+      </details>
+    </section>
+
+    <section class="summary">
+      <h2>Section Summary</h2>
+      <ul>
+        <li>A program is a sequence of instructions written to complete a task.</li>
+        <li>An algorithm describes the steps used to solve a problem.</li>
+        <li>Python is a readable, general-purpose language with many mathematical packages.</li>
+        <li>Programs often accept input, process it, and produce output.</li>
+        <li>The <code>print</code> function displays information.</li>
+        <li>Variables give names to stored values.</li>
+        <li>Python code must follow the language's syntax rules.</li>
+        <li>Testing and debugging are normal parts of programming.</li>
+      </ul>
+    </section>
+
+    <nav class="page-navigation" aria-label="Page navigation">
+      <a href="index.html">&larr; Back to Course Contents</a>
+      <a href="section-0-2.html">Next: Section 0.2 — Installing Python &rarr;</a>
+    </nav>
+  </main>
+
+  <footer>
+    <p>MATH 1516 Coding Activities — Prepared by Joe Tran</p>
+  </footer>
+</body>
+</html>

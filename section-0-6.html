@@ -1,0 +1,957 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Section 0.6: Lists, Loops, and Functions | MATH 1516</title>
+  <style>
+    body {
+      max-width: 850px;
+      margin: 0 auto;
+      padding: 20px;
+      font-family: Arial, sans-serif;
+      line-height: 1.65;
+      color: #222;
+    }
+
+    header {
+      border-bottom: 2px solid #8c1d40;
+      margin-bottom: 30px;
+    }
+
+    nav {
+      margin: 15px 0;
+    }
+
+    nav a {
+      margin-right: 15px;
+    }
+
+    h1, h2, h3 {
+      line-height: 1.25;
+    }
+
+    h2 {
+      margin-top: 40px;
+      color: #8c1d40;
+      border-bottom: 1px solid #ddd;
+      padding-bottom: 5px;
+    }
+
+    h3 {
+      margin-top: 28px;
+    }
+
+    .objectives,
+    .steps,
+    .activity,
+    .note,
+    .warning,
+    .example,
+    .summary {
+      padding: 15px 18px;
+      margin: 20px 0;
+      border-radius: 4px;
+    }
+
+    .objectives,
+    .summary {
+      background: #f7f7f7;
+      border: 1px solid #ccc;
+    }
+
+    .steps {
+      background: #f4f8fc;
+      border-left: 4px solid #2f6fa3;
+    }
+
+    .activity {
+      background: #fff8e6;
+      border-left: 4px solid #d18b00;
+    }
+
+    .note {
+      background: #f3f8f3;
+      border-left: 4px solid #4c8c4a;
+    }
+
+    .warning {
+      background: #fff3f3;
+      border-left: 4px solid #b64040;
+    }
+
+    .example {
+      background: #f7f1fa;
+      border-left: 4px solid #7b3f98;
+    }
+
+    .steps h3,
+    .activity h3,
+    .note h3,
+    .warning h3,
+    .example h3,
+    .summary h2 {
+      margin-top: 0;
+    }
+
+    pre {
+      overflow-x: auto;
+      padding: 14px;
+      background: #202124;
+      color: #f1f1f1;
+      border-radius: 4px;
+      line-height: 1.5;
+    }
+
+    code {
+      font-family: Consolas, Monaco, monospace;
+    }
+
+    p code,
+    li code,
+    td code {
+      background: #f0f0f0;
+      padding: 2px 5px;
+      border-radius: 3px;
+      color: #222;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 20px 0;
+    }
+
+    th,
+    td {
+      border: 1px solid #bbb;
+      padding: 10px;
+      text-align: left;
+      vertical-align: top;
+    }
+
+    th {
+      background: #f2f2f2;
+    }
+
+    details {
+      margin: 12px 0;
+    }
+
+    summary {
+      cursor: pointer;
+      font-weight: bold;
+    }
+
+    .page-navigation {
+      display: flex;
+      justify-content: space-between;
+      gap: 15px;
+      border-top: 1px solid #ccc;
+      margin-top: 45px;
+      padding-top: 20px;
+    }
+
+    footer {
+      margin-top: 35px;
+      color: #555;
+      font-size: 0.9rem;
+    }
+
+    @media (max-width: 600px) {
+      body {
+        padding: 14px;
+      }
+
+      table {
+        font-size: 0.9rem;
+      }
+
+      .page-navigation {
+        flex-direction: column;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <p><a href="index.html">&larr; Course Home</a></p>
+    <h1>Section 0.6: Lists, Loops, and Functions</h1>
+    <p><strong>Part 0: Getting Started with Python</strong></p>
+
+    <nav aria-label="Section contents">
+      <a href="#lists">Lists</a>
+      <a href="#indexing">Indexing</a>
+      <a href="#loops">Loops</a>
+      <a href="#range">Range</a>
+      <a href="#functions">Functions</a>
+      <a href="#activity">Activity</a>
+    </nav>
+  </header>
+
+  <main>
+    <section class="objectives">
+      <h2>Learning Objectives</h2>
+      <p>By the end of this section, you should be able to:</p>
+      <ul>
+        <li>create a Python list and determine its length;</li>
+        <li>access, slice, update, and append list elements;</li>
+        <li>iterate through a list using a <code>for</code> loop;</li>
+        <li>generate integer sequences using <code>range()</code>;</li>
+        <li>use an accumulator to calculate a total;</li>
+        <li>define and call a function with parameters;</li>
+        <li>return a calculated value from a function; and</li>
+        <li>combine lists, loops, and functions in a short mathematical program.</li>
+      </ul>
+    </section>
+
+    <section id="lists">
+      <h2>0.6.1 What Is a List?</h2>
+
+      <p>
+        A <strong>list</strong> stores an ordered collection of values under one
+        variable name. Lists are useful when a program must work with several
+        related values, such as tutorial scores, matrix entries, or repeated
+        measurements.
+      </p>
+
+      <pre><code>scores = [8, 10, 7, 9, 6]
+print(scores)</code></pre>
+
+      <p>
+        Square brackets mark the beginning and end of the list. Commas separate its
+        elements. The order of the elements is preserved.
+      </p>
+
+      <h3>Common List Operations</h3>
+
+      <pre><code>scores = [8, 10, 7, 9, 6]
+
+print("Number of scores:", len(scores))
+print("Total:", sum(scores))
+print("Smallest:", min(scores))
+print("Largest:", max(scores))
+print("Mean:", sum(scores) / len(scores))</code></pre>
+
+      <table>
+        <thead>
+          <tr>
+            <th>Expression</th>
+            <th>Purpose</th>
+            <th>Result for <code>scores</code></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><code>len(scores)</code></td>
+            <td>Number of elements</td>
+            <td><code>5</code></td>
+          </tr>
+          <tr>
+            <td><code>sum(scores)</code></td>
+            <td>Sum of numerical elements</td>
+            <td><code>40</code></td>
+          </tr>
+          <tr>
+            <td><code>min(scores)</code></td>
+            <td>Smallest element</td>
+            <td><code>6</code></td>
+          </tr>
+          <tr>
+            <td><code>max(scores)</code></td>
+            <td>Largest element</td>
+            <td><code>10</code></td>
+          </tr>
+        </tbody>
+      </table>
+
+      <p>A list can also contain strings or a mixture of data types:</p>
+
+      <pre><code>topics = ["matrices", "calculus", "statistics", "probability"]
+student_record = ["Ada", 18, 20, True]</code></pre>
+
+      <div class="note">
+        <h3>Prefer Consistent Data</h3>
+        <p>
+          Python allows mixed lists, but mathematical lists are usually easier to
+          process when all elements represent the same kind of quantity.
+        </p>
+      </div>
+    </section>
+
+    <section id="indexing">
+      <h2>0.6.2 Indexing and Slicing</h2>
+
+      <p>
+        Each list element has a position called an <strong>index</strong>. Python
+        begins counting at zero.
+      </p>
+
+      <table>
+        <thead>
+          <tr>
+            <th>Element</th>
+            <th><code>8</code></th>
+            <th><code>10</code></th>
+            <th><code>7</code></th>
+            <th><code>9</code></th>
+            <th><code>6</code></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Index</strong></td>
+            <td>0</td>
+            <td>1</td>
+            <td>2</td>
+            <td>3</td>
+            <td>4</td>
+          </tr>
+          <tr>
+            <td><strong>Negative index</strong></td>
+            <td>-5</td>
+            <td>-4</td>
+            <td>-3</td>
+            <td>-2</td>
+            <td>-1</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <pre><code>scores = [8, 10, 7, 9, 6]
+
+print(scores[0])   # First element
+print(scores[2])   # Third element
+print(scores[-1])  # Last element</code></pre>
+
+      <div class="warning">
+        <h3>The First Index Is Zero</h3>
+        <p>
+          For a list with five elements, the valid non-negative indices are 0 through
+          4. Trying to access <code>scores[5]</code> produces an
+          <code>IndexError</code>.
+        </p>
+      </div>
+
+      <h3>Slicing a List</h3>
+
+      <p>
+        A slice selects several consecutive elements. The starting index is included,
+        but the stopping index is excluded.
+      </p>
+
+      <pre><code>scores = [8, 10, 7, 9, 6]
+
+print(scores[1:4])  # [10, 7, 9]
+print(scores[:3])   # [8, 10, 7]
+print(scores[2:])   # [7, 9, 6]</code></pre>
+
+      <h3>Changing a List</h3>
+
+      <p>Lists are mutable, meaning that their contents can be changed.</p>
+
+      <pre><code>scores = [8, 10, 7]
+
+scores[2] = 9
+scores.append(6)
+
+print(scores)</code></pre>
+
+      <p>The output is <code>[8, 10, 9, 6]</code>.</p>
+
+      <table>
+        <thead>
+          <tr>
+            <th>Method</th>
+            <th>Purpose</th>
+            <th>Example</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><code>append(value)</code></td>
+            <td>Add one element to the end</td>
+            <td><code>scores.append(6)</code></td>
+          </tr>
+          <tr>
+            <td><code>insert(index, value)</code></td>
+            <td>Add an element at a selected index</td>
+            <td><code>scores.insert(1, 5)</code></td>
+          </tr>
+          <tr>
+            <td><code>remove(value)</code></td>
+            <td>Remove the first matching value</td>
+            <td><code>scores.remove(5)</code></td>
+          </tr>
+          <tr>
+            <td><code>pop()</code></td>
+            <td>Remove and return the final element</td>
+            <td><code>last_score = scores.pop()</code></td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section id="loops">
+      <h2>0.6.3 Repetition with <code>for</code> Loops</h2>
+
+      <p>
+        A <strong>loop</strong> repeats a block of code. A <code>for</code> loop is
+        particularly useful when the program should process each element of a list.
+      </p>
+
+      <pre><code>scores = [8, 10, 7, 9, 6]
+
+for score in scores:
+    print(score)</code></pre>
+
+      <p>
+        During each iteration, the variable <code>score</code> refers to the next list
+        element. The indented line is executed once for each value.
+      </p>
+
+      <div class="warning">
+        <h3>Indentation Is Part of Python Syntax</h3>
+        <p>
+          The colon begins the loop body, and the indented lines belong to the loop.
+          Colab normally inserts four spaces automatically. Code that should run
+          after the loop must return to the original indentation level.
+        </p>
+      </div>
+
+      <h3>Transforming Each Value</h3>
+
+      <pre><code>numbers = [1, 2, 3, 4, 5]
+
+for number in numbers:
+    square = number ** 2
+    print(f"{number} squared is {square}")</code></pre>
+
+      <p>
+        The loop repeats the same calculation for every value without requiring five
+        separate copies of the instruction.
+      </p>
+
+      <h3>Building a New List</h3>
+
+      <pre><code>numbers = [1, 2, 3, 4, 5]
+squares = []
+
+for number in numbers:
+    squares.append(number ** 2)
+
+print(squares)</code></pre>
+
+      <p>The output is <code>[1, 4, 9, 16, 25]</code>.</p>
+
+      <h3>An Accumulator</h3>
+
+      <p>
+        An <strong>accumulator</strong> is a variable that is updated during each loop
+        iteration. The following loop recreates the behaviour of <code>sum()</code>.
+      </p>
+
+      <pre><code>scores = [8, 10, 7, 9, 6]
+total = 0
+
+for score in scores:
+    total = total + score
+
+mean = total / len(scores)
+
+print("Total:", total)
+print("Mean:", mean)</code></pre>
+
+      <div class="note">
+        <h3>Use Built-ins When Available</h3>
+        <p>
+          Writing an accumulator helps explain how repetition works. In ordinary
+          programs, <code>sum(scores)</code> is shorter and clearer when only the
+          total is needed.
+        </p>
+      </div>
+    </section>
+
+    <section id="range">
+      <h2>0.6.4 Generating Integers with <code>range()</code></h2>
+
+      <p>
+        The <code>range()</code> function generates a sequence of integers. It is
+        commonly used when a loop must repeat a known number of times.
+      </p>
+
+      <table>
+        <thead>
+          <tr>
+            <th>Expression</th>
+            <th>Generated Values</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><code>range(5)</code></td>
+            <td>0, 1, 2, 3, 4</td>
+          </tr>
+          <tr>
+            <td><code>range(2, 6)</code></td>
+            <td>2, 3, 4, 5</td>
+          </tr>
+          <tr>
+            <td><code>range(2, 11, 2)</code></td>
+            <td>2, 4, 6, 8, 10</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <p>
+        As with list slicing, the stopping value is excluded. Therefore,
+        <code>range(1, 6)</code> generates the integers 1 through 5.
+      </p>
+
+      <pre><code>for n in range(1, 6):
+    print(n, n ** 2)</code></pre>
+
+      <h3>Calculate a Finite Sum</h3>
+
+      <p>The following program calculates 1 + 2 + ... + 100:</p>
+
+      <pre><code>total = 0
+
+for n in range(1, 101):
+    total = total + n
+
+print(total)</code></pre>
+
+      <p>The output is <code>5050</code>.</p>
+
+      <h3>Repeat an Action a Fixed Number of Times</h3>
+
+      <pre><code>for repetition in range(3):
+    print("Run the experiment")</code></pre>
+
+      <p>
+        The variable name describes the current iteration. If that value is not
+        needed, an underscore is a common placeholder:
+      </p>
+
+      <pre><code>for _ in range(3):
+    print("Run the experiment")</code></pre>
+    </section>
+
+    <section>
+      <h2>0.6.5 A Brief Introduction to <code>while</code> Loops</h2>
+
+      <p>
+        A <code>while</code> loop repeats while a condition remains true. Use it when
+        the number of iterations is not known in advance.
+      </p>
+
+      <pre><code>value = 1
+
+while value &lt; 20:
+    print(value)
+    value = value * 2</code></pre>
+
+      <p>The loop prints <code>1</code>, <code>2</code>, <code>4</code>, <code>8</code>, and <code>16</code>.</p>
+
+      <div class="warning">
+        <h3>A <code>while</code> Loop Must Make Progress</h3>
+        <p>
+          If the condition never becomes false, the loop continues indefinitely.
+          Confirm that some value inside the loop changes. If a Colab cell will not
+          stop, use the stop button beside the cell.
+        </p>
+      </div>
+    </section>
+
+    <section id="functions">
+      <h2>0.6.6 Defining Functions</h2>
+
+      <p>
+        A <strong>function</strong> is a named, reusable block of code. Functions help
+        divide a longer program into smaller tasks and prevent repeated code.
+      </p>
+
+      <pre><code>def greet():
+    print("Welcome to MATH 1516!")
+
+greet()</code></pre>
+
+      <p>
+        The keyword <code>def</code> begins the function definition. The function body
+        is indented. Defining a function does not run its body; the separate call
+        <code>greet()</code> runs it.
+      </p>
+
+      <h3>Parameters and Arguments</h3>
+
+      <pre><code>def square(number):
+    result = number ** 2
+    return result
+
+print(square(5))
+print(square(1.5))</code></pre>
+
+      <p>
+        The name <code>number</code> is a <strong>parameter</strong>. The values
+        <code>5</code> and <code>1.5</code> are <strong>arguments</strong> supplied when the
+        function is called.
+      </p>
+
+      <h3><code>return</code> Versus <code>print()</code></h3>
+
+      <table>
+        <thead>
+          <tr>
+            <th>Instruction</th>
+            <th>Purpose</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><code>print(value)</code></td>
+            <td>Displays a value for the user.</td>
+          </tr>
+          <tr>
+            <td><code>return value</code></td>
+            <td>Sends a value back to the code that called the function.</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <pre><code>def rectangle_area(length, width):
+    return length * width
+
+area_1 = rectangle_area(5, 3)
+area_2 = rectangle_area(2.5, 4)
+combined_area = area_1 + area_2
+
+print(f"Combined area: {combined_area}")</code></pre>
+
+      <p>
+        Returning the two areas makes them available for another calculation. A
+        function that only prints its result is less reusable.
+      </p>
+
+      <h3>Documenting a Function</h3>
+
+      <p>
+        A short string directly beneath the function header is called a
+        <strong>docstring</strong>. It describes what the function calculates.
+      </p>
+
+      <pre><code>def average(values):
+    """Return the arithmetic mean of a non-empty list."""
+    return sum(values) / len(values)
+
+scores = [8, 10, 7, 9, 6]
+print(average(scores))</code></pre>
+
+      <div class="note">
+        <h3>Function Names Should Describe Actions</h3>
+        <p>
+          Names such as <code>calculate_mean</code>, <code>distance</code>, and
+          <code>convert_temperature</code> communicate the purpose of a function
+          better than names such as <code>do_it</code> or <code>function1</code>.
+        </p>
+      </div>
+    </section>
+
+    <section>
+      <h2>0.6.7 Combining Lists, Loops, and Functions</h2>
+
+      <div class="example">
+        <h3>Example: Apply a Function to Every Value</h3>
+
+        <pre><code>def fahrenheit(celsius):
+    """Convert a Celsius temperature to Fahrenheit."""
+    return 9 * celsius / 5 + 32
+
+celsius_values = [0, 10, 20, 30, 40]
+fahrenheit_values = []
+
+for temperature in celsius_values:
+    converted = fahrenheit(temperature)
+    fahrenheit_values.append(converted)
+
+print(celsius_values)
+print(fahrenheit_values)</code></pre>
+      </div>
+
+      <p>
+        The list supplies the data, the loop visits each value, and the function
+        performs the reusable calculation. This pattern appears throughout numerical
+        mathematics and data analysis.
+      </p>
+
+      <h3>Generating a Table of Function Values</h3>
+
+      <pre><code>def f(x):
+    return x ** 2 - 3 * x + 2
+
+for x in range(-2, 6):
+    print(f"x = {x:2d}, f(x) = {f(x):2d}")</code></pre>
+
+      <p>
+        A table of values can help investigate a function before graphing it. Later
+        sections will use NumPy and Matplotlib to perform similar tasks more
+        efficiently and visualize the results.
+      </p>
+
+      <h3>A List of Lists</h3>
+
+      <p>A list can contain other lists. This provides a basic way to represent a matrix:</p>
+
+      <pre><code>matrix = [
+    [1, 2, 3],
+    [4, 5, 6]
+]
+
+print(matrix[0])     # First row
+print(matrix[1][2])  # Entry in second row, third column</code></pre>
+
+      <p>
+        Part 1 will use NumPy arrays for most matrix calculations, but nested lists
+        help show how rows and entries can be organized.
+      </p>
+    </section>
+
+    <section id="activity">
+      <h2>0.6.8 Tutorial Activity: Summarize a Set of Scores</h2>
+
+      <div class="activity">
+        <h3>Build the Program in Colab</h3>
+        <ol>
+          <li>Create the list <code>scores = [72, 85, 91, 68, 88, 76]</code>.</li>
+          <li>Write a function named <code>calculate_mean</code> that returns the arithmetic mean of a list.</li>
+          <li>Use a <code>for</code> loop to print each score and its square.</li>
+          <li>Create an empty list named <code>percent_as_decimal</code>.</li>
+          <li>Use another loop to divide each score by 100 and append the result to the new list.</li>
+          <li>Display the number of scores, minimum, maximum, mean, and decimal list.</li>
+          <li>Change one score, predict which results will change, and run the cell again.</li>
+        </ol>
+      </div>
+
+      <details>
+        <summary>Show a sample solution</summary>
+        <pre><code>def calculate_mean(values):
+    """Return the arithmetic mean of a non-empty list."""
+    return sum(values) / len(values)
+
+scores = [72, 85, 91, 68, 88, 76]
+
+for score in scores:
+    print(f"Score: {score}, square: {score ** 2}")
+
+percent_as_decimal = []
+
+for score in scores:
+    percent_as_decimal.append(score / 100)
+
+print("Count:", len(scores))
+print("Minimum:", min(scores))
+print("Maximum:", max(scores))
+print(f"Mean: {calculate_mean(scores):.2f}")
+print("Decimals:", percent_as_decimal)</code></pre>
+      </details>
+
+      <h3>Extension: Running Totals</h3>
+
+      <p>
+        Use an accumulator to create a new list containing the running total after
+        each score. For the list <code>[3, 5, 2]</code>, the running totals would be
+        <code>[3, 8, 10]</code>.
+      </p>
+
+      <details>
+        <summary>Show an extension solution</summary>
+        <pre><code>values = [3, 5, 2]
+running_totals = []
+total = 0
+
+for value in values:
+    total = total + value
+    running_totals.append(total)
+
+print(running_totals)</code></pre>
+      </details>
+    </section>
+
+    <section>
+      <h2>0.6.9 Reading Code by Hand</h2>
+
+      <p>Predict the output before running the cell:</p>
+
+      <pre><code>def change(values):
+    results = []
+
+    for value in values:
+        results.append(2 * value + 1)
+
+    return results
+
+numbers = [0, 2, 4]
+print(change(numbers))</code></pre>
+
+      <details>
+        <summary>Show the answer</summary>
+        <p>
+          The output is <code>[1, 5, 9]</code>. The loop applies the rule
+          <code>2 * value + 1</code> to each list element and appends each result to a
+          new list.
+        </p>
+      </details>
+    </section>
+
+    <section>
+      <h2>0.6.10 Common Mistakes</h2>
+
+      <table>
+        <thead>
+          <tr>
+            <th>Mistake</th>
+            <th>Example</th>
+            <th>Correction</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Starting at index 1</td>
+            <td><code>values[1]</code> for the first element</td>
+            <td>Use <code>values[0]</code>.</td>
+          </tr>
+          <tr>
+            <td>Including the stopping value of <code>range()</code></td>
+            <td>Expecting <code>range(5)</code> to include 5</td>
+            <td>Remember that it generates 0 through 4.</td>
+          </tr>
+          <tr>
+            <td>Missing a colon</td>
+            <td><code>for value in values</code></td>
+            <td>Add <code>:</code> at the end of the header.</td>
+          </tr>
+          <tr>
+            <td>Incorrect indentation</td>
+            <td>Loop or function body aligned with its header</td>
+            <td>Indent the complete body consistently.</td>
+          </tr>
+          <tr>
+            <td>Forgetting to initialize an accumulator</td>
+            <td>Using <code>total</code> before assigning a value</td>
+            <td>Set <code>total = 0</code> before the loop.</td>
+          </tr>
+          <tr>
+            <td>Printing instead of returning</td>
+            <td>A calculation function only calls <code>print()</code></td>
+            <td>Use <code>return</code> when later code needs the result.</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section>
+      <h2>0.6.11 Concept Check</h2>
+
+      <ol>
+        <li>What index identifies the first element of a list?</li>
+        <li>What does <code>values[-1]</code> select?</li>
+        <li>Why does <code>range(1, 5)</code> not include 5?</li>
+        <li>What determines which instructions belong to a loop or function?</li>
+        <li>What is an accumulator?</li>
+        <li>What is the difference between a parameter and an argument?</li>
+        <li>Why is <code>return</code> useful in a calculation function?</li>
+      </ol>
+
+      <details>
+        <summary>Show suggested answers</summary>
+        <ol>
+          <li>Index 0.</li>
+          <li>The final element.</li>
+          <li>The stopping value of <code>range()</code> is excluded.</li>
+          <li>Indentation determines the code block.</li>
+          <li>A variable that is repeatedly updated, often to store a running total.</li>
+          <li>A parameter is a name in the function definition; an argument is a value supplied in a function call.</li>
+          <li>It sends the result back so other code can store it or use it in another calculation.</li>
+        </ol>
+      </details>
+    </section>
+
+    <section>
+      <h2>0.6.12 Practice Exercises</h2>
+
+      <ol>
+        <li>Create a list containing the first five positive odd integers.</li>
+        <li>Print the second and final elements of your list.</li>
+        <li>Use a loop to print the cube of every integer from 1 through 6.</li>
+        <li>Use an accumulator to calculate the product of the integers from 1 through 5.</li>
+        <li>Write a function <code>quadratic_value(x)</code> that returns <code>x**2 + 2*x - 3</code>.</li>
+        <li>Write a function that accepts a list and returns its range, calculated as maximum minus minimum.</li>
+        <li>Use a function and loop to convert the radii <code>[1, 2, 3, 4]</code> into circle areas.</li>
+      </ol>
+
+      <details>
+        <summary>Show sample solutions</summary>
+        <pre><code># 1 and 2
+odd_numbers = [1, 3, 5, 7, 9]
+print(odd_numbers[1])
+print(odd_numbers[-1])
+
+# 3
+for n in range(1, 7):
+    print(n ** 3)
+
+# 4
+product = 1
+for n in range(1, 6):
+    product = product * n
+print(product)
+
+# 5
+def quadratic_value(x):
+    return x ** 2 + 2 * x - 3
+
+# 6
+def data_range(values):
+    return max(values) - min(values)
+
+# 7
+def circle_area(radius):
+    return 3.14159 * radius ** 2
+
+radii = [1, 2, 3, 4]
+areas = []
+
+for radius in radii:
+    areas.append(circle_area(radius))
+
+print(areas)</code></pre>
+      </details>
+    </section>
+
+    <section class="summary">
+      <h2>Section Summary</h2>
+      <ul>
+        <li>A list stores an ordered collection of values.</li>
+        <li>Python list indices begin at zero, and slices exclude the stopping index.</li>
+        <li>Lists are mutable and can be extended using <code>append()</code>.</li>
+        <li>A <code>for</code> loop processes each value in a collection.</li>
+        <li><code>range()</code> generates integers and excludes its stopping value.</li>
+        <li>An accumulator stores a result that changes during a loop.</li>
+        <li>A function is a named, reusable block of code defined with <code>def</code>.</li>
+        <li>Parameters receive arguments, and <code>return</code> sends a result back to the caller.</li>
+        <li>Lists, loops, and functions form a common pattern for repeated mathematical calculations.</li>
+      </ul>
+    </section>
+
+    <nav class="page-navigation" aria-label="Page navigation">
+      <a href="section-0-5.html">&larr; Previous: Section 0.5</a>
+      <a href="index.html">Course Contents</a>
+      <a href="section-0-7.html">Next: Section 0.7 &rarr;</a>
+    </nav>
+  </main>
+
+  <footer>
+    <p>MATH 1516 Coding Activities — Prepared by Joe Tran</p>
+  </footer>
+</body>
+</html>

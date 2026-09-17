@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MATH 1516 Coding Activities</title>
+  <style>
+    body {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 20px;
+      font-family: Arial, sans-serif;
+      line-height: 1.6;
+      color: #222;
+    }
+
+    header {
+      border-bottom: 2px solid #8c1d40;
+      margin-bottom: 25px;
+    }
+
+    nav {
+      margin: 15px 0;
+    }
+
+    nav a {
+      margin-right: 12px;
+    }
+
+    section {
+      margin-bottom: 35px;
+      scroll-margin-top: 20px;
+    }
+
+    .part {
+      border: 1px solid #ccc;
+      padding: 18px;
+      margin-bottom: 20px;
+      border-radius: 4px;
+    }
+
+    .part h2 {
+      margin-top: 0;
+      color: #8c1d40;
+    }
+
+    .part ol {
+      margin-bottom: 0;
+      padding-left: 28px;
+    }
+
+    .part li {
+      margin-bottom: 10px;
+    }
+
+    .description {
+      display: block;
+      color: #555;
+      font-size: 0.95rem;
+    }
+
+    code {
+      background: #f2f2f2;
+      padding: 2px 5px;
+      border-radius: 3px;
+    }
+
+    footer {
+      border-top: 1px solid #ccc;
+      margin-top: 40px;
+      padding-top: 15px;
+      color: #555;
+      font-size: 0.9rem;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>MATH 1516 Coding Activities</h1>
+    <p>General Mathematics for Software Development — Fall 2026</p>
+
+    <nav aria-label="Course parts">
+      <a href="#part0">Part 0</a>
+      <a href="#part1">Part 1</a>
+      <a href="#part2">Part 2</a>
+      <a href="#part3">Part 3</a>
+      <a href="#part4">Part 4</a>
+    </nav>
+  </header>
+
+  <main>
+    <section>
+      <h2>About These Activities</h2>
+      <p>
+        This website contains short Python activities for MATH 1516 tutorials.
+        The material is organized into parts and numbered sections, similar to a
+        textbook. Each section will eventually have its own lesson, examples,
+        code, exercises, and solutions.
+      </p>
+      <p>No previous Python experience is required.</p>
+    </section>
+
+    <section class="part" id="part0">
+      <h2>Part 0: Getting Started with Python</h2>
+      <p>This part introduces the software and basic Python skills needed for the course.</p>
+      <ol start="0">
+        <li>
+          <strong><a href="section-0-1.html">0.1 Introduction to Python</a></strong>
+          <span class="description">What Python is, why it is useful in mathematics, and how it will be used in MATH 1516.</span>
+        </li>
+        <li>
+          <strong><a href="section-0-2.html">0.2 Installing Python</a></strong>
+          <span class="description">Install a current version of Python on Windows or macOS and confirm that it works.</span>
+        </li>
+        <li>
+          <strong><a href="section-0-3.html">0.3 Choosing a Coding Environment</a></strong>
+          <span class="description">An introduction to IDLE, Visual Studio Code, Jupyter Notebook, and Google Colab.</span>
+        </li>
+        <li>
+          <strong><a href="section-0-4.html">0.4 Installing Python Packages</a></strong>
+          <span class="description">Use <code>pip</code> to install NumPy, Matplotlib, SymPy, pandas, and SciPy.</span>
+        </li>
+        <li>
+          <strong><a href="section-0-5.html">0.5 Your First Python Program</a></strong>
+          <span class="description">Run a short program, print results, use variables, and perform basic calculations.</span>
+        </li>
+        <li>
+          <strong><a href="section-0-6.html">0.6 Lists, Loops, and Functions</a></strong>
+          <span class="description">The basic Python structures that will appear throughout the activities.</span>
+        </li>
+        <li>
+          <strong><a href="section-0-7.html">0.7 Common Errors and Troubleshooting</a></strong>
+          <span class="description">Read error messages and fix common problems involving syntax, indentation, and missing packages.</span>
+        </li>
+      </ol>
+    </section>
+
+    <section class="part" id="part1">
+      <h2>Part 1: Linear Systems and Matrices</h2>
+      <p>Use NumPy to represent matrices and investigate systems of linear equations.</p>
+      <ol>
+        <li>
+          <strong><a href="section-1-1.html">1.1 Creating Vectors and Matrices</a></strong>
+          <span class="description">Create NumPy arrays and access individual entries, rows, and columns.</span>
+        </li>
+        <li>
+          <strong>1.2 Matrix Terminology and Dimensions</strong>
+          <span class="description">Identify matrix size, entries, rows, columns, diagonal entries, and special matrices.</span>
+        </li>
+        <li>
+          <strong>1.3 Matrix Arithmetic</strong>
+          <span class="description">Perform addition, scalar multiplication, matrix multiplication, and transposition.</span>
+        </li>
+        <li>
+          <strong>1.4 Linear Systems in Matrix Form</strong>
+          <span class="description">Convert a system of equations into the form <em>Ax = b</em>.</span>
+        </li>
+        <li>
+          <strong>1.5 Solving Linear Systems</strong>
+          <span class="description">Use <code>numpy.linalg.solve</code> and compare the output with algebraic methods.</span>
+        </li>
+        <li>
+          <strong>1.6 Visualizing Matrices</strong>
+          <span class="description">Display matrix entries using <code>imshow</code> and interpret colour-based matrix plots.</span>
+        </li>
+        <li>
+          <strong>1.7 Applications of Linear Systems</strong>
+          <span class="description">Model small problems involving mixtures, costs, networks, or resource allocation.</span>
+        </li>
+      </ol>
+    </section>
+
+    <section class="part" id="part2">
+      <h2>Part 2: Differential Calculus</h2>
+      <p>Use Python to explore functions, limits, derivatives, and optimization.</p>
+      <ol>
+        <li>
+          <strong>2.1 Defining and Evaluating Functions</strong>
+          <span class="description">Write Python functions and evaluate them at selected input values.</span>
+        </li>
+        <li>
+          <strong>2.2 Plotting Functions</strong>
+          <span class="description">Use Matplotlib to graph functions and adjust the viewing window.</span>
+        </li>
+        <li>
+          <strong>2.3 Exploring Limits Numerically</strong>
+          <span class="description">Use tables and graphs to investigate function behaviour near a point.</span>
+        </li>
+        <li>
+          <strong>2.4 Approximating Derivatives</strong>
+          <span class="description">Estimate derivatives with difference quotients and examine approximation error.</span>
+        </li>
+        <li>
+          <strong>2.5 Symbolic Differentiation</strong>
+          <span class="description">Use SymPy to calculate and simplify derivatives.</span>
+        </li>
+        <li>
+          <strong>2.6 Tangent Lines and Rates of Change</strong>
+          <span class="description">Plot tangent lines and interpret derivatives in applied settings.</span>
+        </li>
+        <li>
+          <strong>2.7 Optimization</strong>
+          <span class="description">Use derivatives and graphs to locate and interpret maximum and minimum values.</span>
+        </li>
+      </ol>
+    </section>
+
+    <section class="part" id="part3">
+      <h2>Part 3: Statistics</h2>
+      <p>Use pandas, NumPy, and Matplotlib to summarize and visualize data.</p>
+      <ol>
+        <li>
+          <strong>3.1 Working with Data</strong>
+          <span class="description">Create a dataset and import data from a CSV file.</span>
+        </li>
+        <li>
+          <strong>3.2 Measures of Centre</strong>
+          <span class="description">Calculate and compare the mean, median, and mode.</span>
+        </li>
+        <li>
+          <strong>3.3 Measures of Spread</strong>
+          <span class="description">Calculate the range, variance, standard deviation, and interquartile range.</span>
+        </li>
+        <li>
+          <strong>3.4 Histograms and Box Plots</strong>
+          <span class="description">Create statistical graphs and use them to describe a distribution.</span>
+        </li>
+        <li>
+          <strong>3.5 Scatter Plots and Correlation</strong>
+          <span class="description">Investigate relationships between two numerical variables.</span>
+        </li>
+        <li>
+          <strong>3.6 Comparing Data Groups</strong>
+          <span class="description">Use numerical summaries and graphs to compare two or more datasets.</span>
+        </li>
+      </ol>
+    </section>
+
+    <section class="part" id="part4">
+      <h2>Part 4: Probability</h2>
+      <p>Use random simulation to investigate probability models and distributions.</p>
+      <ol>
+        <li>
+          <strong>4.1 Random Experiments</strong>
+          <span class="description">Simulate coins, dice, cards, and other simple random experiments.</span>
+        </li>
+        <li>
+          <strong>4.2 Experimental Probability</strong>
+          <span class="description">Compare simulated relative frequencies with theoretical probabilities.</span>
+        </li>
+        <li>
+          <strong>4.3 Discrete Random Variables</strong>
+          <span class="description">Represent values and probabilities and calculate expected value.</span>
+        </li>
+        <li>
+          <strong>4.4 Binomial Distribution</strong>
+          <span class="description">Calculate and simulate binomial probabilities.</span>
+        </li>
+        <li>
+          <strong>4.5 Normal Distribution</strong>
+          <span class="description">Plot normal curves and calculate probabilities using SciPy.</span>
+        </li>
+        <li>
+          <strong>4.6 Monte Carlo Methods</strong>
+          <span class="description">Estimate a quantity by repeating a random experiment many times.</span>
+        </li>
+      </ol>
+    </section>
+  </main>
+
+  <footer>
+    <p>Prepared by Joe Tran for MATH 1516 tutorials.</p>
+  </footer>
+</body>
+</html>

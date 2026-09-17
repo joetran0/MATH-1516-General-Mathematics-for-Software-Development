@@ -1,0 +1,895 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Section 0.5: Your First Python Program | MATH 1516</title>
+  <style>
+    body {
+      max-width: 850px;
+      margin: 0 auto;
+      padding: 20px;
+      font-family: Arial, sans-serif;
+      line-height: 1.65;
+      color: #222;
+    }
+
+    header {
+      border-bottom: 2px solid #8c1d40;
+      margin-bottom: 30px;
+    }
+
+    nav {
+      margin: 15px 0;
+    }
+
+    nav a {
+      margin-right: 15px;
+    }
+
+    h1, h2, h3 {
+      line-height: 1.25;
+    }
+
+    h2 {
+      margin-top: 40px;
+      color: #8c1d40;
+      border-bottom: 1px solid #ddd;
+      padding-bottom: 5px;
+    }
+
+    h3 {
+      margin-top: 28px;
+    }
+
+    .objectives,
+    .steps,
+    .activity,
+    .note,
+    .warning,
+    .example,
+    .summary {
+      padding: 15px 18px;
+      margin: 20px 0;
+      border-radius: 4px;
+    }
+
+    .objectives,
+    .summary {
+      background: #f7f7f7;
+      border: 1px solid #ccc;
+    }
+
+    .steps {
+      background: #f4f8fc;
+      border-left: 4px solid #2f6fa3;
+    }
+
+    .activity {
+      background: #fff8e6;
+      border-left: 4px solid #d18b00;
+    }
+
+    .note {
+      background: #f3f8f3;
+      border-left: 4px solid #4c8c4a;
+    }
+
+    .warning {
+      background: #fff3f3;
+      border-left: 4px solid #b64040;
+    }
+
+    .example {
+      background: #f7f1fa;
+      border-left: 4px solid #7b3f98;
+    }
+
+    .steps h3,
+    .activity h3,
+    .note h3,
+    .warning h3,
+    .example h3,
+    .summary h2 {
+      margin-top: 0;
+    }
+
+    pre {
+      overflow-x: auto;
+      padding: 14px;
+      background: #202124;
+      color: #f1f1f1;
+      border-radius: 4px;
+      line-height: 1.5;
+    }
+
+    code {
+      font-family: Consolas, Monaco, monospace;
+    }
+
+    p code,
+    li code,
+    td code {
+      background: #f0f0f0;
+      padding: 2px 5px;
+      border-radius: 3px;
+      color: #222;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 20px 0;
+    }
+
+    th,
+    td {
+      border: 1px solid #bbb;
+      padding: 10px;
+      text-align: left;
+      vertical-align: top;
+    }
+
+    th {
+      background: #f2f2f2;
+    }
+
+    details {
+      margin: 12px 0;
+    }
+
+    summary {
+      cursor: pointer;
+      font-weight: bold;
+    }
+
+    .page-navigation {
+      display: flex;
+      justify-content: space-between;
+      gap: 15px;
+      border-top: 1px solid #ccc;
+      margin-top: 45px;
+      padding-top: 20px;
+    }
+
+    footer {
+      margin-top: 35px;
+      color: #555;
+      font-size: 0.9rem;
+    }
+
+    @media (max-width: 600px) {
+      body {
+        padding: 14px;
+      }
+
+      table {
+        font-size: 0.9rem;
+      }
+
+      .page-navigation {
+        flex-direction: column;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <p><a href="index.html">&larr; Course Home</a></p>
+    <h1>Section 0.5: Your First Python Program</h1>
+    <p><strong>Part 0: Getting Started with Python</strong></p>
+
+    <nav aria-label="Section contents">
+      <a href="#first-program">First Program</a>
+      <a href="#variables">Variables</a>
+      <a href="#arithmetic">Arithmetic</a>
+      <a href="#strings">Text</a>
+      <a href="#input">Input</a>
+      <a href="#activity">Activity</a>
+    </nav>
+  </header>
+
+  <main>
+    <section class="objectives">
+      <h2>Learning Objectives</h2>
+      <p>By the end of this section, you should be able to:</p>
+      <ul>
+        <li>create and run a code cell in Google Colab;</li>
+        <li>display output using <code>print()</code>;</li>
+        <li>write comments that explain a program;</li>
+        <li>store and update values using variables;</li>
+        <li>identify integers, floating-point numbers, strings, and Boolean values;</li>
+        <li>perform arithmetic calculations using Python operators;</li>
+        <li>format readable output using an f-string; and</li>
+        <li>accept numerical input and use it in a calculation.</li>
+      </ul>
+    </section>
+
+    <section id="first-program">
+      <h2>0.5.1 Your First Code Cell</h2>
+
+      <p>
+        A <strong>program</strong> is a sequence of instructions that a computer
+        executes. In Google Colab, the instructions are usually divided into code
+        cells. A cell can contain one instruction or several related instructions.
+      </p>
+
+      <div class="steps">
+        <h3>Create and Run the Program</h3>
+        <ol>
+          <li>Open <a href="https://colab.research.google.com/">Google Colab</a>.</li>
+          <li>Create a new notebook.</li>
+          <li>Rename it <code>MATH1516_First_Program.ipynb</code>.</li>
+          <li>Enter the code below in the first code cell.</li>
+          <li>Run the cell using the play button or <kbd>Shift</kbd>+<kbd>Enter</kbd>.</li>
+        </ol>
+      </div>
+
+      <pre><code>print("Hello, MATH 1516!")
+print("I am running my first Python program.")</code></pre>
+
+      <p>The output is:</p>
+
+      <pre><code>Hello, MATH 1516!
+I am running my first Python program.</code></pre>
+
+      <p>
+        The <code>print()</code> function displays a value as output. Text must be
+        placed inside quotation marks. Python accepts either double quotation marks
+        or single quotation marks, provided that the pair matches.
+      </p>
+
+      <div class="note">
+        <h3>Notebook Output and <code>print()</code></h3>
+        <p>
+          Colab automatically displays the value of the final expression in a cell.
+          However, <code>print()</code> is clearer when a program has several results
+          or when each result needs a label.
+        </p>
+      </div>
+
+      <h3>Comments</h3>
+
+      <p>
+        A comment begins with <code>#</code>. Python ignores everything after the
+        number sign on that line. Comments explain the purpose of code to a reader.
+      </p>
+
+      <pre><code># This program displays a course message.
+print("Welcome to the tutorial!")  # Display the message.</code></pre>
+
+      <p>
+        Useful comments explain the purpose or reasoning behind a step. They should
+        not merely repeat an obvious instruction.
+      </p>
+    </section>
+
+    <section id="variables">
+      <h2>0.5.2 Variables and Assignment</h2>
+
+      <p>
+        A <strong>variable</strong> is a name that refers to a value. The assignment
+        operator <code>=</code> stores the value on its right under the name on its
+        left.
+      </p>
+
+      <pre><code>course = "MATH 1516"
+number_of_students = 28
+tutorial_length = 80
+
+print(course)
+print(number_of_students)
+print(tutorial_length)</code></pre>
+
+      <p>
+        Read <code>number_of_students = 28</code> as “assign the value 28 to the
+        variable <code>number_of_students</code>.” In Python, assignment is not an
+        equation asserting that two expressions are permanently equal.
+      </p>
+
+      <h3>Updating a Variable</h3>
+
+      <pre><code>score = 7
+print("Original score:", score)
+
+score = score + 2
+print("Updated score:", score)</code></pre>
+
+      <p>
+        Python first evaluates the right side using the current value of
+        <code>score</code>. It then stores the result, 9, under the same name.
+      </p>
+
+      <h3>Variable Naming Rules</h3>
+
+      <ul>
+        <li>A name may contain letters, digits, and underscores.</li>
+        <li>A name cannot begin with a digit.</li>
+        <li>A name cannot contain a space or hyphen.</li>
+        <li>Names are case-sensitive: <code>score</code> and <code>Score</code> are different.</li>
+        <li>A Python keyword such as <code>for</code>, <code>if</code>, or <code>class</code> cannot be used as a variable name.</li>
+        <li>Use descriptive names written in <code>snake_case</code>, such as <code>final_score</code>.</li>
+      </ul>
+
+      <table>
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Valid?</th>
+            <th>Reason</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><code>matrix_size</code></td>
+            <td>Yes</td>
+            <td>Uses letters and an underscore.</td>
+          </tr>
+          <tr>
+            <td><code>score2</code></td>
+            <td>Yes</td>
+            <td>A digit may appear after the first character.</td>
+          </tr>
+          <tr>
+            <td><code>2score</code></td>
+            <td>No</td>
+            <td>A variable name cannot begin with a digit.</td>
+          </tr>
+          <tr>
+            <td><code>final score</code></td>
+            <td>No</td>
+            <td>Spaces are not allowed in variable names.</td>
+          </tr>
+          <tr>
+            <td><code>sum</code></td>
+            <td>Technically, but avoid it</td>
+            <td>It hides Python's built-in <code>sum()</code> function.</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section>
+      <h2>0.5.3 Basic Data Types</h2>
+
+      <p>
+        Every value has a <strong>data type</strong>. The type determines how Python
+        represents the value and which operations are meaningful.
+      </p>
+
+      <table>
+        <thead>
+          <tr>
+            <th>Type</th>
+            <th>Meaning</th>
+            <th>Examples</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><code>int</code></td>
+            <td>Integer</td>
+            <td><code>7</code>, <code>0</code>, <code>-12</code></td>
+          </tr>
+          <tr>
+            <td><code>float</code></td>
+            <td>Number with a decimal point</td>
+            <td><code>3.14</code>, <code>-0.5</code>, <code>2.0</code></td>
+          </tr>
+          <tr>
+            <td><code>str</code></td>
+            <td>Text, called a string</td>
+            <td><code>"Python"</code>, <code>"1516"</code></td>
+          </tr>
+          <tr>
+            <td><code>bool</code></td>
+            <td>A logical value</td>
+            <td><code>True</code>, <code>False</code></td>
+          </tr>
+        </tbody>
+      </table>
+
+      <p>Use <code>type()</code> to inspect the type of a value:</p>
+
+      <pre><code>students = 28
+average = 8.5
+course = "MATH 1516"
+is_tutorial_day = True
+
+print(type(students))
+print(type(average))
+print(type(course))
+print(type(is_tutorial_day))</code></pre>
+
+      <div class="warning">
+        <h3>A Number and a String Are Different</h3>
+        <p>
+          The integer <code>1516</code> can be used in arithmetic. The string
+          <code>"1516"</code> is text. Quotation marks change the value's type and
+          therefore change which operations Python can perform.
+        </p>
+      </div>
+    </section>
+
+    <section id="arithmetic">
+      <h2>0.5.4 Arithmetic in Python</h2>
+
+      <p>Python can be used as a calculator.</p>
+
+      <table>
+        <thead>
+          <tr>
+            <th>Operation</th>
+            <th>Python Operator</th>
+            <th>Example</th>
+            <th>Result</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Addition</td>
+            <td><code>+</code></td>
+            <td><code>7 + 3</code></td>
+            <td><code>10</code></td>
+          </tr>
+          <tr>
+            <td>Subtraction</td>
+            <td><code>-</code></td>
+            <td><code>7 - 3</code></td>
+            <td><code>4</code></td>
+          </tr>
+          <tr>
+            <td>Multiplication</td>
+            <td><code>*</code></td>
+            <td><code>7 * 3</code></td>
+            <td><code>21</code></td>
+          </tr>
+          <tr>
+            <td>Division</td>
+            <td><code>/</code></td>
+            <td><code>7 / 2</code></td>
+            <td><code>3.5</code></td>
+          </tr>
+          <tr>
+            <td>Floor division</td>
+            <td><code>//</code></td>
+            <td><code>7 // 2</code></td>
+            <td><code>3</code></td>
+          </tr>
+          <tr>
+            <td>Remainder</td>
+            <td><code>%</code></td>
+            <td><code>7 % 2</code></td>
+            <td><code>1</code></td>
+          </tr>
+          <tr>
+            <td>Exponentiation</td>
+            <td><code>**</code></td>
+            <td><code>7 ** 2</code></td>
+            <td><code>49</code></td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="warning">
+        <h3>Python Does Not Use <code>^</code> for Powers</h3>
+        <p>
+          Write <code>x ** 2</code> for x squared. The symbol <code>^</code> performs
+          a different operation in Python and should not be used for exponents.
+        </p>
+      </div>
+
+      <h3>Order of Operations</h3>
+
+      <p>
+        Python follows the usual order of operations: parentheses, exponents,
+        multiplication and division, then addition and subtraction. Operations at
+        the same level are normally evaluated from left to right.
+      </p>
+
+      <pre><code>result_1 = 2 + 3 * 4
+result_2 = (2 + 3) * 4
+
+print(result_1)
+print(result_2)</code></pre>
+
+      <p>The outputs are <code>14</code> and <code>20</code>.</p>
+
+      <h3>A Mathematical Calculation</h3>
+
+      <pre><code>radius = 5
+pi = 3.14159
+
+area = pi * radius ** 2
+circumference = 2 * pi * radius
+
+print("Area:", area)
+print("Circumference:", circumference)</code></pre>
+
+      <p>
+        Longer expressions should be written so their mathematical structure is
+        visible. Use parentheses whenever they make the intended order clearer.
+      </p>
+    </section>
+
+    <section id="strings">
+      <h2>0.5.5 Strings and Readable Output</h2>
+
+      <p>
+        A <strong>string</strong> is a sequence of characters used to represent text.
+        Strings can be stored in variables, printed, and combined.
+      </p>
+
+      <pre><code>first_name = "Ada"
+last_name = "Lovelace"
+full_name = first_name + " " + last_name
+
+print(full_name)</code></pre>
+
+      <p>The <code>+</code> operator joins strings. This is called concatenation.</p>
+
+      <h3>Formatted Strings</h3>
+
+      <p>
+        An <strong>f-string</strong> places variable values inside text. Put the
+        letter <code>f</code> before the opening quotation mark and place expressions
+        inside braces.
+      </p>
+
+      <pre><code>course = "MATH 1516"
+score = 18
+total = 20
+
+print(f"Course: {course}")
+print(f"Score: {score} out of {total}")
+print(f"Percentage: {100 * score / total}%")</code></pre>
+
+      <p>To show a fixed number of decimal places, add a formatting instruction:</p>
+
+      <pre><code>value = 10 / 3
+print(f"The value is approximately {value:.2f}.")</code></pre>
+
+      <p>The output is <code>The value is approximately 3.33.</code></p>
+
+      <div class="note">
+        <h3>Compute First, Then Explain</h3>
+        <p>
+          Store an important result in a descriptively named variable. Then use an
+          f-string to label the value and include units. This makes mathematical
+          output easier to interpret.
+        </p>
+      </div>
+    </section>
+
+    <section id="input">
+      <h2>0.5.6 Accepting User Input</h2>
+
+      <p>
+        The <code>input()</code> function pauses a program and asks the user to enter
+        a value. In Colab, an input box appears beneath the code cell.
+      </p>
+
+      <pre><code>name = input("Enter your name: ")
+print(f"Hello, {name}!")</code></pre>
+
+      <p>
+        The value returned by <code>input()</code> is always a string. Convert the
+        string before performing numerical calculations.
+      </p>
+
+      <table>
+        <thead>
+          <tr>
+            <th>Function</th>
+            <th>Conversion</th>
+            <th>Example</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><code>int()</code></td>
+            <td>Converts to an integer</td>
+            <td><code>int("12")</code> gives <code>12</code></td>
+          </tr>
+          <tr>
+            <td><code>float()</code></td>
+            <td>Converts to a decimal number</td>
+            <td><code>float("12.5")</code> gives <code>12.5</code></td>
+          </tr>
+          <tr>
+            <td><code>str()</code></td>
+            <td>Converts to text</td>
+            <td><code>str(12)</code> gives <code>"12"</code></td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="example">
+        <h3>Example: Rectangle Calculator</h3>
+        <p>
+          This program asks for the dimensions of a rectangle, calculates its area
+          and perimeter, and displays labelled results.
+        </p>
+
+        <pre><code># Ask the user for the rectangle's dimensions.
+length = float(input("Enter the length: "))
+width = float(input("Enter the width: "))
+
+# Calculate the requested quantities.
+area = length * width
+perimeter = 2 * (length + width)
+
+# Display the results.
+print(f"Area: {area:.2f} square units")
+print(f"Perimeter: {perimeter:.2f} units")</code></pre>
+      </div>
+
+      <div class="warning">
+        <h3>Input Must Match the Conversion</h3>
+        <p>
+          Entering text such as <code>five</code> when the program calls
+          <code>float()</code> produces a <code>ValueError</code>. For now, rerun the
+          cell and enter a valid number. A later section will discuss errors in more
+          detail.
+        </p>
+      </div>
+    </section>
+
+    <section>
+      <h2>0.5.7 A Complete Mathematical Program</h2>
+
+      <p>
+        A clear program often follows an <strong>input–process–output</strong>
+        structure:
+      </p>
+
+      <ol>
+        <li><strong>Input:</strong> obtain or define the required data.</li>
+        <li><strong>Process:</strong> perform the calculations.</li>
+        <li><strong>Output:</strong> display the result with a meaningful label.</li>
+      </ol>
+
+      <div class="example">
+        <h3>Example: Distance Between Two Points</h3>
+        <p>
+          For points (x<sub>1</sub>, y<sub>1</sub>) and
+          (x<sub>2</sub>, y<sub>2</sub>), the distance is
+          the square root of the sum of the squared coordinate differences.
+        </p>
+
+        <pre><code># Input
+x1 = float(input("Enter x1: "))
+y1 = float(input("Enter y1: "))
+x2 = float(input("Enter x2: "))
+y2 = float(input("Enter y2: "))
+
+# Process
+change_x = x2 - x1
+change_y = y2 - y1
+distance = (change_x ** 2 + change_y ** 2) ** 0.5
+
+# Output
+print(f"The distance is {distance:.3f} units.")</code></pre>
+      </div>
+
+      <p>
+        If the points are (1, 2) and (4, 6), the program displays a distance of
+        <code>5.000</code> units.
+      </p>
+
+      <h3>Trace the Program</h3>
+
+      <table>
+        <thead>
+          <tr>
+            <th>Variable</th>
+            <th>Value</th>
+            <th>Meaning</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><code>change_x</code></td>
+            <td><code>4 - 1 = 3</code></td>
+            <td>Horizontal change</td>
+          </tr>
+          <tr>
+            <td><code>change_y</code></td>
+            <td><code>6 - 2 = 4</code></td>
+            <td>Vertical change</td>
+          </tr>
+          <tr>
+            <td><code>distance</code></td>
+            <td><code>(3**2 + 4**2)**0.5 = 5.0</code></td>
+            <td>Distance between the points</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section id="activity">
+      <h2>0.5.8 Tutorial Activity: Build a Score Calculator</h2>
+
+      <div class="activity">
+        <h3>Predict, Run, and Modify</h3>
+        <p>
+          Create a new section in your Colab notebook and complete the following
+          tasks.
+        </p>
+        <ol>
+          <li>Ask the user for a student's name.</li>
+          <li>Ask for the score earned and the total possible score.</li>
+          <li>Convert the two numerical inputs to <code>float</code> values.</li>
+          <li>Calculate the percentage.</li>
+          <li>Display the student's name and percentage, rounded to one decimal place.</li>
+          <li>Test the program using a score of 17 out of 20.</li>
+          <li>Modify one input and predict the new result before rerunning the cell.</li>
+        </ol>
+      </div>
+
+      <details>
+        <summary>Show a sample solution</summary>
+        <pre><code># Input
+student_name = input("Enter the student's name: ")
+score = float(input("Enter the score earned: "))
+total = float(input("Enter the total possible score: "))
+
+# Process
+percentage = 100 * score / total
+
+# Output
+print(f"{student_name}'s percentage is {percentage:.1f}%.")</code></pre>
+        <p>A score of 17 out of 20 gives <code>85.0%</code>.</p>
+      </details>
+
+      <h3>Extension</h3>
+
+      <p>
+        Add inputs for three tutorial scores. Calculate and display their arithmetic
+        mean. Give each input a descriptive prompt and show the final result to two
+        decimal places.
+      </p>
+    </section>
+
+    <section>
+      <h2>0.5.9 Reading Code by Hand</h2>
+
+      <p>
+        Before running a cell, predict its output. This develops the ability to trace
+        a program and identify mistakes.
+      </p>
+
+      <pre><code>a = 4
+b = 3
+c = a ** 2 + b ** 2
+a = a + 1
+
+print(a)
+print(b)
+print(c)</code></pre>
+
+      <details>
+        <summary>Show the output and explanation</summary>
+        <pre><code>5
+3
+25</code></pre>
+        <p>
+          The value of <code>c</code> is calculated while <code>a</code> is 4. Updating
+          <code>a</code> afterward does not automatically recalculate <code>c</code>.
+        </p>
+      </details>
+    </section>
+
+    <section>
+      <h2>0.5.10 Concept Check</h2>
+
+      <ol>
+        <li>What does the <code>print()</code> function do?</li>
+        <li>What is the purpose of a comment?</li>
+        <li>Why is <code>score = score + 1</code> valid Python?</li>
+        <li>What is the difference between <code>5</code> and <code>"5"</code>?</li>
+        <li>Which operator represents exponentiation?</li>
+        <li>Why is <code>float(input("Enter a value: "))</code> often used for numerical input?</li>
+      </ol>
+
+      <details>
+        <summary>Show suggested answers</summary>
+        <ol>
+          <li>It displays a value as output.</li>
+          <li>A comment explains code to a human reader and is ignored by Python.</li>
+          <li>It uses the current value of <code>score</code>, adds 1, and stores the new value under the same name.</li>
+          <li><code>5</code> is an integer, while <code>"5"</code> is a string containing text.</li>
+          <li><code>**</code>.</li>
+          <li><code>input()</code> returns a string, so <code>float()</code> converts it to a number that can be used in arithmetic.</li>
+        </ol>
+      </details>
+    </section>
+
+    <section>
+      <h2>0.5.11 Practice Exercises</h2>
+
+      <ol>
+        <li>Write a program that stores your name and program of study, then prints both values.</li>
+        <li>Calculate the value of (3 + 5)<sup>2</sup> divided by 4.</li>
+        <li>Given a temperature of 20 degrees Celsius, calculate the Fahrenheit temperature using <code>F = 9*C/5 + 32</code>.</li>
+        <li>Ask the user for a radius and calculate the area of a circle using <code>pi = 3.14159</code>.</li>
+        <li>Ask for the price and quantity of an item. Display the total cost to two decimal places.</li>
+        <li>Predict the output of <code>x = 10; y = x / 4; x = 2; print(y)</code>.</li>
+      </ol>
+
+      <details>
+        <summary>Show sample solutions</summary>
+        <pre><code># 1
+name = "Ada"
+program = "Software Development"
+print(f"Name: {name}")
+print(f"Program: {program}")
+
+# 2
+value = (3 + 5) ** 2 / 4
+print(value)
+
+# 3
+celsius = 20
+fahrenheit = 9 * celsius / 5 + 32
+print(f"Temperature: {fahrenheit} F")
+
+# 4
+radius = float(input("Enter the radius: "))
+pi = 3.14159
+area = pi * radius ** 2
+print(f"Area: {area:.2f} square units")
+
+# 5
+price = float(input("Enter the price: "))
+quantity = int(input("Enter the quantity: "))
+total_cost = price * quantity
+print(f"Total cost: ${total_cost:.2f}")</code></pre>
+        <p>
+          For Exercise 6, the output is <code>2.5</code>. The value of <code>y</code>
+          was calculated before <code>x</code> changed.
+        </p>
+      </details>
+    </section>
+
+    <section>
+      <h2>0.5.12 Good Habits from the Beginning</h2>
+
+      <ul>
+        <li>Use descriptive variable names.</li>
+        <li>Include spaces around arithmetic and assignment operators.</li>
+        <li>Separate input, calculations, and output into logical groups.</li>
+        <li>Add short comments when the purpose of a step is not obvious.</li>
+        <li>Label numerical output and include units when appropriate.</li>
+        <li>Predict the result before running a cell.</li>
+        <li>Test a program using simple values whose correct result is known.</li>
+        <li>Run notebook cells from top to bottom before sharing your work.</li>
+      </ul>
+    </section>
+
+    <section class="summary">
+      <h2>Section Summary</h2>
+      <ul>
+        <li>A Python program is a sequence of executable instructions.</li>
+        <li><code>print()</code> displays output, and <code>#</code> begins a comment.</li>
+        <li>The assignment operator stores a value under a variable name.</li>
+        <li>Common types include <code>int</code>, <code>float</code>, <code>str</code>, and <code>bool</code>.</li>
+        <li>Python uses <code>**</code> for powers and follows the usual order of operations.</li>
+        <li>F-strings combine text, values, and formatting in readable output.</li>
+        <li><code>input()</code> returns text, so numerical input must usually be converted.</li>
+        <li>A clear mathematical program follows an input–process–output structure.</li>
+      </ul>
+    </section>
+
+    <nav class="page-navigation" aria-label="Page navigation">
+      <a href="section-0-4.html">&larr; Previous: Section 0.4</a>
+      <a href="index.html">Course Contents</a>
+      <a href="section-0-6.html">Next: Section 0.6 &rarr;</a>
+    </nav>
+  </main>
+
+  <footer>
+    <p>MATH 1516 Coding Activities — Prepared by Joe Tran</p>
+  </footer>
+</body>
+</html>
