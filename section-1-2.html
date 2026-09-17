@@ -1,0 +1,961 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Section 1.2: Matrix Terminology and Dimensions | MATH 1516</title>
+  <style>
+    body {
+      max-width: 850px;
+      margin: 0 auto;
+      padding: 20px;
+      font-family: Arial, sans-serif;
+      line-height: 1.65;
+      color: #222;
+    }
+
+    header {
+      border-bottom: 2px solid #8c1d40;
+      margin-bottom: 30px;
+    }
+
+    nav {
+      margin: 15px 0;
+    }
+
+    nav a {
+      margin-right: 15px;
+    }
+
+    h1, h2, h3 {
+      line-height: 1.25;
+    }
+
+    h2 {
+      margin-top: 40px;
+      color: #8c1d40;
+      border-bottom: 1px solid #ddd;
+      padding-bottom: 5px;
+    }
+
+    h3 {
+      margin-top: 28px;
+    }
+
+    .objectives,
+    .steps,
+    .activity,
+    .note,
+    .warning,
+    .example,
+    .summary {
+      padding: 15px 18px;
+      margin: 20px 0;
+      border-radius: 4px;
+    }
+
+    .objectives,
+    .summary {
+      background: #f7f7f7;
+      border: 1px solid #ccc;
+    }
+
+    .steps {
+      background: #f4f8fc;
+      border-left: 4px solid #2f6fa3;
+    }
+
+    .activity {
+      background: #fff8e6;
+      border-left: 4px solid #d18b00;
+    }
+
+    .note {
+      background: #f3f8f3;
+      border-left: 4px solid #4c8c4a;
+    }
+
+    .warning {
+      background: #fff3f3;
+      border-left: 4px solid #b64040;
+    }
+
+    .example {
+      background: #f7f1fa;
+      border-left: 4px solid #7b3f98;
+    }
+
+    .steps h3,
+    .activity h3,
+    .note h3,
+    .warning h3,
+    .example h3,
+    .summary h2 {
+      margin-top: 0;
+    }
+
+    pre {
+      overflow-x: auto;
+      padding: 14px;
+      background: #202124;
+      color: #f1f1f1;
+      border-radius: 4px;
+      line-height: 1.5;
+    }
+
+    code {
+      font-family: Consolas, Monaco, monospace;
+    }
+
+    p code,
+    li code,
+    td code {
+      background: #f0f0f0;
+      padding: 2px 5px;
+      border-radius: 3px;
+      color: #222;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 20px 0;
+    }
+
+    th,
+    td {
+      border: 1px solid #bbb;
+      padding: 10px;
+      text-align: left;
+      vertical-align: top;
+    }
+
+    th {
+      background: #f2f2f2;
+    }
+
+    details {
+      margin: 12px 0;
+    }
+
+    summary {
+      cursor: pointer;
+      font-weight: bold;
+    }
+
+    .page-navigation {
+      display: flex;
+      justify-content: space-between;
+      gap: 15px;
+      border-top: 1px solid #ccc;
+      margin-top: 45px;
+      padding-top: 20px;
+    }
+
+    footer {
+      margin-top: 35px;
+      color: #555;
+      font-size: 0.9rem;
+    }
+
+    @media (max-width: 600px) {
+      body {
+        padding: 14px;
+      }
+
+      table {
+        font-size: 0.9rem;
+      }
+
+      .page-navigation {
+        flex-direction: column;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <p><a href="index.html">&larr; Course Home</a></p>
+    <h1>Section 1.2: Matrix Terminology and Dimensions</h1>
+    <p><strong>Part 1: Linear Systems and Matrices</strong></p>
+
+    <nav aria-label="Section contents">
+      <a href="#order">Order</a>
+      <a href="#entries">Entries</a>
+      <a href="#rows-columns">Rows and Columns</a>
+      <a href="#diagonals">Diagonals</a>
+      <a href="#special">Special Matrices</a>
+      <a href="#activity">Activity</a>
+    </nav>
+  </header>
+
+  <main>
+    <section class="objectives">
+      <h2>Learning Objectives</h2>
+      <p>By the end of this section, you should be able to:</p>
+      <ul>
+        <li>state the order of a matrix using the form <em>m</em> by <em>n</em>;</li>
+        <li>interpret the notation <em>a</em><sub>ij</sub>;</li>
+        <li>translate between mathematical indexing and NumPy indexing;</li>
+        <li>extract rows, columns, and diagonal entries;</li>
+        <li>distinguish square, rectangular, row, and column matrices;</li>
+        <li>identify zero, identity, diagonal, scalar, triangular, and symmetric matrices;</li>
+        <li>construct common special matrices using NumPy; and</li>
+        <li>write short tests that classify a matrix from its entries and shape.</li>
+      </ul>
+    </section>
+
+    <section id="order">
+      <h2>1.2.1 Matrix Order</h2>
+
+      <p>
+        A <strong>matrix</strong> is a rectangular arrangement of entries organized
+        into rows and columns. If a matrix has <em>m</em> rows and <em>n</em> columns,
+        its order is <strong><em>m</em> by <em>n</em></strong>, written
+        <em>m</em> &times; <em>n</em>.
+      </p>
+
+      <pre><code>A = np.array([
+    [2, -1, 4],
+    [0,  3, 5]
+])</code></pre>
+
+      <p>
+        The matrix <code>A</code> has two rows and three columns. It is a
+        2 &times; 3 matrix.
+      </p>
+
+      <pre><code>rows, columns = A.shape
+
+print("Rows:", rows)
+print("Columns:", columns)
+print(f"Order: {rows} by {columns}")</code></pre>
+
+      <div class="warning">
+        <h3>Rows Come First</h3>
+        <p>
+          A 2 &times; 3 matrix has two rows and three columns. It does not have three
+          rows and two columns. NumPy follows the same order in
+          <code>A.shape == (2, 3)</code>.
+        </p>
+      </div>
+
+      <h3>Total Number of Entries</h3>
+
+      <p>
+        An <em>m</em> &times; <em>n</em> matrix contains <em>mn</em> entries. The 2 &times; 3
+        matrix above contains 6 entries.
+      </p>
+
+      <pre><code>print(A.size)
+print(rows * columns)</code></pre>
+
+      <p>Both instructions display <code>6</code>.</p>
+    </section>
+
+    <section id="entries">
+      <h2>1.2.2 Matrix Entries and Subscripts</h2>
+
+      <p>
+        The entry in row <em>i</em> and column <em>j</em> of a matrix <em>A</em> is
+        denoted by <em>a</em><sub>ij</sub>. The row subscript appears first, followed by
+        the column subscript.
+      </p>
+
+      <p>For the matrix:</p>
+
+      <pre><code>A = np.array([
+    [ 2, -1, 4],
+    [ 0,  3, 5],
+    [-2,  6, 1]
+])</code></pre>
+
+      <table>
+        <thead>
+          <tr>
+            <th>Mathematical Entry</th>
+            <th>Meaning</th>
+            <th>Value</th>
+            <th>NumPy Code</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><em>a</em><sub>11</sub></td>
+            <td>Row 1, column 1</td>
+            <td>2</td>
+            <td><code>A[0, 0]</code></td>
+          </tr>
+          <tr>
+            <td><em>a</em><sub>13</sub></td>
+            <td>Row 1, column 3</td>
+            <td>4</td>
+            <td><code>A[0, 2]</code></td>
+          </tr>
+          <tr>
+            <td><em>a</em><sub>22</sub></td>
+            <td>Row 2, column 2</td>
+            <td>3</td>
+            <td><code>A[1, 1]</code></td>
+          </tr>
+          <tr>
+            <td><em>a</em><sub>32</sub></td>
+            <td>Row 3, column 2</td>
+            <td>6</td>
+            <td><code>A[2, 1]</code></td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="note">
+        <h3>Mathematics Starts at 1; NumPy Starts at 0</h3>
+        <p>
+          Mathematical matrix subscripts normally begin at 1. NumPy array indices
+          begin at 0. Therefore, the mathematical entry
+          <em>a</em><sub>ij</sub> is accessed with <code>A[i - 1, j - 1]</code>.
+        </p>
+      </div>
+
+      <h3>A Reusable Entry Function</h3>
+
+      <pre><code>def matrix_entry(A, i, j):
+    """Return mathematical entry a_ij using 1-based indices."""
+    return A[i - 1, j - 1]
+
+print(matrix_entry(A, 3, 2))</code></pre>
+
+      <p>The output is <code>6</code>.</p>
+    </section>
+
+    <section id="rows-columns">
+      <h2>1.2.3 Rows and Columns</h2>
+
+      <p>
+        A row is a horizontal sequence of entries, while a column is a vertical
+        sequence. NumPy uses a colon to select every position along an axis.
+      </p>
+
+      <pre><code>A = np.array([
+    [ 2, -1, 4],
+    [ 0,  3, 5],
+    [-2,  6, 1]
+])
+
+row_2 = A[1, :]
+column_3 = A[:, 2]
+
+print("Second row:", row_2)
+print("Third column:", column_3)</code></pre>
+
+      <p>The output is:</p>
+
+      <pre><code>Second row: [0 3 5]
+Third column: [4 5 1]</code></pre>
+
+      <h3>Preserving Row or Column Shape</h3>
+
+      <pre><code>row_2_matrix = A[1:2, :]
+column_3_matrix = A[:, 2:3]
+
+print(row_2_matrix.shape)
+print(column_3_matrix.shape)</code></pre>
+
+      <p>
+        The shapes are <code>(1, 3)</code> and <code>(3, 1)</code>. Using a single index
+        instead produces a 1-D array of shape <code>(3,)</code>.
+      </p>
+
+      <table>
+        <thead>
+          <tr>
+            <th>Selection</th>
+            <th>Resulting Shape for a 3 &times; 3 Matrix</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><code>A[1, :]</code></td>
+            <td><code>(3,)</code></td>
+          </tr>
+          <tr>
+            <td><code>A[1:2, :]</code></td>
+            <td><code>(1, 3)</code></td>
+          </tr>
+          <tr>
+            <td><code>A[:, 2]</code></td>
+            <td><code>(3,)</code></td>
+          </tr>
+          <tr>
+            <td><code>A[:, 2:3]</code></td>
+            <td><code>(3, 1)</code></td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section>
+      <h2>1.2.4 Basic Matrix Classifications</h2>
+
+      <table>
+        <thead>
+          <tr>
+            <th>Type</th>
+            <th>Definition</th>
+            <th>Example Shape</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Rectangular matrix</strong></td>
+            <td>A matrix whose number of rows differs from its number of columns</td>
+            <td><code>(2, 3)</code></td>
+          </tr>
+          <tr>
+            <td><strong>Square matrix</strong></td>
+            <td>A matrix with the same number of rows and columns</td>
+            <td><code>(3, 3)</code></td>
+          </tr>
+          <tr>
+            <td><strong>Row matrix</strong></td>
+            <td>A matrix containing exactly one row</td>
+            <td><code>(1, 4)</code></td>
+          </tr>
+          <tr>
+            <td><strong>Column matrix</strong></td>
+            <td>A matrix containing exactly one column</td>
+            <td><code>(4, 1)</code></td>
+          </tr>
+        </tbody>
+      </table>
+
+      <pre><code>def is_square(A):
+    """Return True when A is a square 2-D array."""
+    return A.ndim == 2 and A.shape[0] == A.shape[1]
+
+M = np.array([[1, 2], [3, 4]])
+N = np.array([[1, 2, 3], [4, 5, 6]])
+
+print(is_square(M))
+print(is_square(N))</code></pre>
+
+      <p>The output is <code>True</code> followed by <code>False</code>.</p>
+    </section>
+
+    <section id="diagonals">
+      <h2>1.2.5 Main and Secondary Diagonals</h2>
+
+      <p>
+        In a square matrix, the <strong>main diagonal</strong> runs from the upper-left
+        entry to the lower-right entry. Its entries have equal row and column
+        subscripts: <em>a</em><sub>11</sub>, <em>a</em><sub>22</sub>, and so on.
+      </p>
+
+      <pre><code>A = np.array([
+    [2, 4, 6],
+    [1, 3, 5],
+    [7, 8, 9]
+])
+
+main_diagonal = np.diag(A)
+print(main_diagonal)</code></pre>
+
+      <p>The output is <code>[2 3 9]</code>.</p>
+
+      <h3>Trace of a Square Matrix</h3>
+
+      <p>
+        The <strong>trace</strong> is the sum of the main diagonal entries. NumPy
+        calculates it using <code>np.trace()</code>.
+      </p>
+
+      <pre><code>print(np.trace(A))</code></pre>
+
+      <p>The output is <code>14</code>.</p>
+
+      <h3>Secondary Diagonal</h3>
+
+      <p>
+        The secondary diagonal runs from the upper-right entry to the lower-left
+        entry. One way to extract it is to reverse the column order and then take the
+        main diagonal.
+      </p>
+
+      <pre><code>secondary_diagonal = np.diag(np.fliplr(A))
+print(secondary_diagonal)</code></pre>
+
+      <p>The output is <code>[6 3 7]</code>.</p>
+
+      <div class="note">
+        <h3><code>np.diag()</code> Has Two Related Uses</h3>
+        <p>
+          Given a 2-D array, it extracts the main diagonal. Given a 1-D array, it
+          creates a diagonal matrix containing those values.
+        </p>
+      </div>
+    </section>
+
+    <section id="special">
+      <h2>1.2.6 Zero and Identity Matrices</h2>
+
+      <h3>Zero Matrix</h3>
+
+      <p>A zero matrix has zero in every entry.</p>
+
+      <pre><code>Z = np.zeros((3, 4), dtype=int)
+print(Z)</code></pre>
+
+      <h3>Identity Matrix</h3>
+
+      <p>
+        The identity matrix is square, has 1 on the main diagonal, and has 0
+        everywhere else. It is commonly denoted by <em>I</em>.
+      </p>
+
+      <pre><code>I = np.eye(3, dtype=int)
+print(I)</code></pre>
+
+      <p>The output is:</p>
+
+      <pre><code>[[1 0 0]
+ [0 1 0]
+ [0 0 1]]</code></pre>
+
+      <p>
+        The identity matrix plays a role for matrix multiplication similar to the
+        role of the number 1 in ordinary multiplication. That property will be
+        examined in Section 1.3.
+      </p>
+    </section>
+
+    <section>
+      <h2>1.2.7 Diagonal and Scalar Matrices</h2>
+
+      <p>
+        A <strong>diagonal matrix</strong> is a square matrix whose entries outside
+        the main diagonal are all zero.
+      </p>
+
+      <pre><code>D = np.diag([2, -1, 5])
+print(D)</code></pre>
+
+      <p>The output is:</p>
+
+      <pre><code>[[ 2  0  0]
+ [ 0 -1  0]
+ [ 0  0  5]]</code></pre>
+
+      <p>
+        A <strong>scalar matrix</strong> is a diagonal matrix whose diagonal entries
+        are all equal. For example:
+      </p>
+
+      <pre><code>S = 4 * np.eye(3, dtype=int)
+print(S)</code></pre>
+
+      <p>
+        Every identity matrix is a scalar matrix with scalar 1. Every scalar matrix
+        is diagonal, but not every diagonal matrix is scalar.
+      </p>
+
+      <h3>Testing Whether a Matrix Is Diagonal</h3>
+
+      <pre><code>def is_diagonal(A):
+    """Return True when A is a square diagonal matrix."""
+    if A.ndim != 2 or A.shape[0] != A.shape[1]:
+        return False
+
+    diagonal_part = np.diag(np.diag(A))
+    return np.array_equal(A, diagonal_part)
+
+print(is_diagonal(D))</code></pre>
+    </section>
+
+    <section>
+      <h2>1.2.8 Triangular Matrices</h2>
+
+      <p>
+        An <strong>upper triangular matrix</strong> has zero entries below the main
+        diagonal. A <strong>lower triangular matrix</strong> has zero entries above
+        the main diagonal.
+      </p>
+
+      <pre><code>U = np.array([
+    [2, 4, 1],
+    [0, 3, 5],
+    [0, 0, 7]
+])
+
+L = np.array([
+    [2, 0, 0],
+    [4, 3, 0],
+    [1, 5, 7]
+])</code></pre>
+
+      <p>NumPy can extract triangular portions of a matrix:</p>
+
+      <pre><code>A = np.array([
+    [2, 4, 1],
+    [6, 3, 5],
+    [8, 9, 7]
+])
+
+upper_part = np.triu(A)
+lower_part = np.tril(A)
+
+print(upper_part)
+print(lower_part)</code></pre>
+
+      <h3>Testing Triangular Structure</h3>
+
+      <pre><code>def is_upper_triangular(A):
+    """Return True when A is a square upper triangular matrix."""
+    return is_square(A) and np.array_equal(A, np.triu(A))
+
+def is_lower_triangular(A):
+    """Return True when A is a square lower triangular matrix."""
+    return is_square(A) and np.array_equal(A, np.tril(A))</code></pre>
+
+      <div class="note">
+        <h3>Diagonal Matrices Are Both</h3>
+        <p>
+          A diagonal matrix has zeros both above and below its main diagonal.
+          Therefore, every diagonal matrix is both upper triangular and lower
+          triangular.
+        </p>
+      </div>
+    </section>
+
+    <section>
+      <h2>1.2.9 Symmetric Matrices</h2>
+
+      <p>
+        A square matrix is <strong>symmetric</strong> when entries reflected across
+        the main diagonal are equal. In notation,
+        <em>a</em><sub>ij</sub> = <em>a</em><sub>ji</sub> for every pair of indices.
+      </p>
+
+      <pre><code>A = np.array([
+    [2, 1, 4],
+    [1, 3, 5],
+    [4, 5, 7]
+])</code></pre>
+
+      <p>
+        The transpose <code>A.T</code> interchanges rows and columns. A symmetric
+        matrix equals its transpose.
+      </p>
+
+      <pre><code>print(A.T)
+print(np.array_equal(A, A.T))</code></pre>
+
+      <h3>Numerical Comparison</h3>
+
+      <p>
+        For arrays produced by floating-point calculations, small rounding errors can
+        occur. Use <code>np.allclose()</code> when approximate equality is appropriate.
+      </p>
+
+      <pre><code>def is_symmetric(A):
+    """Return True when A is approximately symmetric."""
+    return is_square(A) and np.allclose(A, A.T)
+
+print(is_symmetric(A))</code></pre>
+
+      <div class="warning">
+        <h3>Symmetric Matrices Must Be Square</h3>
+        <p>
+          A rectangular matrix and its transpose have different shapes, so they
+          cannot be equal as matrices.
+        </p>
+      </div>
+    </section>
+
+    <section>
+      <h2>1.2.10 Classification Relationships</h2>
+
+      <p>Some matrix types form nested categories:</p>
+
+      <ul>
+        <li>Every identity matrix is a scalar matrix.</li>
+        <li>Every scalar matrix is a diagonal matrix.</li>
+        <li>Every diagonal matrix is both upper and lower triangular.</li>
+        <li>Every diagonal matrix is symmetric.</li>
+        <li>A zero square matrix belongs to all of these categories except identity.</li>
+      </ul>
+
+      <table>
+        <thead>
+          <tr>
+            <th>Matrix</th>
+            <th>Square</th>
+            <th>Diagonal</th>
+            <th>Triangular</th>
+            <th>Symmetric</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Identity matrix</td>
+            <td>Yes</td>
+            <td>Yes</td>
+            <td>Upper and lower</td>
+            <td>Yes</td>
+          </tr>
+          <tr>
+            <td>Scalar matrix</td>
+            <td>Yes</td>
+            <td>Yes</td>
+            <td>Upper and lower</td>
+            <td>Yes</td>
+          </tr>
+          <tr>
+            <td>General upper triangular matrix</td>
+            <td>Yes</td>
+            <td>Not necessarily</td>
+            <td>Upper</td>
+            <td>Not necessarily</td>
+          </tr>
+          <tr>
+            <td>General symmetric matrix</td>
+            <td>Yes</td>
+            <td>Not necessarily</td>
+            <td>Not necessarily</td>
+            <td>Yes</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section id="activity">
+      <h2>1.2.11 Tutorial Activity: Matrix Inspector</h2>
+
+      <div class="activity">
+        <h3>Inspect and Classify</h3>
+        <p>Consider the following matrices:</p>
+
+        <pre><code>A = np.array([
+    [3, 0, 0],
+    [0, 3, 0],
+    [0, 0, 3]
+])
+
+B = np.array([
+    [2, 1, 4],
+    [1, 5, 0],
+    [4, 0, 7]
+])
+
+C = np.array([
+    [1, 2, 3],
+    [0, 4, 5],
+    [0, 0, 6]
+])
+
+D = np.array([
+    [1, 2, 3],
+    [4, 5, 6]
+])</code></pre>
+
+        <ol>
+          <li>Record the order and total number of entries of each matrix.</li>
+          <li>Find the entry in row 2, column 3 whenever it exists.</li>
+          <li>Extract the main diagonal of each matrix.</li>
+          <li>For each square matrix, calculate the trace.</li>
+          <li>Classify each matrix as square or rectangular.</li>
+          <li>Determine which matrices are diagonal, scalar, upper triangular, lower triangular, and symmetric.</li>
+          <li>Use the NumPy test functions from this section to verify your classifications.</li>
+        </ol>
+      </div>
+
+      <details>
+        <summary>Show classifications</summary>
+        <ul>
+          <li><strong>A:</strong> 3 &times; 3, scalar, diagonal, upper triangular, lower triangular, and symmetric.</li>
+          <li><strong>B:</strong> 3 &times; 3 and symmetric, but not diagonal or triangular.</li>
+          <li><strong>C:</strong> 3 &times; 3 and upper triangular, but not diagonal or symmetric.</li>
+          <li><strong>D:</strong> 2 &times; 3 rectangular matrix; it is not classified as diagonal, triangular, or symmetric.</li>
+        </ul>
+      </details>
+
+      <h3>Programming Extension</h3>
+
+      <p>Complete a function that returns a dictionary of matrix properties:</p>
+
+      <pre><code>def inspect_matrix(A):
+    return {
+        "shape": A.shape,
+        "size": A.size,
+        "square": is_square(A),
+        "diagonal": is_diagonal(A),
+        "upper_triangular": is_upper_triangular(A),
+        "lower_triangular": is_lower_triangular(A),
+        "symmetric": is_symmetric(A)
+    }
+
+print(inspect_matrix(A))</code></pre>
+    </section>
+
+    <section>
+      <h2>1.2.12 Common Errors</h2>
+
+      <table>
+        <thead>
+          <tr>
+            <th>Problem</th>
+            <th>Cause</th>
+            <th>Correction</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Reversing matrix order</td>
+            <td>Columns were counted before rows.</td>
+            <td>Use rows first: <code>A.shape == (rows, columns)</code>.</td>
+          </tr>
+          <tr>
+            <td>Wrong entry selected</td>
+            <td>Mathematical subscripts were used directly as NumPy indices.</td>
+            <td>Access <em>a</em><sub>ij</sub> with <code>A[i - 1, j - 1]</code>.</td>
+          </tr>
+          <tr>
+            <td>Column has shape <code>(m,)</code></td>
+            <td>A single column index removed one dimension.</td>
+            <td>Use <code>A[:, j:j+1]</code> to preserve shape <code>(m, 1)</code>.</td>
+          </tr>
+          <tr>
+            <td>Symmetry test fails after calculations</td>
+            <td>Small floating-point differences are present.</td>
+            <td>Use <code>np.allclose(A, A.T)</code> when approximate comparison is intended.</td>
+          </tr>
+          <tr>
+            <td>Rectangular matrix called diagonal</td>
+            <td>Only off-diagonal zeros were considered.</td>
+            <td>Under the course definition, diagonal matrices must also be square.</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section>
+      <h2>1.2.13 Concept Check</h2>
+
+      <ol>
+        <li>What does it mean for a matrix to have order 4 &times; 7?</li>
+        <li>How many entries does a 4 &times; 7 matrix contain?</li>
+        <li>How is the mathematical entry <em>a</em><sub>24</sub> accessed in NumPy?</li>
+        <li>What is the difference between a diagonal matrix and a scalar matrix?</li>
+        <li>Why is every diagonal matrix both upper and lower triangular?</li>
+        <li>What condition defines a symmetric matrix?</li>
+        <li>When should <code>np.allclose()</code> be preferred over <code>np.array_equal()</code>?</li>
+      </ol>
+
+      <details>
+        <summary>Show suggested answers</summary>
+        <ol>
+          <li>It has four rows and seven columns.</li>
+          <li>28 entries.</li>
+          <li><code>A[1, 3]</code>.</li>
+          <li>Both have zeros off the main diagonal, but a scalar matrix also has equal diagonal entries.</li>
+          <li>All entries above and below the main diagonal are zero.</li>
+          <li>It is square and satisfies <em>a</em><sub>ij</sub> = <em>a</em><sub>ji</sub>, equivalently <code>A == A.T</code>.</li>
+          <li>When floating-point rounding may create very small numerical differences.</li>
+        </ol>
+      </details>
+    </section>
+
+    <section>
+      <h2>1.2.14 Practice Exercises</h2>
+
+      <ol>
+        <li>Create a 3 &times; 4 matrix and report its number of entries.</li>
+        <li>For <code>A = np.arange(1, 17).reshape(4, 4)</code>, find <em>a</em><sub>23</sub>, the third row, and the second column.</li>
+        <li>Extract the main and secondary diagonals of <code>A</code>.</li>
+        <li>Create the 5 &times; 5 identity matrix.</li>
+        <li>Create a 4 &times; 4 diagonal matrix with diagonal entries 3, -1, 0, and 6.</li>
+        <li>Create a 3 &times; 3 scalar matrix with every diagonal entry equal to 8.</li>
+        <li>Write a function that returns the trace of a square matrix without using <code>np.trace()</code>.</li>
+        <li>Construct a symmetric matrix that is not diagonal.</li>
+      </ol>
+
+      <details>
+        <summary>Show sample solutions</summary>
+        <pre><code># 1
+M = np.array([
+    [1, 2, 3, 4],
+    [5, 6, 7, 8],
+    [9, 10, 11, 12]
+])
+print(M.size)
+
+# 2
+A = np.arange(1, 17).reshape(4, 4)
+print(A[1, 2])
+print(A[2, :])
+print(A[:, 1])
+
+# 3
+print(np.diag(A))
+print(np.diag(np.fliplr(A)))
+
+# 4
+I = np.eye(5, dtype=int)
+
+# 5
+D = np.diag([3, -1, 0, 6])
+
+# 6
+S = 8 * np.eye(3, dtype=int)
+
+# 7
+def manual_trace(A):
+    total = 0
+    for i in range(A.shape[0]):
+        total = total + A[i, i]
+    return total
+
+# 8
+H = np.array([
+    [1, 2, 3],
+    [2, 4, 5],
+    [3, 5, 6]
+])</code></pre>
+      </details>
+    </section>
+
+    <section>
+      <h2>1.2.15 Official References</h2>
+      <ul>
+        <li><a href="https://numpy.org/doc/stable/user/absolute_beginners.html">NumPy: The Absolute Basics for Beginners</a></li>
+        <li><a href="https://numpy.org/doc/stable/reference/generated/numpy.diag.html"><code>numpy.diag</code> Reference</a></li>
+        <li><a href="https://numpy.org/doc/stable/reference/generated/numpy.eye.html"><code>numpy.eye</code> Reference</a></li>
+        <li><a href="https://numpy.org/doc/stable/reference/generated/numpy.triu.html"><code>numpy.triu</code> Reference</a></li>
+        <li><a href="https://numpy.org/doc/stable/reference/generated/numpy.tril.html"><code>numpy.tril</code> Reference</a></li>
+      </ul>
+    </section>
+
+    <section class="summary">
+      <h2>Section Summary</h2>
+      <ul>
+        <li>An <em>m</em> &times; <em>n</em> matrix has <em>m</em> rows, <em>n</em> columns, and <em>mn</em> entries.</li>
+        <li>The mathematical entry <em>a</em><sub>ij</sub> corresponds to <code>A[i - 1, j - 1]</code> in NumPy.</li>
+        <li>The main diagonal contains entries whose row and column indices are equal.</li>
+        <li>Square matrices have equal numbers of rows and columns.</li>
+        <li>Identity, scalar, and diagonal matrices form nested special classes.</li>
+        <li>A diagonal matrix is both upper triangular and lower triangular.</li>
+        <li>A symmetric matrix equals its transpose.</li>
+        <li><code>np.diag()</code>, <code>np.eye()</code>, <code>np.triu()</code>, and <code>np.tril()</code> help construct or inspect special matrices.</li>
+      </ul>
+    </section>
+
+    <nav class="page-navigation" aria-label="Page navigation">
+      <a href="section-1-1.html">&larr; Previous: Section 1.1</a>
+      <a href="index.html">Course Contents</a>
+      <a href="section-1-3.html">Next: Section 1.3 &rarr;</a>
+    </nav>
+  </main>
+
+  <footer>
+    <p>MATH 1516 Coding Activities — Prepared by Joe Tran</p>
+  </footer>
+</body>
+</html>

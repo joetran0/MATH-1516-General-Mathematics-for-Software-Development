@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Section 1.7: Applications of Linear Systems | MATH 1516</title>
+  <style>
+    body { max-width: 850px; margin: 0 auto; padding: 20px; font-family: Arial, sans-serif; line-height: 1.65; color: #222; }
+    header { border-bottom: 2px solid #8c1d40; margin-bottom: 30px; }
+    nav { margin: 15px 0; }
+    nav a { margin-right: 15px; }
+    h1, h2, h3 { line-height: 1.25; }
+    h2 { margin-top: 40px; color: #8c1d40; border-bottom: 1px solid #ddd; padding-bottom: 5px; }
+    h3 { margin-top: 28px; }
+    .objectives, .steps, .activity, .note, .warning, .example, .summary { padding: 15px 18px; margin: 20px 0; border-radius: 4px; }
+    .objectives, .summary { background: #f7f7f7; border: 1px solid #ccc; }
+    .steps { background: #f4f8fc; border-left: 4px solid #2f6fa3; }
+    .activity { background: #fff8e6; border-left: 4px solid #d18b00; }
+    .note { background: #f3f8f3; border-left: 4px solid #4c8c4a; }
+    .warning { background: #fff3f3; border-left: 4px solid #b64040; }
+    .example { background: #f7f1fa; border-left: 4px solid #7b3f98; }
+    .steps h3, .activity h3, .note h3, .warning h3, .example h3, .summary h2 { margin-top: 0; }
+    pre { overflow-x: auto; padding: 14px; background: #202124; color: #f1f1f1; border-radius: 4px; line-height: 1.5; }
+    code { font-family: Consolas, Monaco, monospace; }
+    p code, li code, td code { background: #f0f0f0; padding: 2px 5px; border-radius: 3px; color: #222; }
+    table { width: 100%; border-collapse: collapse; margin: 20px 0; }
+    th, td { border: 1px solid #bbb; padding: 10px; text-align: left; vertical-align: top; }
+    th { background: #f2f2f2; }
+    details { margin: 12px 0; }
+    summary { cursor: pointer; font-weight: bold; }
+    .equation { text-align: center; font-family: Georgia, serif; font-size: 1.08rem; margin: 18px 0; }
+    .page-navigation { display: flex; justify-content: space-between; gap: 15px; border-top: 1px solid #ccc; margin-top: 45px; padding-top: 20px; }
+    footer { margin-top: 35px; color: #555; font-size: 0.9rem; }
+    @media (max-width: 600px) {
+      body { padding: 14px; }
+      table { font-size: 0.9rem; }
+      .page-navigation { flex-direction: column; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <p><a href="index.html">&larr; Course Home</a></p>
+    <h1>Section 1.7: Applications of Linear Systems</h1>
+    <p><strong>Part 1: Linear Systems and Matrices</strong></p>
+    <nav aria-label="Section contents">
+      <a href="#workflow">Modelling Workflow</a>
+      <a href="#sales">Sales</a>
+      <a href="#mixtures">Mixtures</a>
+      <a href="#resources">Resources</a>
+      <a href="#networks">Networks</a>
+      <a href="#activity">Activity</a>
+    </nav>
+  </header>
+
+  <main>
+    <section class="objectives">
+      <h2>Learning Objectives</h2>
+      <p>By the end of this section, you should be able to:</p>
+      <ul>
+        <li>define variables with clear meanings and units;</li>
+        <li>translate verbal constraints into linear equations;</li>
+        <li>organize an applied model as <em>A</em><strong>x</strong> = <strong>b</strong>;</li>
+        <li>solve and verify a model using NumPy;</li>
+        <li>interpret solution-vector entries in context;</li>
+        <li>check nonnegativity, integrality, capacity, and units;</li>
+        <li>state assumptions and limitations of a linear model; and</li>
+        <li>apply linear systems to sales, mixtures, resources, and networks.</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>1.7.1 Begin in Google Colab</h2>
+      <p>Open a Google Colab notebook and run:</p>
+      <pre><code>import numpy as np</code></pre>
+      <p>This section combines the modelling ideas of Section 1.4 with the numerical solver from Section 1.5.</p>
+    </section>
+
+    <section id="workflow">
+      <h2>1.7.2 The Modelling Workflow</h2>
+      <div class="steps">
+        <h3>From Words to a Decision</h3>
+        <ol>
+          <li><strong>Understand the question.</strong> Identify what is known and what must be found.</li>
+          <li><strong>Define variables.</strong> Include a meaning and unit for every unknown.</li>
+          <li><strong>State assumptions.</strong> Decide what is being simplified or treated as exact.</li>
+          <li><strong>Write constraints.</strong> Translate each relationship into an equation.</li>
+          <li><strong>Build the matrices.</strong> Keep one consistent variable order.</li>
+          <li><strong>Solve.</strong> Use an appropriate numerical method.</li>
+          <li><strong>Verify.</strong> Check <code>A @ x</code> against <code>b</code>.</li>
+          <li><strong>Interpret.</strong> Attach names and units to the numbers.</li>
+          <li><strong>Evaluate.</strong> Decide whether the answer is reasonable and usable.</li>
+        </ol>
+      </div>
+      <div class="warning">
+        <h3>Do Not Start with the Matrix</h3>
+        <p>First define the variables and equations. A matrix entered without a clear variable order may be numerically valid but represent the wrong problem.</p>
+      </div>
+    </section>
+
+    <section>
+      <h2>1.7.3 A General Applied Solver</h2>
+      <pre><code>def solve_model(A, b, variable_names):
+    """Solve A @ x = b, verify it, and label the result."""
+    A = np.array(A, dtype=float)
+    b = np.array(b, dtype=float)
+
+    if A.shape[0] != A.shape[1]:
+        raise ValueError("This helper expects a square system.")
+    if A.shape[1] != len(variable_names):
+        raise ValueError("Provide one name for each variable.")
+
+    x = np.linalg.solve(A, b)
+    verified = np.allclose(A @ x, b)
+
+    result = dict(zip(variable_names, x))
+    return result, verified
+
+result, verified = solve_model(
+    [[2, 1], [1, 3]],
+    [5, 5],
+    ["x", "y"]
+)
+
+print(result)
+print("Verified:", verified)</code></pre>
+      <p>Labels reduce the risk of interpreting the solution entries in the wrong order.</p>
+    </section>
+
+    <section id="sales">
+      <h2>1.7.4 Application 1: Ticket Sales</h2>
+      <p>A fundraiser sells student tickets for $6 and general tickets for $10. A total of 80 tickets produces $620 in revenue.</p>
+      <h3>Step 1: Define Variables</h3>
+      <ul>
+        <li><em>s</em> = number of student tickets;</li>
+        <li><em>g</em> = number of general tickets.</li>
+      </ul>
+      <h3>Step 2: Form the Equations</h3>
+      <div class="equation">
+        <em>s</em> + <em>g</em> = 80<br>
+        6<em>s</em> + 10<em>g</em> = 620
+      </div>
+      <h3>Step 3: Solve</h3>
+      <pre><code>A = np.array([[1, 1], [6, 10]], dtype=float)
+b = np.array([80, 620], dtype=float)
+
+solution = np.linalg.solve(A, b)
+s, g = solution
+
+print("Student tickets:", s)
+print("General tickets:", g)
+print("Verified:", np.allclose(A @ solution, b))</code></pre>
+      <h3>Step 4: Interpret</h3>
+      <p>The fundraiser sold 45 student tickets and 35 general tickets.</p>
+      <div class="note">
+        <h3>Context Check</h3>
+        <p>Ticket counts must be nonnegative whole numbers. The computed values meet both requirements, add to 80, and reproduce $620.</p>
+      </div>
+    </section>
+
+    <section id="mixtures">
+      <h2>1.7.5 Application 2: Mixing Concentrations</h2>
+      <p>How many litres of a 20% solution and a 50% solution should be combined to create 30 L of a 32% solution?</p>
+      <h3>Variables</h3>
+      <ul>
+        <li><em>x</em> = litres of 20% solution;</li>
+        <li><em>y</em> = litres of 50% solution.</li>
+      </ul>
+      <h3>Conservation Equations</h3>
+      <div class="equation">
+        <em>x</em> + <em>y</em> = 30<br>
+        0.20<em>x</em> + 0.50<em>y</em> = 0.32(30)
+      </div>
+      <pre><code>A = np.array([[1, 1], [0.20, 0.50]], dtype=float)
+b = np.array([30, 0.32 * 30], dtype=float)
+
+x, y = np.linalg.solve(A, b)
+
+print("20% solution:", x, "L")
+print("50% solution:", y, "L")
+print("Final amount:", x + y, "L")
+print("Pure component:", 0.20*x + 0.50*y, "L")</code></pre>
+      <p>The mixture requires 18 L of the 20% solution and 12 L of the 50% solution.</p>
+      <div class="warning">
+        <h3>Percentages Must Be Decimals</h3>
+        <p>Use <code>0.20</code>, not <code>20</code>, when 20% is used as a coefficient.</p>
+      </div>
+    </section>
+
+    <section id="resources">
+      <h2>1.7.6 Application 3: Resource Allocation</h2>
+      <p>A workshop produces products A and B. Each unit uses the following resources:</p>
+      <table>
+        <thead><tr><th>Resource</th><th>Product A</th><th>Product B</th><th>Available</th></tr></thead>
+        <tbody>
+          <tr><td>Machine time</td><td>2 hours</td><td>1 hour</td><td>100 hours</td></tr>
+          <tr><td>Labour</td><td>1 hour</td><td>3 hours</td><td>120 hours</td></tr>
+        </tbody>
+      </table>
+      <p>Assume all available hours are used. Let <em>a</em> and <em>b</em> be the numbers of units of products A and B.</p>
+      <div class="equation">
+        2<em>a</em> + <em>b</em> = 100<br>
+        <em>a</em> + 3<em>b</em> = 120
+      </div>
+      <pre><code>A = np.array([[2, 1], [1, 3]], dtype=float)
+resources = np.array([100, 120], dtype=float)
+
+production = np.linalg.solve(A, resources)
+a, b = production
+
+print("Product A:", a)
+print("Product B:", b)
+print("Resources used:", A @ production)</code></pre>
+      <p>The model gives 36 units of product A and 28 units of product B.</p>
+      <div class="note">
+        <h3>Equation or Inequality?</h3>
+        <p>The equations assume both resources are used completely. If the workshop may leave resources unused, the natural constraints are inequalities and the problem becomes an optimization model rather than only a linear system.</p>
+      </div>
+    </section>
+
+    <section>
+      <h2>1.7.7 Application 4: Nutrition Planning</h2>
+      <p>Food A supplies 10 g of protein and 5 g of carbohydrates per serving. Food B supplies 5 g of protein and 15 g of carbohydrates. Find servings that provide exactly 50 g of protein and 60 g of carbohydrates.</p>
+      <pre><code>A = np.array([
+    [10,  5],
+    [ 5, 15]
+], dtype=float)
+
+targets = np.array([50, 60], dtype=float)
+servings = np.linalg.solve(A, targets)
+
+print("Food A servings:", servings[0])
+print("Food B servings:", servings[1])
+print("Nutrients supplied:", A @ servings)</code></pre>
+      <p>The result is 3.6 servings of Food A and 2.8 servings of Food B.</p>
+      <div class="warning">
+        <h3>Interpret Fractional Servings Carefully</h3>
+        <p>A fractional value may be practical for food quantities but not for indivisible objects. The context determines whether rounding is acceptable.</p>
+      </div>
+    </section>
+
+    <section id="networks">
+      <h2>1.7.8 Application 5: Routing Through a Network</h2>
+      <p>A network sends 700 data packets through two routes. Route 1 has a cost of 20 units per packet and Route 2 has a cost of 35 units per packet. The total routing cost is 18,500 units.</p>
+      <p>Let <em>x</em> and <em>y</em> be the numbers of packets sent through Routes 1 and 2.</p>
+      <div class="equation">
+        <em>x</em> + <em>y</em> = 700<br>
+        20<em>x</em> + 35<em>y</em> = 18,500
+      </div>
+      <pre><code>A = np.array([[1, 1], [20, 35]], dtype=float)
+b = np.array([700, 18500], dtype=float)
+
+routes = np.linalg.solve(A, b)
+x, y = routes
+
+print("Route 1 packets:", x)
+print("Route 2 packets:", y)
+print("Verified:", np.allclose(A @ routes, b))</code></pre>
+      <p>The network sends 400 packets through Route 1 and 300 through Route 2.</p>
+    </section>
+
+    <section>
+      <h2>1.7.9 Application 6: Traffic Flow Conservation</h2>
+      <p>At a simplified junction, 420 vehicles per hour enter from the west and 180 enter from the north. Traffic exits along two roads. The eastern exit carries 100 more vehicles per hour than the southern exit.</p>
+      <p>Let <em>e</em> and <em>s</em> denote the eastern and southern exit flows.</p>
+      <div class="equation">
+        <em>e</em> + <em>s</em> = 600<br>
+        <em>e</em> &minus; <em>s</em> = 100
+      </div>
+      <pre><code>A = np.array([[1, 1], [1, -1]], dtype=float)
+b = np.array([600, 100], dtype=float)
+
+e, s = np.linalg.solve(A, b)
+
+print("East:", e, "vehicles/hour")
+print("South:", s, "vehicles/hour")</code></pre>
+      <p>The eastern flow is 350 vehicles per hour and the southern flow is 250 vehicles per hour.</p>
+      <div class="note">
+        <h3>Conservation Principle</h3>
+        <p>In a steady-flow model with no accumulation, total inflow equals total outflow. Real traffic may vary with time, so this is a simplified snapshot.</p>
+      </div>
+    </section>
+
+    <section>
+      <h2>1.7.10 Application 7: Comparing Service Plans</h2>
+      <p>Plan A costs $30 plus $4 per use. Plan B costs $54 plus $2 per use. At how many uses do the plans cost the same, and what is that cost?</p>
+      <p>Let <em>u</em> be the number of uses and <em>c</em> the common cost.</p>
+      <div class="equation">
+        &minus;4<em>u</em> + <em>c</em> = 30<br>
+        &minus;2<em>u</em> + <em>c</em> = 54
+      </div>
+      <pre><code>A = np.array([[-4, 1], [-2, 1]], dtype=float)
+b = np.array([30, 54], dtype=float)
+
+u, c = np.linalg.solve(A, b)
+
+print("Equal at", u, "uses")
+print("Common cost: $", c)</code></pre>
+      <p>The plans cost the same at 12 uses, when each costs $78.</p>
+    </section>
+
+    <section>
+      <h2>1.7.11 Validation Beyond <code>np.allclose()</code></h2>
+      <p>Numerical verification checks the equations, but an applied answer needs additional checks.</p>
+      <table>
+        <thead><tr><th>Check</th><th>Question</th></tr></thead>
+        <tbody>
+          <tr><td>Units</td><td>Does each result have the correct unit?</td></tr>
+          <tr><td>Sign</td><td>Must the variables be nonnegative?</td></tr>
+          <tr><td>Integrality</td><td>Must counts be whole numbers?</td></tr>
+          <tr><td>Capacity</td><td>Does the solution exceed a physical or stated limit?</td></tr>
+          <tr><td>Scale</td><td>Is the magnitude plausible?</td></tr>
+          <tr><td>Assumptions</td><td>Does the situation reasonably satisfy the model assumptions?</td></tr>
+          <tr><td>Sensitivity</td><td>Would a small change in the data cause a large change in the answer?</td></tr>
+        </tbody>
+      </table>
+      <pre><code>def model_checks(A, x, b):
+    residual = A @ x - b
+    return {
+        "equations_verified": np.allclose(A @ x, b),
+        "residual_norm": np.linalg.norm(residual),
+        "all_nonnegative": np.all(x >= 0)
+    }</code></pre>
+    </section>
+
+    <section>
+      <h2>1.7.12 Rounding and Discrete Decisions</h2>
+      <p>Rounding each variable independently can destroy the equations. Suppose a solver returns counts such as 12.4 and 7.6. Rounding both values may change totals or resource use.</p>
+      <div class="warning">
+        <h3>Do Not Round Before Verification</h3>
+        <p>Keep full numerical precision during calculations. If whole-number decisions are required, verify the rounded values separately. Some problems require integer optimization rather than ordinary linear-system solving.</p>
+      </div>
+      <pre><code>rounded = np.rint(solution).astype(int)
+
+print("Rounded candidate:", rounded)
+print("Still satisfies model:", np.allclose(A @ rounded, b))</code></pre>
+    </section>
+
+    <section>
+      <h2>1.7.13 Model Assumptions and Limitations</h2>
+      <p>A linear model assumes that contributions combine through addition and constant multiples. Common assumptions include:</p>
+      <ul>
+        <li>unit prices, concentrations, or resource rates are constant;</li>
+        <li>quantities are measured without important error;</li>
+        <li>there are no discounts, thresholds, delays, or nonlinear effects;</li>
+        <li>every relevant constraint has been included; and</li>
+        <li>the system describes the time period or operating conditions of interest.</li>
+      </ul>
+      <p>A correct computation answers the mathematical model. Whether it answers the real problem depends on the quality of these assumptions.</p>
+    </section>
+
+    <section id="activity">
+      <h2>1.7.14 Tutorial Activity: Model, Solve, Defend</h2>
+      <div class="activity">
+        <h3>Scenario A: Event Sales</h3>
+        <p>A club sells 120 items consisting of $8 notebooks and $14 shirts. Total revenue is $1,260. Find the number of each item sold.</p>
+        <h3>Scenario B: Coffee Blend</h3>
+        <p>A shop combines coffee costing $12/kg and $20/kg to make 25 kg of a blend worth $15.20/kg. Find the amount of each coffee.</p>
+        <h3>Scenario C: Computing Resources</h3>
+        <p>Job A uses 3 CPU-hours and 1 GPU-hour. Job B uses 1 CPU-hour and 2 GPU-hours. A batch uses 90 CPU-hours and 70 GPU-hours. Find the number of each job if all resources are used.</p>
+        <h3>For Each Scenario</h3>
+        <ol>
+          <li>Define variables and units.</li>
+          <li>State at least one assumption.</li>
+          <li>Write the equations and matrix model.</li>
+          <li>Solve using NumPy.</li>
+          <li>Calculate the residual norm.</li>
+          <li>Interpret the answer in one complete sentence.</li>
+          <li>Check nonnegativity, integrality, and plausibility.</li>
+        </ol>
+      </div>
+      <details>
+        <summary>Show solutions</summary>
+        <pre><code># Scenario A: [notebooks, shirts]
+A1 = np.array([[1, 1], [8, 14]], dtype=float)
+b1 = np.array([120, 1260], dtype=float)
+x1 = np.linalg.solve(A1, b1)
+# 70 notebooks and 50 shirts
+
+# Scenario B: [12-dollar coffee, 20-dollar coffee]
+A2 = np.array([[1, 1], [12, 20]], dtype=float)
+b2 = np.array([25, 15.20 * 25], dtype=float)
+x2 = np.linalg.solve(A2, b2)
+# 15 kg and 10 kg
+
+# Scenario C: [Job A, Job B]
+A3 = np.array([[3, 1], [1, 2]], dtype=float)
+b3 = np.array([90, 70], dtype=float)
+x3 = np.linalg.solve(A3, b3)
+# 22 Job A and 24 Job B
+
+for A, b, x in [(A1, b1, x1), (A2, b2, x2), (A3, b3, x3)]:
+    print(x, np.linalg.norm(A @ x - b))</code></pre>
+      </details>
+    </section>
+
+    <section>
+      <h2>1.7.15 Common Modelling Errors</h2>
+      <table>
+        <thead><tr><th>Problem</th><th>Cause</th><th>Correction</th></tr></thead>
+        <tbody>
+          <tr><td>The equations use different variable orders</td><td>Variables were not defined before coefficients were recorded.</td><td>Write the variable vector explicitly and keep that order.</td></tr>
+          <tr><td>Terms with incompatible units are added</td><td>Units were ignored.</td><td>Check every equation dimensionally.</td></tr>
+          <tr><td>A percentage is too large</td><td>For example, 30% was entered as 30.</td><td>Use the decimal <code>0.30</code>.</td></tr>
+          <tr><td>The numerical solution is accepted immediately</td><td>Only the solver output was considered.</td><td>Verify the equations and apply contextual checks.</td></tr>
+          <tr><td>Counts are fractional</td><td>A continuous model was used for discrete objects.</td><td>Determine whether rounding is valid or a different model is needed.</td></tr>
+          <tr><td>An equality was used for a capacity</td><td>The model assumed all resources must be used.</td><td>Use an inequality-based optimization model when unused capacity is allowed.</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section>
+      <h2>1.7.16 Concept Check</h2>
+      <ol>
+        <li>Why should variables be defined with units?</li>
+        <li>What is the difference between numerical verification and contextual validation?</li>
+        <li>Why is nonnegativity important in many applied systems?</li>
+        <li>Why can rounding a solution be dangerous?</li>
+        <li>What assumption changes a resource inequality into an equality?</li>
+        <li>What does a small residual norm tell you—and what does it not tell you?</li>
+      </ol>
+      <details>
+        <summary>Show suggested answers</summary>
+        <ol>
+          <li>Units clarify meaning and help detect invalid equations.</li>
+          <li>Verification checks the equations; validation checks whether the answer and assumptions make sense in reality.</li>
+          <li>Negative tickets, litres, servings, jobs, or packets are generally impossible.</li>
+          <li>The rounded vector may no longer satisfy the equations or constraints.</li>
+          <li>That the resource is used completely.</li>
+          <li>It shows that the vector nearly satisfies the entered equations, but not that the equations correctly represent reality.</li>
+        </ol>
+      </details>
+    </section>
+
+    <section>
+      <h2>1.7.17 Practice Exercises</h2>
+      <ol>
+        <li>Create and solve a ticket-sales problem with two prices.</li>
+        <li>Mix 10% and 40% solutions to obtain 20 L of a 25% solution.</li>
+        <li>Build a two-product resource-allocation model and explain when equalities are justified.</li>
+        <li>Create a two-route packet problem with a total-flow and total-cost constraint.</li>
+        <li>Find the break-even point between two linear service plans.</li>
+        <li>Modify one model so its solution is negative, then explain why the model or data are unsuitable.</li>
+        <li>Change one constant in the coffee example and measure how the solution changes.</li>
+        <li>Write an original application, solve it, and provide a complete verification and validation report.</li>
+      </ol>
+      <details>
+        <summary>Show sample solution for Exercise 2</summary>
+        <pre><code>A = np.array([[1, 1], [0.10, 0.40]], dtype=float)
+b = np.array([20, 0.25 * 20], dtype=float)
+x = np.linalg.solve(A, b)
+
+print(x)                       # [10, 10]
+print(np.allclose(A @ x, b))   # True</code></pre>
+      </details>
+    </section>
+
+    <section>
+      <h2>1.7.18 Official References</h2>
+      <ul>
+        <li><a href="https://numpy.org/doc/stable/reference/generated/numpy.linalg.solve.html"><code>numpy.linalg.solve</code></a></li>
+        <li><a href="https://numpy.org/doc/stable/reference/generated/numpy.allclose.html"><code>numpy.allclose</code></a></li>
+        <li><a href="https://numpy.org/doc/stable/reference/generated/numpy.linalg.norm.html"><code>numpy.linalg.norm</code></a></li>
+      </ul>
+    </section>
+
+    <section class="summary">
+      <h2>Part 1 Summary</h2>
+      <ul>
+        <li>Applied modelling begins with clearly defined variables, units, and assumptions.</li>
+        <li>Verbal constraints can be organized into <em>A</em><strong>x</strong> = <strong>b</strong>.</li>
+        <li>NumPy can solve square, full-rank models and verify the resulting equations.</li>
+        <li>Residuals measure numerical discrepancy, not real-world validity.</li>
+        <li>Solutions must be interpreted and checked for signs, units, integrality, capacity, and plausibility.</li>
+        <li>Linear systems model sales, mixtures, resource use, nutrition, routing, traffic, and pricing.</li>
+        <li>A useful model is both mathematically correct and appropriate for its context.</li>
+      </ul>
+    </section>
+
+    <nav class="page-navigation" aria-label="Page navigation">
+      <a href="section-1-6.html">&larr; Previous: Section 1.6</a>
+      <a href="index.html">Course Contents</a>
+      <span>End of Part 1</span>
+    </nav>
+  </main>
+
+  <footer>
+    <p>MATH 1516 Coding Activities — Prepared by Joe Tran</p>
+  </footer>
+</body>
+</html>

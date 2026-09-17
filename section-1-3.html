@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Section 1.3: Matrix Arithmetic | MATH 1516</title>
+  <style>
+    body { max-width: 850px; margin: 0 auto; padding: 20px; font-family: Arial, sans-serif; line-height: 1.65; color: #222; }
+    header { border-bottom: 2px solid #8c1d40; margin-bottom: 30px; }
+    nav { margin: 15px 0; }
+    nav a { margin-right: 15px; }
+    h1, h2, h3 { line-height: 1.25; }
+    h2 { margin-top: 40px; color: #8c1d40; border-bottom: 1px solid #ddd; padding-bottom: 5px; }
+    h3 { margin-top: 28px; }
+    .objectives, .steps, .activity, .note, .warning, .example, .summary { padding: 15px 18px; margin: 20px 0; border-radius: 4px; }
+    .objectives, .summary { background: #f7f7f7; border: 1px solid #ccc; }
+    .steps { background: #f4f8fc; border-left: 4px solid #2f6fa3; }
+    .activity { background: #fff8e6; border-left: 4px solid #d18b00; }
+    .note { background: #f3f8f3; border-left: 4px solid #4c8c4a; }
+    .warning { background: #fff3f3; border-left: 4px solid #b64040; }
+    .example { background: #f7f1fa; border-left: 4px solid #7b3f98; }
+    .steps h3, .activity h3, .note h3, .warning h3, .example h3, .summary h2 { margin-top: 0; }
+    pre { overflow-x: auto; padding: 14px; background: #202124; color: #f1f1f1; border-radius: 4px; line-height: 1.5; }
+    code { font-family: Consolas, Monaco, monospace; }
+    p code, li code, td code { background: #f0f0f0; padding: 2px 5px; border-radius: 3px; color: #222; }
+    table { width: 100%; border-collapse: collapse; margin: 20px 0; }
+    th, td { border: 1px solid #bbb; padding: 10px; text-align: left; vertical-align: top; }
+    th { background: #f2f2f2; }
+    details { margin: 12px 0; }
+    summary { cursor: pointer; font-weight: bold; }
+    .page-navigation { display: flex; justify-content: space-between; gap: 15px; border-top: 1px solid #ccc; margin-top: 45px; padding-top: 20px; }
+    footer { margin-top: 35px; color: #555; font-size: 0.9rem; }
+    @media (max-width: 600px) {
+      body { padding: 14px; }
+      table { font-size: 0.9rem; }
+      .page-navigation { flex-direction: column; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <p><a href="index.html">&larr; Course Home</a></p>
+    <h1>Section 1.3: Matrix Arithmetic</h1>
+    <p><strong>Part 1: Linear Systems and Matrices</strong></p>
+    <nav aria-label="Section contents">
+      <a href="#basic">Basic Operations</a>
+      <a href="#transpose">Transpose</a>
+      <a href="#products">Products</a>
+      <a href="#activity">Activity</a>
+      <a href="#practice">Practice</a>
+    </nav>
+  </header>
+
+  <main>
+    <section class="objectives">
+      <h2>Learning Objectives</h2>
+      <p>By the end of this section, you should be able to:</p>
+      <ul>
+        <li>add and subtract matrices of the same order;</li>
+        <li>multiply a matrix by a scalar;</li>
+        <li>distinguish elementwise multiplication from matrix multiplication;</li>
+        <li>calculate the transpose of a matrix;</li>
+        <li>calculate dot products and matrix-vector products;</li>
+        <li>determine whether two matrices can be multiplied;</li>
+        <li>predict the order of a matrix product; and</li>
+        <li>perform matrix arithmetic using NumPy.</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>1.3.1 Begin in Google Colab</h2>
+      <p>Open a new Google Colab notebook and run this setup cell:</p>
+      <pre><code>import numpy as np</code></pre>
+      <p>NumPy is already installed in Colab, so no package installation is required.</p>
+    </section>
+
+    <section id="basic">
+      <h2>1.3.2 Addition and Subtraction</h2>
+      <p>Matrices can be added or subtracted only when they have the same order. The operation is performed entry by entry.</p>
+      <pre><code>A = np.array([
+    [1, 2],
+    [3, 4]
+])
+
+B = np.array([
+    [5, 1],
+    [2, 6]
+])
+
+print(A + B)
+print(A - B)</code></pre>
+      <p>The results are:</p>
+      <pre><code>[[6 3]
+ [5 10]]
+
+[[-4  1]
+ [ 1 -2]]</code></pre>
+      <div class="note">
+        <h3>Shape Check</h3>
+        <p>Before adding or subtracting, compare <code>A.shape</code> and <code>B.shape</code>. For ordinary matrix addition, the shapes must match.</p>
+      </div>
+    </section>
+
+    <section>
+      <h2>1.3.3 Scalar Multiplication</h2>
+      <p>A scalar is a single number. Multiplying a matrix by a scalar multiplies every entry by that number.</p>
+      <pre><code>A = np.array([
+    [ 1, -2],
+    [ 3,  4]
+])
+
+print(3 * A)</code></pre>
+      <pre><code>[[ 3 -6]
+ [ 9 12]]</code></pre>
+      <p>Scalar multiplication does not change the order of a matrix.</p>
+    </section>
+
+    <section>
+      <h2>1.3.4 Elementwise Operations</h2>
+      <p>For NumPy arrays, <code>*</code> multiplies corresponding entries. This is called <strong>elementwise multiplication</strong>.</p>
+      <pre><code>A = np.array([[1, 2], [3, 4]])
+B = np.array([[5, 6], [7, 8]])
+
+print(A * B)</code></pre>
+      <pre><code>[[ 5 12]
+ [21 32]]</code></pre>
+      <p>Other elementwise operations include <code>A / B</code> and <code>A ** 2</code>.</p>
+      <div class="warning">
+        <h3><code>*</code> Is Not Matrix Multiplication</h3>
+        <p>Use <code>*</code> for entry-by-entry multiplication. Use <code>@</code> for a matrix product. Confusing these operators is one of the most common NumPy errors in linear algebra.</p>
+      </div>
+    </section>
+
+    <section id="transpose">
+      <h2>1.3.5 The Transpose</h2>
+      <p>The transpose of a matrix interchanges its rows and columns. If <em>A</em> has order <em>m</em> &times; <em>n</em>, then <em>A</em><sup>T</sup> has order <em>n</em> &times; <em>m</em>.</p>
+      <pre><code>A = np.array([
+    [1, 2, 3],
+    [4, 5, 6]
+])
+
+print(A.T)
+print("A shape:", A.shape)
+print("A.T shape:", A.T.shape)</code></pre>
+      <pre><code>[[1 4]
+ [2 5]
+ [3 6]]
+A shape: (2, 3)
+A.T shape: (3, 2)</code></pre>
+      <p>Transposing twice returns the original matrix: <code>(A.T).T</code> equals <code>A</code>.</p>
+      <div class="warning">
+        <h3>Transposing a 1-D Array</h3>
+        <p>If <code>v.shape</code> is <code>(3,)</code>, then <code>v.T</code> still has shape <code>(3,)</code>. Use <code>v.reshape(3, 1)</code> when you need an explicit 3 &times; 1 column matrix.</p>
+      </div>
+    </section>
+
+    <section id="products">
+      <h2>1.3.6 Vector Dot Products</h2>
+      <p>The dot product multiplies corresponding vector entries and then adds the products.</p>
+      <p>For <em>u</em> = [1, 2, 3] and <em>v</em> = [4, 5, 6]:</p>
+      <p><em>u</em> &middot; <em>v</em> = 1(4) + 2(5) + 3(6) = 32.</p>
+      <pre><code>u = np.array([1, 2, 3])
+v = np.array([4, 5, 6])
+
+print(u @ v)
+print(np.dot(u, v))</code></pre>
+      <p>Both instructions display <code>32</code>.</p>
+    </section>
+
+    <section>
+      <h2>1.3.7 Matrix-Vector Products</h2>
+      <p>An <em>m</em> &times; <em>n</em> matrix can multiply a vector of length <em>n</em>. The result is a vector of length <em>m</em>.</p>
+      <pre><code>A = np.array([
+    [1, 2, 3],
+    [4, 5, 6]
+])
+
+x = np.array([2, 0, -1])
+
+print(A @ x)</code></pre>
+      <pre><code>[-1  2]</code></pre>
+      <p>Each result entry is the dot product of one row of <code>A</code> with <code>x</code>.</p>
+    </section>
+
+    <section>
+      <h2>1.3.8 Matrix-Matrix Products</h2>
+      <p>Suppose <em>A</em> has order <em>m</em> &times; <em>n</em> and <em>B</em> has order <em>n</em> &times; <em>p</em>. Then <em>AB</em> is defined and has order <em>m</em> &times; <em>p</em>.</p>
+      <div class="steps">
+        <h3>Dimension Rule</h3>
+        <ol>
+          <li>Write the orders side by side: (<em>m</em> &times; <em>n</em>)(<em>n</em> &times; <em>p</em>).</li>
+          <li>Check that the inner dimensions match.</li>
+          <li>The outer dimensions give the result: <em>m</em> &times; <em>p</em>.</li>
+        </ol>
+      </div>
+      <div class="example">
+        <h3>Worked Example</h3>
+        <pre><code>A = np.array([
+    [1, 2, 3],
+    [4, 5, 6]
+])
+
+B = np.array([
+    [1, 2],
+    [0, 1],
+    [2, 0]
+])
+
+C = A @ B
+
+print(C)
+print(C.shape)</code></pre>
+        <pre><code>[[ 7  4]
+ [16 13]]
+(2, 2)</code></pre>
+        <p>For example, the upper-left entry is the dot product of row 1 of <code>A</code> and column 1 of <code>B</code>: 1(1) + 2(0) + 3(2) = 7.</p>
+      </div>
+    </section>
+
+    <section>
+      <h2>1.3.9 Order Matters</h2>
+      <p>Matrix multiplication is generally not commutative. Even when both products exist, <em>AB</em> and <em>BA</em> may be different.</p>
+      <pre><code>A = np.array([[1, 2], [0, 1]])
+B = np.array([[2, 0], [3, 1]])
+
+print("A @ B:")
+print(A @ B)
+
+print("B @ A:")
+print(B @ A)</code></pre>
+      <pre><code>A @ B:
+[[8 2]
+ [3 1]]
+B @ A:
+[[2 4]
+ [3 7]]</code></pre>
+      <p>In other examples, one product may be defined while the reverse product is not.</p>
+    </section>
+
+    <section>
+      <h2>1.3.10 Identity and Powers</h2>
+      <p>For a square matrix <em>A</em> and a matching identity matrix <em>I</em>, <em>AI</em> = <em>IA</em> = <em>A</em>.</p>
+      <pre><code>A = np.array([[1, 2], [3, 4]])
+I = np.eye(2, dtype=int)
+
+print(A @ I)
+print(I @ A)</code></pre>
+      <p>A matrix square means a matrix product:</p>
+      <pre><code>matrix_square = A @ A
+entry_squares = A ** 2
+
+print(matrix_square)
+print(entry_squares)</code></pre>
+      <div class="warning">
+        <h3>Two Different Meanings</h3>
+        <p><code>A @ A</code> computes <em>A</em><sup>2</sup> in linear algebra. <code>A ** 2</code> merely squares each entry.</p>
+      </div>
+    </section>
+
+    <section>
+      <h2>1.3.11 Checking Compatibility in Code</h2>
+      <pre><code>def can_multiply(A, B):
+    """Return True when two 2-D arrays can form A @ B."""
+    return (
+        A.ndim == 2
+        and B.ndim == 2
+        and A.shape[1] == B.shape[0]
+    )
+
+A = np.zeros((2, 3))
+B = np.zeros((3, 4))
+
+print(can_multiply(A, B))
+print(can_multiply(B, A))</code></pre>
+      <p>The output is <code>True</code> followed by <code>False</code>. If multiplication is possible, the product shape is <code>(A.shape[0], B.shape[1])</code>.</p>
+    </section>
+
+    <section id="activity">
+      <h2>1.3.12 Tutorial Activity: Matrix Arithmetic Lab</h2>
+      <div class="activity">
+        <h3>Predict, Then Calculate</h3>
+        <pre><code>A = np.array([
+    [1, 2],
+    [3, 4]
+])
+
+B = np.array([
+    [ 2,  0],
+    [-1,  5]
+])
+
+C = np.array([
+    [1, 0, 2],
+    [3, 1, 4]
+])</code></pre>
+        <ol>
+          <li>Predict and calculate <code>A + B</code> and <code>A - B</code>.</li>
+          <li>Calculate <code>-2 * A</code>.</li>
+          <li>Compare <code>A * B</code> with <code>A @ B</code>.</li>
+          <li>Find <code>C.T</code> and state its order.</li>
+          <li>Decide whether each product is defined: <code>A @ C</code>, <code>C @ A</code>, <code>C.T @ C</code>, and <code>C @ C.T</code>.</li>
+          <li>Predict the shape of each defined product before using NumPy.</li>
+          <li>Verify that <code>A @ I</code> equals <code>A</code>.</li>
+        </ol>
+      </div>
+      <details>
+        <summary>Show selected answers</summary>
+        <pre><code>A + B = [[3, 2], [2, 9]]
+A - B = [[-1, 2], [4, -1]]
+-2 * A = [[-2, -4], [-6, -8]]
+
+A * B = [[2, 0], [-3, 20]]
+A @ B = [[0, 10], [2, 20]]
+
+C.T has shape (3, 2).
+A @ C is defined and has shape (2, 3).
+C @ A is not defined.
+C.T @ C is defined and has shape (3, 3).
+C @ C.T is defined and has shape (2, 2).</code></pre>
+      </details>
+    </section>
+
+    <section>
+      <h2>1.3.13 Common Errors</h2>
+      <table>
+        <thead><tr><th>Problem</th><th>Cause</th><th>Correction</th></tr></thead>
+        <tbody>
+          <tr><td>The wrong product was calculated</td><td><code>*</code> was used instead of <code>@</code>.</td><td>Use <code>@</code> for matrix multiplication.</td></tr>
+          <tr><td>Operands could not be broadcast together</td><td>Shapes are incompatible for an elementwise operation.</td><td>Inspect both shapes and make sure the intended entries align.</td></tr>
+          <tr><td>Matrix multiplication dimension error</td><td>The inner dimensions do not match.</td><td>For <code>A @ B</code>, check <code>A.shape[1] == B.shape[0]</code>.</td></tr>
+          <tr><td><code>v.T</code> appears unchanged</td><td><code>v</code> is a 1-D array.</td><td>Reshape it as a row or column matrix first.</td></tr>
+          <tr><td><code>A @ B</code> works but <code>B @ A</code> fails</td><td>Compatibility depends on order.</td><td>Check the dimensions separately for each product.</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section>
+      <h2>1.3.14 Concept Check</h2>
+      <ol>
+        <li>What condition is required to add two matrices?</li>
+        <li>What is the difference between <code>A * B</code> and <code>A @ B</code>?</li>
+        <li>If <code>A.shape == (4, 3)</code>, what is <code>A.T.shape</code>?</li>
+        <li>Can a 3 &times; 5 matrix multiply a 5 &times; 2 matrix? What is the product order?</li>
+        <li>Can a 3 &times; 5 matrix multiply a 3 &times; 2 matrix?</li>
+        <li>Why might <code>A @ B</code> differ from <code>B @ A</code>?</li>
+      </ol>
+      <details>
+        <summary>Show suggested answers</summary>
+        <ol>
+          <li>They must have the same order.</li>
+          <li><code>*</code> is elementwise; <code>@</code> forms a matrix product.</li>
+          <li><code>(3, 4)</code>.</li>
+          <li>Yes. The product is 3 &times; 2.</li>
+          <li>No, because the inner dimensions 5 and 3 do not match.</li>
+          <li>Matrix multiplication combines rows and columns in an order-dependent way; it is generally not commutative.</li>
+        </ol>
+      </details>
+    </section>
+
+    <section id="practice">
+      <h2>1.3.15 Practice Exercises</h2>
+      <ol>
+        <li>Create two 3 &times; 3 matrices and calculate their sum and difference.</li>
+        <li>Multiply a 2 &times; 4 matrix by the scalar 5.</li>
+        <li>For two compatible arrays, compare elementwise and matrix multiplication.</li>
+        <li>Create a 2 &times; 5 matrix and print its transpose and both shapes.</li>
+        <li>Calculate the dot product of <code>[2, -1, 3]</code> and <code>[4, 5, 0]</code> by hand and with NumPy.</li>
+        <li>Create matrices with shapes <code>(3, 2)</code> and <code>(2, 4)</code>. Predict and verify the product shape.</li>
+        <li>Find square matrices <em>A</em> and <em>B</em> for which <em>AB</em> is not equal to <em>BA</em>.</li>
+        <li>Write a function that returns the expected product shape or <code>None</code> if multiplication is impossible.</li>
+      </ol>
+      <details>
+        <summary>Show sample solution for Exercise 8</summary>
+        <pre><code>def product_shape(A, B):
+    if A.ndim != 2 or B.ndim != 2:
+        return None
+    if A.shape[1] != B.shape[0]:
+        return None
+    return (A.shape[0], B.shape[1])</code></pre>
+      </details>
+    </section>
+
+    <section>
+      <h2>1.3.16 Official References</h2>
+      <ul>
+        <li><a href="https://numpy.org/doc/stable/reference/generated/numpy.matmul.html"><code>numpy.matmul</code> and the <code>@</code> operator</a></li>
+        <li><a href="https://numpy.org/doc/stable/reference/generated/numpy.multiply.html"><code>numpy.multiply</code> and elementwise multiplication</a></li>
+        <li><a href="https://numpy.org/doc/stable/reference/generated/numpy.transpose.html"><code>numpy.transpose</code></a></li>
+        <li><a href="https://numpy.org/doc/stable/reference/generated/numpy.dot.html"><code>numpy.dot</code></a></li>
+      </ul>
+    </section>
+
+    <section class="summary">
+      <h2>Section Summary</h2>
+      <ul>
+        <li>Matrices must have the same order for addition or subtraction.</li>
+        <li>Scalar multiplication applies the scalar to every entry.</li>
+        <li>For NumPy arrays, <code>*</code> is elementwise multiplication and <code>@</code> is matrix multiplication.</li>
+        <li>Transposing an <em>m</em> &times; <em>n</em> matrix produces an <em>n</em> &times; <em>m</em> matrix.</li>
+        <li>An <em>m</em> &times; <em>n</em> matrix times an <em>n</em> &times; <em>p</em> matrix produces an <em>m</em> &times; <em>p</em> matrix.</li>
+        <li>Matrix multiplication is generally not commutative.</li>
+        <li><code>A @ A</code> and <code>A ** 2</code> represent different calculations.</li>
+      </ul>
+    </section>
+
+    <nav class="page-navigation" aria-label="Page navigation">
+      <a href="section-1-2.html">&larr; Previous: Section 1.2</a>
+      <a href="index.html">Course Contents</a>
+      <a href="section-1-4.html">Next: Section 1.4 &rarr;</a>
+    </nav>
+  </main>
+
+  <footer>
+    <p>MATH 1516 Coding Activities — Prepared by Joe Tran</p>
+  </footer>
+</body>
+</html>

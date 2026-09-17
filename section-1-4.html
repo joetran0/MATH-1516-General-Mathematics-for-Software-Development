@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Section 1.4: Linear Systems in Matrix Form | MATH 1516</title>
+  <style>
+    body { max-width: 850px; margin: 0 auto; padding: 20px; font-family: Arial, sans-serif; line-height: 1.65; color: #222; }
+    header { border-bottom: 2px solid #8c1d40; margin-bottom: 30px; }
+    nav { margin: 15px 0; }
+    nav a { margin-right: 15px; }
+    h1, h2, h3 { line-height: 1.25; }
+    h2 { margin-top: 40px; color: #8c1d40; border-bottom: 1px solid #ddd; padding-bottom: 5px; }
+    h3 { margin-top: 28px; }
+    .objectives, .steps, .activity, .note, .warning, .example, .summary { padding: 15px 18px; margin: 20px 0; border-radius: 4px; }
+    .objectives, .summary { background: #f7f7f7; border: 1px solid #ccc; }
+    .steps { background: #f4f8fc; border-left: 4px solid #2f6fa3; }
+    .activity { background: #fff8e6; border-left: 4px solid #d18b00; }
+    .note { background: #f3f8f3; border-left: 4px solid #4c8c4a; }
+    .warning { background: #fff3f3; border-left: 4px solid #b64040; }
+    .example { background: #f7f1fa; border-left: 4px solid #7b3f98; }
+    .steps h3, .activity h3, .note h3, .warning h3, .example h3, .summary h2 { margin-top: 0; }
+    pre { overflow-x: auto; padding: 14px; background: #202124; color: #f1f1f1; border-radius: 4px; line-height: 1.5; }
+    code { font-family: Consolas, Monaco, monospace; }
+    p code, li code, td code { background: #f0f0f0; padding: 2px 5px; border-radius: 3px; color: #222; }
+    table { width: 100%; border-collapse: collapse; margin: 20px 0; }
+    th, td { border: 1px solid #bbb; padding: 10px; text-align: left; vertical-align: top; }
+    th { background: #f2f2f2; }
+    details { margin: 12px 0; }
+    summary { cursor: pointer; font-weight: bold; }
+    .equation { text-align: center; font-family: Georgia, serif; font-size: 1.08rem; margin: 18px 0; }
+    .page-navigation { display: flex; justify-content: space-between; gap: 15px; border-top: 1px solid #ccc; margin-top: 45px; padding-top: 20px; }
+    footer { margin-top: 35px; color: #555; font-size: 0.9rem; }
+    @media (max-width: 600px) {
+      body { padding: 14px; }
+      table { font-size: 0.9rem; }
+      .page-navigation { flex-direction: column; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <p><a href="index.html">&larr; Course Home</a></p>
+    <h1>Section 1.4: Linear Systems in Matrix Form</h1>
+    <p><strong>Part 1: Linear Systems and Matrices</strong></p>
+    <nav aria-label="Section contents">
+      <a href="#matrix-form">Matrix Form</a>
+      <a href="#translation">Translation</a>
+      <a href="#augmented">Augmented Matrix</a>
+      <a href="#verification">Verification</a>
+      <a href="#activity">Activity</a>
+    </nav>
+  </header>
+
+  <main>
+    <section class="objectives">
+      <h2>Learning Objectives</h2>
+      <p>By the end of this section, you should be able to:</p>
+      <ul>
+        <li>identify the variables, coefficients, and constants in a linear system;</li>
+        <li>write a linear system in the form <em>A</em><strong>x</strong> = <strong>b</strong>;</li>
+        <li>translate a matrix equation back into individual equations;</li>
+        <li>determine the required dimensions of <em>A</em>, <strong>x</strong>, and <strong>b</strong>;</li>
+        <li>construct coefficient, variable, constant, and augmented matrices in NumPy;</li>
+        <li>verify whether a proposed vector satisfies a system; and</li>
+        <li>translate a simple applied problem into a linear system.</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>1.4.1 Begin in Google Colab</h2>
+      <p>Open a Google Colab notebook and run:</p>
+      <pre><code>import numpy as np</code></pre>
+      <p>We will represent matrices and vectors using NumPy arrays. Solving the systems will be introduced in Section 1.5.</p>
+    </section>
+
+    <section id="matrix-form">
+      <h2>1.4.2 What Is a Linear System?</h2>
+      <p>A linear system is a collection of linear equations involving the same variables. For example:</p>
+      <div class="equation">
+        2<em>x</em> + 3<em>y</em> = 7<br>
+        &minus;<em>x</em> + 4<em>y</em> = 5
+      </div>
+      <p>The numbers multiplying the variables are the <strong>coefficients</strong>. The numbers on the right are the <strong>constants</strong>.</p>
+      <table>
+        <thead><tr><th>Equation</th><th>Coefficient of <em>x</em></th><th>Coefficient of <em>y</em></th><th>Constant</th></tr></thead>
+        <tbody>
+          <tr><td>2<em>x</em> + 3<em>y</em> = 7</td><td>2</td><td>3</td><td>7</td></tr>
+          <tr><td>&minus;<em>x</em> + 4<em>y</em> = 5</td><td>&minus;1</td><td>4</td><td>5</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section>
+      <h2>1.4.3 The Equation <em>A</em><strong>x</strong> = <strong>b</strong></h2>
+      <p>The system above can be written compactly as:</p>
+      <div class="equation">
+        <em>A</em><strong>x</strong> = <strong>b</strong>
+      </div>
+      <table>
+        <thead><tr><th>Symbol</th><th>Name</th><th>Contents</th></tr></thead>
+        <tbody>
+          <tr><td><em>A</em></td><td>Coefficient matrix</td><td>The coefficients from the left side of the equations</td></tr>
+          <tr><td><strong>x</strong></td><td>Variable vector</td><td>The unknown variables, in a fixed order</td></tr>
+          <tr><td><strong>b</strong></td><td>Constant vector</td><td>The constants from the right side of the equations</td></tr>
+        </tbody>
+      </table>
+      <pre><code>A = np.array([
+    [ 2, 3],
+    [-1, 4]
+])
+
+x = np.array([x_value, y_value])
+b = np.array([7, 5])</code></pre>
+      <div class="note">
+        <h3>Variable Order Must Stay Fixed</h3>
+        <p>If the variable vector is ordered as <code>[x, y]</code>, every row of <code>A</code> must list the coefficient of <em>x</em> first and the coefficient of <em>y</em> second.</p>
+      </div>
+    </section>
+
+    <section>
+      <h2>1.4.4 Why Matrix Multiplication Reproduces the Equations</h2>
+      <p>Each entry of <em>A</em><strong>x</strong> is a row of <em>A</em> dotted with the variable vector:</p>
+      <div class="equation">
+        [2, 3] &middot; [<em>x</em>, <em>y</em>] = 2<em>x</em> + 3<em>y</em><br>
+        [&minus;1, 4] &middot; [<em>x</em>, <em>y</em>] = &minus;<em>x</em> + 4<em>y</em>
+      </div>
+      <p>Therefore, the matrix equation contains exactly the same information as the original system.</p>
+    </section>
+
+    <section>
+      <h2>1.4.5 Dimensions</h2>
+      <p>A system with <em>m</em> equations and <em>n</em> variables has the following dimensions:</p>
+      <table>
+        <thead><tr><th>Object</th><th>Dimensions</th><th>Meaning</th></tr></thead>
+        <tbody>
+          <tr><td><em>A</em></td><td><em>m</em> &times; <em>n</em></td><td>One row per equation and one column per variable</td></tr>
+          <tr><td><strong>x</strong></td><td><em>n</em> entries</td><td>One entry per variable</td></tr>
+          <tr><td><strong>b</strong></td><td><em>m</em> entries</td><td>One entry per equation</td></tr>
+        </tbody>
+      </table>
+      <p>Thus, an <em>m</em> &times; <em>n</em> matrix multiplied by a length-<em>n</em> vector produces a length-<em>m</em> vector.</p>
+      <pre><code>print("A shape:", A.shape)
+print("b shape:", b.shape)</code></pre>
+    </section>
+
+    <section id="translation">
+      <h2>1.4.6 From Equations to Matrix Form</h2>
+      <p>Consider the system:</p>
+      <div class="equation">
+        3<em>x</em> &minus; 2<em>y</em> + <em>z</em> = 4<br>
+        5<em>y</em> &minus; 3<em>z</em> = &minus;1<br>
+        2<em>x</em> + <em>y</em> + 4<em>z</em> = 10
+      </div>
+      <div class="steps">
+        <h3>Translation Procedure</h3>
+        <ol>
+          <li>Choose and record a variable order: <em>x</em>, <em>y</em>, <em>z</em>.</li>
+          <li>Write one coefficient row for each equation.</li>
+          <li>Use zero when a variable is missing.</li>
+          <li>Place the right-side constants in <strong>b</strong>.</li>
+        </ol>
+      </div>
+      <pre><code>A = np.array([
+    [3, -2,  1],
+    [0,  5, -3],
+    [2,  1,  4]
+])
+
+b = np.array([4, -1, 10])</code></pre>
+      <div class="warning">
+        <h3>Do Not Skip Missing Variables</h3>
+        <p>The second equation has no <em>x</em>-term, so its coefficient row begins with <code>0</code>. Omitting that zero would shift the remaining coefficients into the wrong columns.</p>
+      </div>
+    </section>
+
+    <section>
+      <h2>1.4.7 Standard Form First</h2>
+      <p>Before forming matrices, put every variable term on the left and every constant on the right.</p>
+      <div class="example">
+        <h3>Example</h3>
+        <p>Rewrite <em>x</em> + 8 = 3<em>y</em> as:</p>
+        <div class="equation"><em>x</em> &minus; 3<em>y</em> = &minus;8</div>
+        <p>The correct coefficient row is <code>[1, -3]</code>, and the constant is <code>-8</code>.</p>
+      </div>
+      <p>This step prevents sign errors when extracting coefficients.</p>
+    </section>
+
+    <section>
+      <h2>1.4.8 From Matrix Form to Equations</h2>
+      <p>Suppose:</p>
+      <pre><code>A = np.array([
+    [ 1,  0, -2],
+    [ 3,  4,  1]
+])
+
+b = np.array([6, -5])</code></pre>
+      <p>Using the variable order <em>x</em>, <em>y</em>, <em>z</em>, the corresponding equations are:</p>
+      <div class="equation">
+        <em>x</em> &minus; 2<em>z</em> = 6<br>
+        3<em>x</em> + 4<em>y</em> + <em>z</em> = &minus;5
+      </div>
+      <p>A zero coefficient may be omitted when writing the equation, but its position must remain present in the matrix.</p>
+    </section>
+
+    <section id="augmented">
+      <h2>1.4.9 The Augmented Matrix</h2>
+      <p>The augmented matrix places the constant vector beside the coefficient matrix. It is written [<em>A</em> | <strong>b</strong>].</p>
+      <pre><code>A = np.array([
+    [ 2, 3],
+    [-1, 4]
+])
+
+b = np.array([7, 5])
+
+augmented = np.column_stack((A, b))
+print(augmented)</code></pre>
+      <pre><code>[[ 2  3  7]
+ [-1  4  5]]</code></pre>
+      <p>If <em>A</em> has shape (<em>m</em>, <em>n</em>), then [<em>A</em> | <strong>b</strong>] has shape (<em>m</em>, <em>n</em> + 1).</p>
+      <div class="note">
+        <h3>The Bar Is Not Another Variable</h3>
+        <p>The vertical bar separates coefficients from constants. The final column belongs to <strong>b</strong>, not to the coefficient matrix.</p>
+      </div>
+    </section>
+
+    <section id="verification">
+      <h2>1.4.10 Verifying a Candidate Solution</h2>
+      <p>A vector <strong>x</strong> solves the system exactly when <em>A</em><strong>x</strong> = <strong>b</strong>.</p>
+      <pre><code>A = np.array([
+    [2, 1],
+    [1, 3]
+])
+
+b = np.array([5, 5])
+candidate = np.array([2, 1])
+
+left_side = A @ candidate
+
+print("A @ candidate:", left_side)
+print("b:", b)
+print("Is a solution?", np.allclose(left_side, b))</code></pre>
+      <pre><code>A @ candidate: [5 5]
+b: [5 5]
+Is a solution? True</code></pre>
+      <p><code>np.allclose()</code> is useful when decimal calculations may introduce tiny rounding differences.</p>
+      <h3>A Reusable Function</h3>
+      <pre><code>def is_solution(A, x, b):
+    """Check whether x approximately satisfies A @ x = b."""
+    return np.allclose(A @ x, b)
+
+print(is_solution(A, candidate, b))</code></pre>
+    </section>
+
+    <section>
+      <h2>1.4.11 Homogeneous Systems</h2>
+      <p>A homogeneous system has zero on the right side:</p>
+      <div class="equation"><em>A</em><strong>x</strong> = <strong>0</strong></div>
+      <pre><code>A = np.array([
+    [1,  2, -1],
+    [3, -1,  4]
+])
+
+b = np.zeros(2)</code></pre>
+      <p>The zero vector always satisfies a homogeneous system because <em>A</em><strong>0</strong> = <strong>0</strong>. Some homogeneous systems also have nonzero solutions.</p>
+    </section>
+
+    <section>
+      <h2>1.4.12 Applied Example: Ticket Sales</h2>
+      <p>A tutorial fundraiser sells student tickets for $6 and general tickets for $10. It sells 80 tickets and receives $620.</p>
+      <p>Let <em>s</em> be the number of student tickets and <em>g</em> the number of general tickets.</p>
+      <div class="equation">
+        <em>s</em> + <em>g</em> = 80<br>
+        6<em>s</em> + 10<em>g</em> = 620
+      </div>
+      <pre><code>A = np.array([
+    [1,  1],
+    [6, 10]
+])
+
+b = np.array([80, 620])</code></pre>
+      <p>The first row describes the total number of tickets. The second describes the total revenue. Defining the variables before building the matrix gives every row and column a clear meaning.</p>
+    </section>
+
+    <section id="activity">
+      <h2>1.4.13 Tutorial Activity: Build the System</h2>
+      <div class="activity">
+        <h3>Part A: Translate</h3>
+        <p>For each system, create <code>A</code> and <code>b</code>, state their shapes, and construct the augmented matrix.</p>
+        <ol>
+          <li>
+            2<em>x</em> + <em>y</em> = 9<br>
+            3<em>x</em> &minus; 2<em>y</em> = 4
+          </li>
+          <li>
+            <em>x</em> + <em>z</em> = 5<br>
+            2<em>x</em> &minus; <em>y</em> + 3<em>z</em> = 8<br>
+            4<em>y</em> &minus; <em>z</em> = &minus;2
+          </li>
+        </ol>
+        <h3>Part B: Verify</h3>
+        <p>Use matrix multiplication to determine whether <code>[2, 5]</code> satisfies the first system.</p>
+        <h3>Part C: Reverse the Process</h3>
+        <p>Write the equations represented by:</p>
+        <pre><code>A = np.array([[3, -1, 0], [0, 2, 5]])
+b = np.array([7, -4])</code></pre>
+        <p>Use the variable order <em>x</em>, <em>y</em>, <em>z</em>.</p>
+      </div>
+      <details>
+        <summary>Show selected answers</summary>
+        <pre><code># Part A, System 1
+A1 = np.array([[2, 1], [3, -2]])
+b1 = np.array([9, 4])
+augmented1 = np.column_stack((A1, b1))
+
+# Part A, System 2
+A2 = np.array([
+    [1,  0,  1],
+    [2, -1,  3],
+    [0,  4, -1]
+])
+b2 = np.array([5, 8, -2])
+
+# Part B
+candidate = np.array([2, 5])
+print(A1 @ candidate)          # [9, -4]
+print(np.allclose(A1 @ candidate, b1))  # False</code></pre>
+        <p>Part C represents 3<em>x</em> &minus; <em>y</em> = 7 and 2<em>y</em> + 5<em>z</em> = &minus;4.</p>
+      </details>
+    </section>
+
+    <section>
+      <h2>1.4.14 Common Errors</h2>
+      <table>
+        <thead><tr><th>Problem</th><th>Cause</th><th>Correction</th></tr></thead>
+        <tbody>
+          <tr><td>Coefficients appear in the wrong columns</td><td>The variable order changed between equations.</td><td>Choose one order and use it in every row.</td></tr>
+          <tr><td>A row is too short</td><td>A missing variable was skipped.</td><td>Insert a zero coefficient.</td></tr>
+          <tr><td>A coefficient has the wrong sign</td><td>The equation was not put in standard form first.</td><td>Move variable terms left and constants right before recording values.</td></tr>
+          <tr><td><code>A @ x</code> gives a dimension error</td><td>The number of columns of <code>A</code> differs from the length of <code>x</code>.</td><td>Use one variable-vector entry for each column of <code>A</code>.</td></tr>
+          <tr><td>The augmented matrix has the wrong shape</td><td><code>b</code> does not have one entry per equation.</td><td>Check that <code>len(b) == A.shape[0]</code>.</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section>
+      <h2>1.4.15 Concept Check</h2>
+      <ol>
+        <li>What does each row of a coefficient matrix represent?</li>
+        <li>What does each column represent?</li>
+        <li>Why must a missing variable be recorded with coefficient zero?</li>
+        <li>If a system has five equations and three variables, what is the shape of <em>A</em>?</li>
+        <li>What is the shape of its augmented matrix?</li>
+        <li>How can you test a proposed solution using NumPy?</li>
+      </ol>
+      <details>
+        <summary>Show suggested answers</summary>
+        <ol>
+          <li>One equation.</li>
+          <li>One variable, according to the chosen variable order.</li>
+          <li>It preserves the position of every other coefficient.</li>
+          <li><code>(5, 3)</code>.</li>
+          <li><code>(5, 4)</code>.</li>
+          <li>Compare <code>A @ candidate</code> with <code>b</code>, preferably using <code>np.allclose()</code>.</li>
+        </ol>
+      </details>
+    </section>
+
+    <section>
+      <h2>1.4.16 Practice Exercises</h2>
+      <ol>
+        <li>Write 4<em>x</em> &minus; <em>y</em> = 3 and 2<em>x</em> + 5<em>y</em> = 11 in matrix form.</li>
+        <li>Translate a three-equation, two-variable system into <em>A</em><strong>x</strong> = <strong>b</strong>.</li>
+        <li>Write the equations represented by <code>A = [[1, 2], [-3, 4]]</code> and <code>b = [6, 1]</code>.</li>
+        <li>Rewrite 2<em>x</em> = 5 + <em>y</em> in standard form and identify its coefficient row.</li>
+        <li>Construct the augmented matrix for Exercise 1 using <code>np.column_stack()</code>.</li>
+        <li>Determine whether <code>[2, 1]</code> satisfies the system in Exercise 1.</li>
+        <li>Create a homogeneous system with two equations and three variables.</li>
+        <li>Write a short word problem and represent it using a coefficient matrix and constant vector.</li>
+      </ol>
+      <details>
+        <summary>Show sample solutions for Exercises 1 and 6</summary>
+        <pre><code>A = np.array([[4, -1], [2, 5]])
+b = np.array([3, 11])
+
+candidate = np.array([2, 1])
+print(A @ candidate)                    # [7, 9]
+print(np.allclose(A @ candidate, b))    # False</code></pre>
+      </details>
+    </section>
+
+    <section>
+      <h2>1.4.17 Official References</h2>
+      <ul>
+        <li><a href="https://numpy.org/doc/stable/reference/generated/numpy.column_stack.html"><code>numpy.column_stack</code></a></li>
+        <li><a href="https://numpy.org/doc/stable/reference/generated/numpy.matmul.html"><code>numpy.matmul</code> and the <code>@</code> operator</a></li>
+        <li><a href="https://numpy.org/doc/stable/reference/generated/numpy.allclose.html"><code>numpy.allclose</code></a></li>
+      </ul>
+    </section>
+
+    <section class="summary">
+      <h2>Section Summary</h2>
+      <ul>
+        <li>A linear system can be written compactly as <em>A</em><strong>x</strong> = <strong>b</strong>.</li>
+        <li>Rows of <em>A</em> correspond to equations; columns correspond to variables.</li>
+        <li>Variable order must remain consistent throughout the matrix.</li>
+        <li>A missing variable contributes a zero coefficient.</li>
+        <li>For <em>m</em> equations and <em>n</em> variables, <em>A</em> has order <em>m</em> &times; <em>n</em>.</li>
+        <li>The augmented matrix [<em>A</em> | <strong>b</strong>] appends the constants as one final column.</li>
+        <li>A candidate is a solution precisely when <em>A</em><strong>x</strong> equals <strong>b</strong>.</li>
+      </ul>
+    </section>
+
+    <nav class="page-navigation" aria-label="Page navigation">
+      <a href="section-1-3.html">&larr; Previous: Section 1.3</a>
+      <a href="index.html">Course Contents</a>
+      <a href="section-1-5.html">Next: Section 1.5 &rarr;</a>
+    </nav>
+  </main>
+
+  <footer>
+    <p>MATH 1516 Coding Activities — Prepared by Joe Tran</p>
+  </footer>
+</body>
+</html>

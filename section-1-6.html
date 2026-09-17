@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Section 1.6: Visualizing Matrices | MATH 1516</title>
+  <style>
+    body { max-width: 850px; margin: 0 auto; padding: 20px; font-family: Arial, sans-serif; line-height: 1.65; color: #222; }
+    header { border-bottom: 2px solid #8c1d40; margin-bottom: 30px; }
+    nav { margin: 15px 0; }
+    nav a { margin-right: 15px; }
+    h1, h2, h3 { line-height: 1.25; }
+    h2 { margin-top: 40px; color: #8c1d40; border-bottom: 1px solid #ddd; padding-bottom: 5px; }
+    h3 { margin-top: 28px; }
+    .objectives, .steps, .activity, .note, .warning, .example, .summary { padding: 15px 18px; margin: 20px 0; border-radius: 4px; }
+    .objectives, .summary { background: #f7f7f7; border: 1px solid #ccc; }
+    .steps { background: #f4f8fc; border-left: 4px solid #2f6fa3; }
+    .activity { background: #fff8e6; border-left: 4px solid #d18b00; }
+    .note { background: #f3f8f3; border-left: 4px solid #4c8c4a; }
+    .warning { background: #fff3f3; border-left: 4px solid #b64040; }
+    .example { background: #f7f1fa; border-left: 4px solid #7b3f98; }
+    .steps h3, .activity h3, .note h3, .warning h3, .example h3, .summary h2 { margin-top: 0; }
+    pre { overflow-x: auto; padding: 14px; background: #202124; color: #f1f1f1; border-radius: 4px; line-height: 1.5; }
+    code { font-family: Consolas, Monaco, monospace; }
+    p code, li code, td code { background: #f0f0f0; padding: 2px 5px; border-radius: 3px; color: #222; }
+    table { width: 100%; border-collapse: collapse; margin: 20px 0; }
+    th, td { border: 1px solid #bbb; padding: 10px; text-align: left; vertical-align: top; }
+    th { background: #f2f2f2; }
+    details { margin: 12px 0; }
+    summary { cursor: pointer; font-weight: bold; }
+    .page-navigation { display: flex; justify-content: space-between; gap: 15px; border-top: 1px solid #ccc; margin-top: 45px; padding-top: 20px; }
+    footer { margin-top: 35px; color: #555; font-size: 0.9rem; }
+    @media (max-width: 600px) {
+      body { padding: 14px; }
+      table { font-size: 0.9rem; }
+      .page-navigation { flex-direction: column; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <p><a href="index.html">&larr; Course Home</a></p>
+    <h1>Section 1.6: Visualizing Matrices</h1>
+    <p><strong>Part 1: Linear Systems and Matrices</strong></p>
+    <nav aria-label="Section contents">
+      <a href="#imshow">Basic Plot</a>
+      <a href="#colours">Colour Scales</a>
+      <a href="#annotations">Annotations</a>
+      <a href="#structure">Structure</a>
+      <a href="#activity">Activity</a>
+    </nav>
+  </header>
+
+  <main>
+    <section class="objectives">
+      <h2>Learning Objectives</h2>
+      <p>By the end of this section, you should be able to:</p>
+      <ul>
+        <li>display a matrix as a colour-coded image using <code>imshow()</code>;</li>
+        <li>interpret rows, columns, entries, and colours in a matrix plot;</li>
+        <li>add titles, axis labels, ticks, and colour bars;</li>
+        <li>choose a suitable sequential or diverging colour map;</li>
+        <li>set consistent colour limits when comparing matrices;</li>
+        <li>annotate a small matrix with its numerical entries;</li>
+        <li>visualize zero and nonzero structure with <code>spy()</code>; and</li>
+        <li>identify patterns such as diagonals, blocks, symmetry, and sparsity.</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>1.6.1 Begin in Google Colab</h2>
+      <p>Open a Google Colab notebook and run:</p>
+      <pre><code>import numpy as np
+import matplotlib.pyplot as plt</code></pre>
+      <p>Both NumPy and Matplotlib are already available in Colab.</p>
+    </section>
+
+    <section>
+      <h2>1.6.2 Why Visualize a Matrix?</h2>
+      <p>A numerical matrix can be difficult to scan when it contains many entries. A matrix plot assigns a colour to every entry, making certain structures easier to notice.</p>
+      <table>
+        <thead><tr><th>Pattern</th><th>What a Plot May Reveal</th></tr></thead>
+        <tbody>
+          <tr><td>Diagonal structure</td><td>A line of distinctive entries from upper left to lower right</td></tr>
+          <tr><td>Symmetry</td><td>Reflection across the main diagonal</td></tr>
+          <tr><td>Blocks</td><td>Rectangular regions with similar values</td></tr>
+          <tr><td>Sparsity</td><td>Many zero entries with relatively few nonzero entries</td></tr>
+          <tr><td>Large or unusual values</td><td>Cells whose colours differ strongly from neighbouring cells</td></tr>
+        </tbody>
+      </table>
+      <div class="warning">
+        <h3>A Matrix Plot Does Not Replace the Numbers</h3>
+        <p>Colour summarizes values visually. Use the original matrix or annotations when exact numerical values matter.</p>
+      </div>
+    </section>
+
+    <section id="imshow">
+      <h2>1.6.3 A First Matrix Plot with <code>imshow()</code></h2>
+      <pre><code>A = np.array([
+    [1, 2, 3],
+    [4, 5, 6],
+    [7, 8, 9]
+])
+
+plt.imshow(A)
+plt.title("Matrix A")
+plt.colorbar(label="Entry value")
+plt.show()</code></pre>
+      <p>Each coloured cell corresponds to one matrix entry. By default, row 0 appears at the top and column 0 appears on the left.</p>
+      <div class="note">
+        <h3>Remember NumPy Indexing</h3>
+        <p>The cell at horizontal position <code>j</code> and vertical position <code>i</code> represents <code>A[i, j]</code>. The row index comes first in the code.</p>
+      </div>
+    </section>
+
+    <section>
+      <h2>1.6.4 A Clearer Plot</h2>
+      <pre><code>fig, ax = plt.subplots(figsize=(5, 4))
+
+image = ax.imshow(A, cmap="viridis", interpolation="nearest")
+ax.set_title("Entries of Matrix A")
+ax.set_xlabel("Column index")
+ax.set_ylabel("Row index")
+ax.set_xticks(range(A.shape[1]))
+ax.set_yticks(range(A.shape[0]))
+
+fig.colorbar(image, ax=ax, label="Entry value")
+plt.tight_layout()
+plt.show()</code></pre>
+      <table>
+        <thead><tr><th>Code</th><th>Purpose</th></tr></thead>
+        <tbody>
+          <tr><td><code>fig, ax = plt.subplots()</code></td><td>Creates a figure and plotting area</td></tr>
+          <tr><td><code>ax.imshow(A)</code></td><td>Displays the matrix values as colours</td></tr>
+          <tr><td><code>cmap="viridis"</code></td><td>Selects the colour map</td></tr>
+          <tr><td><code>interpolation="nearest"</code></td><td>Keeps matrix cells visually distinct</td></tr>
+          <tr><td><code>fig.colorbar(...)</code></td><td>Explains how colours correspond to values</td></tr>
+          <tr><td><code>plt.tight_layout()</code></td><td>Reduces overlapping labels</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section id="colours">
+      <h2>1.6.5 Choosing a Colour Map</h2>
+      <p>A colour map converts numerical values into colours. The choice should match the meaning of the data.</p>
+      <table>
+        <thead><tr><th>Type</th><th>Use</th><th>Examples</th></tr></thead>
+        <tbody>
+          <tr><td>Sequential</td><td>Values progress from low to high, especially when all entries are nonnegative</td><td><code>"viridis"</code>, <code>"plasma"</code>, <code>"Blues"</code></td></tr>
+          <tr><td>Diverging</td><td>Values move in two directions away from a meaningful centre such as zero</td><td><code>"coolwarm"</code>, <code>"RdBu"</code></td></tr>
+          <tr><td>Qualitative</td><td>Distinct categories rather than ordered numerical magnitude</td><td>Usually not appropriate for ordinary numerical matrices</td></tr>
+        </tbody>
+      </table>
+      <div class="example">
+        <h3>Signed Matrix</h3>
+        <pre><code>B = np.array([
+    [-4, -2,  0],
+    [-1,  0,  1],
+    [ 0,  2,  4]
+])
+
+limit = np.max(np.abs(B))
+
+plt.imshow(B, cmap="coolwarm", vmin=-limit, vmax=limit)
+plt.colorbar(label="Entry value")
+plt.title("Signed Matrix Centred at Zero")
+plt.show()</code></pre>
+        <p>Using equal-magnitude limits around zero gives positive and negative values balanced visual emphasis.</p>
+      </div>
+    </section>
+
+    <section>
+      <h2>1.6.6 Understanding the Colour Bar</h2>
+      <p>The colour bar is part of the data display. It states the numerical range associated with the colours.</p>
+      <ul>
+        <li>Do not assume that the darkest colour always means the same value.</li>
+        <li>Read the numerical limits beside the colour bar.</li>
+        <li>When comparing plots, check whether their scales are identical.</li>
+        <li>A very large outlier can compress the colour differences among all other entries.</li>
+      </ul>
+      <div class="warning">
+        <h3>Automatic Scaling Can Mislead Comparisons</h3>
+        <p>By default, each plot may use its own minimum and maximum. Two cells with the same colour in separate plots need not represent the same value.</p>
+      </div>
+    </section>
+
+    <section>
+      <h2>1.6.7 Comparing Matrices Fairly</h2>
+      <pre><code>A = np.array([[1, 2], [3, 4]])
+B = np.array([[10, 20], [30, 40]])
+
+shared_min = min(A.min(), B.min())
+shared_max = max(A.max(), B.max())
+
+fig, axes = plt.subplots(1, 2, figsize=(8, 3))
+
+image1 = axes[0].imshow(
+    A, cmap="viridis", vmin=shared_min, vmax=shared_max
+)
+axes[0].set_title("Matrix A")
+
+axes[1].imshow(
+    B, cmap="viridis", vmin=shared_min, vmax=shared_max
+)
+axes[1].set_title("Matrix B")
+
+fig.colorbar(image1, ax=axes, label="Entry value")
+plt.show()</code></pre>
+      <p>The shared <code>vmin</code> and <code>vmax</code> ensure that equal colours represent equal values in both plots.</p>
+    </section>
+
+    <section id="annotations">
+      <h2>1.6.8 Annotating Matrix Entries</h2>
+      <p>For a small matrix, display the exact value inside each cell:</p>
+      <pre><code>A = np.array([
+    [2, -1, 4],
+    [0,  3, 5],
+    [7,  1, 2]
+])
+
+fig, ax = plt.subplots(figsize=(5, 4))
+image = ax.imshow(A, cmap="coolwarm")
+
+for i in range(A.shape[0]):
+    for j in range(A.shape[1]):
+        ax.text(j, i, A[i, j], ha="center", va="center")
+
+ax.set_xticks(range(A.shape[1]))
+ax.set_yticks(range(A.shape[0]))
+ax.set_xlabel("Column index")
+ax.set_ylabel("Row index")
+ax.set_title("Matrix A with Entry Labels")
+fig.colorbar(image, ax=ax)
+plt.show()</code></pre>
+      <div class="note">
+        <h3>Annotations Work Best for Small Matrices</h3>
+        <p>For a large matrix, hundreds of labels overlap and make the figure harder to read. Use colour alone or inspect selected entries instead.</p>
+      </div>
+    </section>
+
+    <section>
+      <h2>1.6.9 A Reusable Matrix-Plot Function</h2>
+      <pre><code>def plot_matrix(A, title="Matrix", cmap="viridis", annotate=False):
+    fig, ax = plt.subplots(figsize=(5, 4))
+    image = ax.imshow(A, cmap=cmap, interpolation="nearest")
+
+    ax.set_title(title)
+    ax.set_xlabel("Column index")
+    ax.set_ylabel("Row index")
+    ax.set_xticks(range(A.shape[1]))
+    ax.set_yticks(range(A.shape[0]))
+
+    if annotate:
+        for i in range(A.shape[0]):
+            for j in range(A.shape[1]):
+                ax.text(j, i, f"{A[i, j]:g}",
+                        ha="center", va="center")
+
+    fig.colorbar(image, ax=ax, label="Entry value")
+    plt.tight_layout()
+    plt.show()
+
+plot_matrix(A, title="My Matrix", cmap="coolwarm", annotate=True)</code></pre>
+    </section>
+
+    <section id="structure">
+      <h2>1.6.10 Visualizing Special Matrices</h2>
+      <h3>Identity Matrix</h3>
+      <pre><code>I = np.eye(8)
+plot_matrix(I, title="Identity Matrix", cmap="Blues")</code></pre>
+      <p>The main diagonal is immediately visible.</p>
+      <h3>Block Matrix</h3>
+      <pre><code>block = np.block([
+    [3 * np.ones((3, 3)), np.zeros((3, 2))],
+    [np.zeros((2, 3)), 7 * np.ones((2, 2))]
+])
+
+plot_matrix(block, title="Block Matrix", cmap="viridis")</code></pre>
+      <p>The two constant diagonal blocks form distinct rectangular regions.</p>
+      <h3>Symmetric Matrix</h3>
+      <pre><code>M = np.array([[2, -1, 3], [0, 4, 5], [1, 2, 6]])
+S = M + M.T
+
+plot_matrix(S, title="Symmetric Matrix", cmap="coolwarm")</code></pre>
+      <p>The colours reflect across the main diagonal because <code>S</code> equals <code>S.T</code>.</p>
+    </section>
+
+    <section>
+      <h2>1.6.11 Zero Patterns and Sparse Matrices</h2>
+      <p>A sparse matrix contains many zeros. <code>plt.spy()</code> marks the locations of nonzero entries.</p>
+      <pre><code>A = np.array([
+    [4, 0, 0, 1, 0],
+    [0, 3, 0, 0, 0],
+    [2, 0, 5, 0, 0],
+    [0, 0, 0, 6, 1],
+    [0, 0, 0, 0, 2]
+])
+
+plt.spy(A, markersize=12)
+plt.title("Nonzero Pattern of A")
+plt.xlabel("Column index")
+plt.ylabel("Row index")
+plt.show()</code></pre>
+      <p>A spy plot emphasizes location rather than magnitude: a value of 1 and a value of 100 are both simply nonzero.</p>
+    </section>
+
+    <section>
+      <h2>1.6.12 Visualizing an Augmented Matrix</h2>
+      <pre><code>A = np.array([
+    [ 2,  1, -1],
+    [-3, -1,  2],
+    [-2,  1,  2]
+])
+b = np.array([8, -11, -3])
+
+augmented = np.column_stack((A, b))
+
+plt.imshow(augmented, cmap="coolwarm")
+plt.axvline(A.shape[1] - 0.5, color="black", linewidth=2)
+plt.colorbar(label="Entry value")
+plt.title("Augmented Matrix [A | b]")
+plt.xlabel("Column index")
+plt.ylabel("Row index")
+plt.show()</code></pre>
+      <p>The vertical line separates the coefficient matrix from the constant column.</p>
+    </section>
+
+    <section>
+      <h2>1.6.13 Saving a Figure</h2>
+      <p>Save a figure before calling <code>plt.show()</code>:</p>
+      <pre><code>plt.imshow(A, cmap="viridis")
+plt.colorbar(label="Entry value")
+plt.title("Matrix A")
+plt.savefig("matrix_A.png", dpi=200, bbox_inches="tight")
+plt.show()</code></pre>
+      <p>In Colab, the file appears in the notebook's temporary Files panel and can be downloaded.</p>
+    </section>
+
+    <section id="activity">
+      <h2>1.6.14 Tutorial Activity: Matrix Pattern Detective</h2>
+      <div class="activity">
+        <h3>Matrices</h3>
+        <pre><code>A = np.eye(6)
+
+B = np.array([
+    [3, 1, 0, 0],
+    [1, 3, 1, 0],
+    [0, 1, 3, 1],
+    [0, 0, 1, 3]
+])
+
+C = np.block([
+    [5 * np.ones((2, 2)), np.zeros((2, 3))],
+    [np.zeros((3, 2)), 2 * np.ones((3, 3))]
+])
+
+rng = np.random.default_rng(1516)
+D = rng.integers(-5, 6, size=(6, 6))</code></pre>
+        <h3>Tasks</h3>
+        <ol>
+          <li>Plot every matrix with <code>imshow()</code>.</li>
+          <li>Choose and justify a colour map for each.</li>
+          <li>Add titles, labelled colour bars, and axis labels.</li>
+          <li>Annotate <code>B</code> and <code>C</code>.</li>
+          <li>Create spy plots for all four matrices.</li>
+          <li>Describe the diagonal, symmetric, block, or sparse patterns that you observe.</li>
+          <li>Compare <code>D</code> and <code>D.T</code> using the same colour limits.</li>
+        </ol>
+      </div>
+      <details>
+        <summary>Show discussion points</summary>
+        <ul>
+          <li><code>A</code> has nonzero entries only on the main diagonal.</li>
+          <li><code>B</code> is symmetric and has three visible diagonals.</li>
+          <li><code>C</code> contains two constant diagonal blocks and zero off-diagonal blocks.</li>
+          <li><code>D</code> contains both signs, so a diverging map centred at zero is suitable.</li>
+          <li><code>D.T</code> reflects the colour pattern of <code>D</code> across the main diagonal.</li>
+        </ul>
+      </details>
+    </section>
+
+    <section>
+      <h2>1.6.15 Common Errors</h2>
+      <table>
+        <thead><tr><th>Problem</th><th>Cause</th><th>Correction</th></tr></thead>
+        <tbody>
+          <tr><td>No colour bar appears</td><td><code>colorbar()</code> was omitted.</td><td>Store the image object and pass it to <code>fig.colorbar()</code>.</td></tr>
+          <tr><td>Row and column positions seem reversed</td><td>Plot coordinates were confused with array indexing.</td><td>Remember that <code>A[i, j]</code> is drawn at horizontal <code>j</code>, vertical <code>i</code>.</td></tr>
+          <tr><td>Two plots look equally intense despite different values</td><td>Each plot used automatic limits.</td><td>Give both plots the same <code>vmin</code> and <code>vmax</code>.</td></tr>
+          <tr><td>Positive and negative values look unbalanced</td><td>The diverging scale is not centred at zero.</td><td>Use symmetric limits such as <code>-limit</code> and <code>limit</code>.</td></tr>
+          <tr><td>Annotations are unreadable</td><td>The matrix is too large or the text lacks contrast.</td><td>Annotate only small matrices or adjust text colour.</td></tr>
+          <tr><td>A spy plot hides magnitude</td><td><code>spy()</code> shows nonzero locations, not values.</td><td>Use <code>imshow()</code> when magnitude matters.</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section>
+      <h2>1.6.16 Concept Check</h2>
+      <ol>
+        <li>What does one cell in an <code>imshow()</code> plot represent?</li>
+        <li>Why should a matrix plot include a colour bar?</li>
+        <li>When is a diverging colour map appropriate?</li>
+        <li>Why should two comparison plots share colour limits?</li>
+        <li>What information does <code>spy()</code> display?</li>
+        <li>How would the image of <code>A.T</code> relate to the image of <code>A</code>?</li>
+      </ol>
+      <details>
+        <summary>Show suggested answers</summary>
+        <ol>
+          <li>One matrix entry.</li>
+          <li>It maps colours back to numerical values.</li>
+          <li>When values move in two meaningful directions around a centre, commonly zero.</li>
+          <li>So the same colour represents the same numerical value in both plots.</li>
+          <li>The locations of nonzero entries.</li>
+          <li>It is reflected across the main diagonal, provided the same scale is used.</li>
+        </ol>
+      </details>
+    </section>
+
+    <section>
+      <h2>1.6.17 Practice Exercises</h2>
+      <ol>
+        <li>Plot a 5 &times; 5 identity matrix and explain the visible pattern.</li>
+        <li>Plot a diagonal matrix with both positive and negative entries.</li>
+        <li>Create and annotate a 4 &times; 4 multiplication table.</li>
+        <li>Compare a matrix with its transpose using a shared colour scale.</li>
+        <li>Create a symmetric matrix and confirm its visual symmetry.</li>
+        <li>Construct a sparse 10 &times; 10 matrix and make a spy plot.</li>
+        <li>Create two matrices with very different ranges and show why independent automatic scales can mislead.</li>
+        <li>Modify <code>plot_matrix()</code> so signed data automatically uses symmetric limits around zero.</li>
+      </ol>
+      <details>
+        <summary>Show sample solution for Exercise 8</summary>
+        <pre><code>def plot_signed_matrix(A, title="Signed Matrix"):
+    limit = np.max(np.abs(A))
+    fig, ax = plt.subplots()
+    image = ax.imshow(
+        A, cmap="coolwarm", vmin=-limit, vmax=limit
+    )
+    ax.set_title(title)
+    ax.set_xlabel("Column index")
+    ax.set_ylabel("Row index")
+    fig.colorbar(image, ax=ax, label="Entry value")
+    plt.show()</code></pre>
+      </details>
+    </section>
+
+    <section>
+      <h2>1.6.18 Official References</h2>
+      <ul>
+        <li><a href="https://matplotlib.org/stable/api/_as_gen/matplotlib.pyplot.imshow.html"><code>matplotlib.pyplot.imshow</code></a></li>
+        <li><a href="https://matplotlib.org/stable/api/_as_gen/matplotlib.pyplot.colorbar.html"><code>matplotlib.pyplot.colorbar</code></a></li>
+        <li><a href="https://matplotlib.org/stable/users/explain/colors/colormaps.html">Choosing Colormaps in Matplotlib</a></li>
+        <li><a href="https://matplotlib.org/stable/api/_as_gen/matplotlib.pyplot.spy.html"><code>matplotlib.pyplot.spy</code></a></li>
+      </ul>
+    </section>
+
+    <section class="summary">
+      <h2>Section Summary</h2>
+      <ul>
+        <li><code>imshow()</code> represents every matrix entry with a coloured cell.</li>
+        <li>A colour bar is required to interpret the numerical meaning of colours.</li>
+        <li>Sequential maps suit ordered magnitudes; diverging maps suit signed data around a centre.</li>
+        <li>Shared colour limits are essential for fair comparisons.</li>
+        <li>Annotations provide exact values for small matrices.</li>
+        <li>Matrix plots can reveal diagonal, symmetric, block, and sparse structure.</li>
+        <li><code>spy()</code> displays the locations of nonzero entries rather than their magnitudes.</li>
+      </ul>
+    </section>
+
+    <nav class="page-navigation" aria-label="Page navigation">
+      <a href="section-1-5.html">&larr; Previous: Section 1.5</a>
+      <a href="index.html">Course Contents</a>
+      <a href="section-1-7.html">Next: Section 1.7 &rarr;</a>
+    </nav>
+  </main>
+
+  <footer>
+    <p>MATH 1516 Coding Activities — Prepared by Joe Tran</p>
+  </footer>
+</body>
+</html>

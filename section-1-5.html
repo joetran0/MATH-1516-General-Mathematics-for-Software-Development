@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Section 1.5: Solving Linear Systems | MATH 1516</title>
+  <style>
+    body { max-width: 850px; margin: 0 auto; padding: 20px; font-family: Arial, sans-serif; line-height: 1.65; color: #222; }
+    header { border-bottom: 2px solid #8c1d40; margin-bottom: 30px; }
+    nav { margin: 15px 0; }
+    nav a { margin-right: 15px; }
+    h1, h2, h3 { line-height: 1.25; }
+    h2 { margin-top: 40px; color: #8c1d40; border-bottom: 1px solid #ddd; padding-bottom: 5px; }
+    h3 { margin-top: 28px; }
+    .objectives, .steps, .activity, .note, .warning, .example, .summary { padding: 15px 18px; margin: 20px 0; border-radius: 4px; }
+    .objectives, .summary { background: #f7f7f7; border: 1px solid #ccc; }
+    .steps { background: #f4f8fc; border-left: 4px solid #2f6fa3; }
+    .activity { background: #fff8e6; border-left: 4px solid #d18b00; }
+    .note { background: #f3f8f3; border-left: 4px solid #4c8c4a; }
+    .warning { background: #fff3f3; border-left: 4px solid #b64040; }
+    .example { background: #f7f1fa; border-left: 4px solid #7b3f98; }
+    .steps h3, .activity h3, .note h3, .warning h3, .example h3, .summary h2 { margin-top: 0; }
+    pre { overflow-x: auto; padding: 14px; background: #202124; color: #f1f1f1; border-radius: 4px; line-height: 1.5; }
+    code { font-family: Consolas, Monaco, monospace; }
+    p code, li code, td code { background: #f0f0f0; padding: 2px 5px; border-radius: 3px; color: #222; }
+    table { width: 100%; border-collapse: collapse; margin: 20px 0; }
+    th, td { border: 1px solid #bbb; padding: 10px; text-align: left; vertical-align: top; }
+    th { background: #f2f2f2; }
+    details { margin: 12px 0; }
+    summary { cursor: pointer; font-weight: bold; }
+    .equation { text-align: center; font-family: Georgia, serif; font-size: 1.08rem; margin: 18px 0; }
+    .page-navigation { display: flex; justify-content: space-between; gap: 15px; border-top: 1px solid #ccc; margin-top: 45px; padding-top: 20px; }
+    footer { margin-top: 35px; color: #555; font-size: 0.9rem; }
+    @media (max-width: 600px) {
+      body { padding: 14px; }
+      table { font-size: 0.9rem; }
+      .page-navigation { flex-direction: column; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <p><a href="index.html">&larr; Course Home</a></p>
+    <h1>Section 1.5: Solving Linear Systems</h1>
+    <p><strong>Part 1: Linear Systems and Matrices</strong></p>
+    <nav aria-label="Section contents">
+      <a href="#solve">NumPy Solve</a>
+      <a href="#verify">Verification</a>
+      <a href="#singular">Singular Systems</a>
+      <a href="#least-squares">Least Squares</a>
+      <a href="#activity">Activity</a>
+    </nav>
+  </header>
+
+  <main>
+    <section class="objectives">
+      <h2>Learning Objectives</h2>
+      <p>By the end of this section, you should be able to:</p>
+      <ul>
+        <li>solve a square, full-rank linear system with <code>np.linalg.solve()</code>;</li>
+        <li>interpret a solution vector using the chosen variable order;</li>
+        <li>verify a numerical solution by substitution and matrix multiplication;</li>
+        <li>calculate and interpret a residual vector;</li>
+        <li>recognize when a system has a unique solution, no solution, or infinitely many solutions;</li>
+        <li>handle a singular-matrix error appropriately;</li>
+        <li>explain why explicitly computing an inverse is usually unnecessary; and</li>
+        <li>use least squares for a simple overdetermined system.</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>1.5.1 Begin in Google Colab</h2>
+      <p>Open a Google Colab notebook and run:</p>
+      <pre><code>import numpy as np</code></pre>
+      <p>NumPy's linear-algebra tools are available through <code>np.linalg</code>.</p>
+    </section>
+
+    <section>
+      <h2>1.5.2 What Does It Mean to Solve a System?</h2>
+      <p>For a system written as <em>A</em><strong>x</strong> = <strong>b</strong>, solving means finding every vector <strong>x</strong> that makes the equation true.</p>
+      <p>A linear system may have:</p>
+      <table>
+        <thead><tr><th>Solution Type</th><th>Meaning</th><th>Geometric Picture in Two Variables</th></tr></thead>
+        <tbody>
+          <tr><td>One solution</td><td>Exactly one vector satisfies all equations.</td><td>Two distinct lines intersect once.</td></tr>
+          <tr><td>No solution</td><td>No vector satisfies every equation.</td><td>Two distinct parallel lines.</td></tr>
+          <tr><td>Infinitely many solutions</td><td>More than one vector satisfies the system.</td><td>Two equations describe the same line.</td></tr>
+        </tbody>
+      </table>
+      <p><code>np.linalg.solve()</code> is intended for square systems with a unique solution.</p>
+    </section>
+
+    <section id="solve">
+      <h2>1.5.3 Solving a 2 &times; 2 System</h2>
+      <p>Consider:</p>
+      <div class="equation">
+        2<em>x</em> + <em>y</em> = 5<br>
+        <em>x</em> + 3<em>y</em> = 5
+      </div>
+      <pre><code>A = np.array([
+    [2, 1],
+    [1, 3]
+])
+
+b = np.array([5, 5])
+
+solution = np.linalg.solve(A, b)
+print(solution)</code></pre>
+      <pre><code>[2. 1.]</code></pre>
+      <p>Since the variable order is <em>x</em>, <em>y</em>, the output means <em>x</em> = 2 and <em>y</em> = 1.</p>
+      <div class="steps">
+        <h3>Standard Workflow</h3>
+        <ol>
+          <li>Put the equations in standard form.</li>
+          <li>Create the coefficient matrix <code>A</code>.</li>
+          <li>Create the constant vector <code>b</code>.</li>
+          <li>Run <code>solution = np.linalg.solve(A, b)</code>.</li>
+          <li>Interpret entries in the original variable order.</li>
+          <li>Verify the result.</li>
+        </ol>
+      </div>
+    </section>
+
+    <section>
+      <h2>1.5.4 Solving a 3 &times; 3 System</h2>
+      <div class="equation">
+        <em>x</em> + <em>y</em> + <em>z</em> = 6<br>
+        2<em>x</em> &minus; <em>y</em> + <em>z</em> = 3<br>
+        <em>x</em> + 2<em>y</em> &minus; <em>z</em> = 2
+      </div>
+      <pre><code>A = np.array([
+    [1,  1,  1],
+    [2, -1,  1],
+    [1,  2, -1]
+], dtype=float)
+
+b = np.array([6, 3, 2], dtype=float)
+
+solution = np.linalg.solve(A, b)
+print(solution)</code></pre>
+      <pre><code>[1. 2. 3.]</code></pre>
+      <p>The solution is <em>x</em> = 1, <em>y</em> = 2, and <em>z</em> = 3.</p>
+      <div class="note">
+        <h3>Why Decimal Output Appears</h3>
+        <p>Numerical linear-algebra routines generally return floating-point values, even when the exact solution consists of integers.</p>
+      </div>
+    </section>
+
+    <section id="verify">
+      <h2>1.5.5 Verifying the Solution</h2>
+      <p>Substitute the computed vector back into the matrix equation:</p>
+      <pre><code>left_side = A @ solution
+
+print("A @ solution:", left_side)
+print("b:", b)
+print("Verified:", np.allclose(left_side, b))</code></pre>
+      <p><code>np.allclose()</code> allows for very small floating-point differences.</p>
+      <h3>Checking Individual Equations</h3>
+      <pre><code>x, y, z = solution
+
+print(x + y + z)
+print(2*x - y + z)
+print(x + 2*y - z)</code></pre>
+      <p>The outputs should be close to 6, 3, and 2.</p>
+    </section>
+
+    <section>
+      <h2>1.5.6 Residuals</h2>
+      <p>The residual vector measures how closely a candidate satisfies the system:</p>
+      <div class="equation"><strong>r</strong> = <em>A</em><strong>x</strong> &minus; <strong>b</strong></div>
+      <pre><code>residual = A @ solution - b
+residual_size = np.linalg.norm(residual)
+
+print("Residual:", residual)
+print("Residual norm:", residual_size)</code></pre>
+      <p>For an accurately computed exact solution, the residual norm should be zero or extremely small.</p>
+      <div class="warning">
+        <h3>Small Does Not Always Mean Exactly Zero</h3>
+        <p>Floating-point arithmetic can produce values such as <code>2.2e-16</code>. This is extremely close to zero and is normally caused by rounding.</p>
+      </div>
+    </section>
+
+    <section>
+      <h2>1.5.7 Determinants and Unique Solutions</h2>
+      <p>For a square matrix <em>A</em>:</p>
+      <ul>
+        <li>if det(<em>A</em>) &ne; 0, then <em>A</em> is invertible and the system has a unique solution for every <strong>b</strong>;</li>
+        <li>if det(<em>A</em>) = 0, then <em>A</em> is singular and a unique solution is impossible.</li>
+      </ul>
+      <pre><code>determinant = np.linalg.det(A)
+print(determinant)</code></pre>
+      <div class="note">
+        <h3>Use the Solver to Solve</h3>
+        <p>The determinant is useful for mathematical interpretation, but you do not need to calculate it before every call to <code>np.linalg.solve()</code>.</p>
+      </div>
+    </section>
+
+    <section>
+      <h2>1.5.8 Why Not Compute the Inverse?</h2>
+      <p>If <em>A</em> is invertible, algebra gives <strong>x</strong> = <em>A</em><sup>&minus;1</sup><strong>b</strong>. NumPy can imitate this:</p>
+      <pre><code>solution_inverse = np.linalg.inv(A) @ b</code></pre>
+      <p>However, when the goal is to solve one system, prefer:</p>
+      <pre><code>solution = np.linalg.solve(A, b)</code></pre>
+      <p>The direct solver avoids explicitly constructing the inverse and more clearly expresses the intended calculation.</p>
+      <div class="warning">
+        <h3>Do Not Use <code>1 / A</code></h3>
+        <p><code>1 / A</code> divides 1 by each entry. It does not compute a matrix inverse.</p>
+      </div>
+    </section>
+
+    <section id="singular">
+      <h2>1.5.9 Singular Systems</h2>
+      <p>Consider a system in which the second equation is twice the first:</p>
+      <div class="equation">
+        <em>x</em> + 2<em>y</em> = 3<br>
+        2<em>x</em> + 4<em>y</em> = 6
+      </div>
+      <pre><code>A = np.array([[1, 2], [2, 4]], dtype=float)
+b = np.array([3, 6], dtype=float)
+
+np.linalg.solve(A, b)</code></pre>
+      <p>NumPy raises a <code>LinAlgError: Singular matrix</code>. Here the equations describe the same line, so there are infinitely many solutions.</p>
+      <h3>A System with No Solution</h3>
+      <p>If the same matrix is paired with <code>b = [3, 7]</code>, the left sides remain multiples but the right sides do not. The equations are inconsistent, so there is no solution. The coefficient matrix is still singular.</p>
+    </section>
+
+    <section>
+      <h2>1.5.10 Handling Solver Errors</h2>
+      <pre><code>try:
+    solution = np.linalg.solve(A, b)
+    print("Solution:", solution)
+except np.linalg.LinAlgError:
+    print("The coefficient matrix is singular or unsuitable for solve().")</code></pre>
+      <p>Catching the error prevents the notebook from stopping and gives you an opportunity to inspect the system.</p>
+    </section>
+
+    <section id="least-squares">
+      <h2>1.5.11 Non-Square Systems and Least Squares</h2>
+      <p><code>np.linalg.solve()</code> requires a square coefficient matrix. An overdetermined system has more equations than variables and may not have an exact solution.</p>
+      <pre><code>A = np.array([
+    [1, 1],
+    [1, 2],
+    [1, 3]
+], dtype=float)
+
+b = np.array([2, 2.9, 4.1])
+
+solution, residuals, rank, singular_values = np.linalg.lstsq(
+    A, b, rcond=None
+)
+
+print("Least-squares solution:", solution)
+print("Residual vector:", A @ solution - b)</code></pre>
+      <p>The least-squares solution minimizes the size of <em>A</em><strong>x</strong> &minus; <strong>b</strong>. It is an approximation, not necessarily an exact solution to every equation.</p>
+      <div class="note">
+        <h3>Where Least Squares Appears</h3>
+        <p>Least squares is used in data fitting and linear regression, where measured data may not lie exactly on one model.</p>
+      </div>
+    </section>
+
+    <section>
+      <h2>1.5.12 Applied Example: Ticket Sales</h2>
+      <p>Recall the system from Section 1.4:</p>
+      <div class="equation">
+        <em>s</em> + <em>g</em> = 80<br>
+        6<em>s</em> + 10<em>g</em> = 620
+      </div>
+      <pre><code>A = np.array([[1, 1], [6, 10]], dtype=float)
+b = np.array([80, 620], dtype=float)
+
+solution = np.linalg.solve(A, b)
+s, g = solution
+
+print("Student tickets:", s)
+print("General tickets:", g)
+print("Verified:", np.allclose(A @ solution, b))</code></pre>
+      <p>The result is 45 student tickets and 35 general tickets. Both values make sense in context: they are nonnegative whole numbers, total 80, and produce $620 in revenue.</p>
+    </section>
+
+    <section>
+      <h2>1.5.13 A Reusable Solver Function</h2>
+      <pre><code>def solve_and_check(A, b):
+    """Solve A @ x = b and report the residual norm."""
+    try:
+        x = np.linalg.solve(A, b)
+    except np.linalg.LinAlgError:
+        return None, None
+
+    residual_norm = np.linalg.norm(A @ x - b)
+    return x, residual_norm
+
+A = np.array([[2, 1], [1, 3]], dtype=float)
+b = np.array([5, 5], dtype=float)
+
+x, error = solve_and_check(A, b)
+print(x)
+print(error)</code></pre>
+    </section>
+
+    <section id="activity">
+      <h2>1.5.14 Tutorial Activity: Solve, Verify, Interpret</h2>
+      <div class="activity">
+        <h3>System A</h3>
+        <div class="equation">
+          3<em>x</em> + 2<em>y</em> = 12<br>
+          <em>x</em> &minus; <em>y</em> = 1
+        </div>
+        <h3>System B</h3>
+        <div class="equation">
+          <em>x</em> + <em>y</em> + <em>z</em> = 2<br>
+          2<em>x</em> &minus; <em>y</em> + 3<em>z</em> = 8<br>
+          3<em>x</em> + 2<em>y</em> &minus; <em>z</em> = 3
+        </div>
+        <h3>Tasks</h3>
+        <ol>
+          <li>Create <code>A</code> and <code>b</code> for each system.</li>
+          <li>Predict whether <code>np.linalg.solve()</code> is appropriate.</li>
+          <li>Solve each system.</li>
+          <li>Interpret the entries using the correct variable order.</li>
+          <li>Calculate the residual vector and its norm.</li>
+          <li>Verify each result with <code>np.allclose()</code>.</li>
+          <li>Modify one row to create a singular matrix and observe what happens.</li>
+        </ol>
+      </div>
+      <details>
+        <summary>Show solutions</summary>
+        <pre><code># System A
+A1 = np.array([[3, 2], [1, -1]], dtype=float)
+b1 = np.array([12, 1], dtype=float)
+x1 = np.linalg.solve(A1, b1)
+# x1 = [2.8, 1.8]
+
+# System B
+A2 = np.array([
+    [1,  1,  1],
+    [2, -1,  3],
+    [3,  2, -1]
+], dtype=float)
+b2 = np.array([2, 8, 3], dtype=float)
+x2 = np.linalg.solve(A2, b2)
+# x2 = [2, -1, 1]
+
+print(np.linalg.norm(A1 @ x1 - b1))
+print(np.linalg.norm(A2 @ x2 - b2))</code></pre>
+      </details>
+    </section>
+
+    <section>
+      <h2>1.5.15 Common Errors</h2>
+      <table>
+        <thead><tr><th>Problem</th><th>Cause</th><th>Correction</th></tr></thead>
+        <tbody>
+          <tr><td><code>LinAlgError: Last 2 dimensions must be square</code></td><td><code>A</code> is not square.</td><td>Use <code>solve</code> only for square systems; consider least squares when appropriate.</td></tr>
+          <tr><td><code>LinAlgError: Singular matrix</code></td><td>The system does not have a unique solution.</td><td>Inspect dependence and consistency instead of forcing a solve.</td></tr>
+          <tr><td>Wrong numerical answer</td><td>Coefficients, constants, or variable order were entered incorrectly.</td><td>Reconstruct <code>A</code> and <code>b</code> from the original equations.</td></tr>
+          <tr><td>Verification fails slightly</td><td>Floating-point rounding is present.</td><td>Use <code>np.allclose()</code> and inspect the residual norm.</td></tr>
+          <tr><td>Used <code>1 / A</code></td><td>Entrywise reciprocals were confused with a matrix inverse.</td><td>Use <code>np.linalg.solve(A, b)</code>.</td></tr>
+          <tr><td>Solution entries mislabelled</td><td>The variable order was forgotten.</td><td>Record the order before building the matrix.</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section>
+      <h2>1.5.16 Concept Check</h2>
+      <ol>
+        <li>What conditions must <code>A</code> satisfy for <code>np.linalg.solve(A, b)</code>?</li>
+        <li>How should you interpret the entries returned by the solver?</li>
+        <li>What does a residual vector measure?</li>
+        <li>What does a singular-matrix error tell you?</li>
+        <li>Why is <code>np.linalg.solve(A, b)</code> preferred to <code>np.linalg.inv(A) @ b</code>?</li>
+        <li>When might <code>np.linalg.lstsq()</code> be appropriate?</li>
+      </ol>
+      <details>
+        <summary>Show suggested answers</summary>
+        <ol>
+          <li>It must be square and full rank, with dimensions compatible with <code>b</code>.</li>
+          <li>According to the variable order used to construct the columns of <code>A</code>.</li>
+          <li>The discrepancy <code>A @ x - b</code>.</li>
+          <li>The coefficient matrix is not invertible, so a unique solution is unavailable.</li>
+          <li>It directly solves the system without explicitly forming an inverse.</li>
+          <li>For a non-square or overdetermined system where a best-fitting approximate solution is desired.</li>
+        </ol>
+      </details>
+    </section>
+
+    <section>
+      <h2>1.5.17 Practice Exercises</h2>
+      <ol>
+        <li>Solve 4<em>x</em> &minus; <em>y</em> = 7 and 2<em>x</em> + 3<em>y</em> = 1.</li>
+        <li>Solve a 3 &times; 3 system of your choice and verify the result.</li>
+        <li>Calculate the residual vector and norm for each solution.</li>
+        <li>Compare <code>np.linalg.solve(A, b)</code> with <code>np.linalg.inv(A) @ b</code>.</li>
+        <li>Construct two equations describing the same line and observe the solver error.</li>
+        <li>Change only the constant vector so those parallel equations become inconsistent.</li>
+        <li>Solve the ticket-sales example and explain why the result is reasonable.</li>
+        <li>Create an overdetermined system and find its least-squares solution.</li>
+      </ol>
+      <details>
+        <summary>Show sample solution for Exercise 1</summary>
+        <pre><code>A = np.array([[4, -1], [2, 3]], dtype=float)
+b = np.array([7, 1], dtype=float)
+x = np.linalg.solve(A, b)
+
+print(x)                         # [1.57142857, -0.71428571]
+print(np.allclose(A @ x, b))     # True
+print(np.linalg.norm(A @ x - b))</code></pre>
+      </details>
+    </section>
+
+    <section>
+      <h2>1.5.18 Official References</h2>
+      <ul>
+        <li><a href="https://numpy.org/doc/stable/reference/generated/numpy.linalg.solve.html"><code>numpy.linalg.solve</code></a></li>
+        <li><a href="https://numpy.org/doc/stable/reference/generated/numpy.linalg.det.html"><code>numpy.linalg.det</code></a></li>
+        <li><a href="https://numpy.org/doc/stable/reference/generated/numpy.linalg.norm.html"><code>numpy.linalg.norm</code></a></li>
+        <li><a href="https://numpy.org/doc/stable/reference/generated/numpy.linalg.lstsq.html"><code>numpy.linalg.lstsq</code></a></li>
+      </ul>
+    </section>
+
+    <section class="summary">
+      <h2>Section Summary</h2>
+      <ul>
+        <li><code>np.linalg.solve(A, b)</code> solves a square, full-rank system.</li>
+        <li>The solution vector must be interpreted in the chosen variable order.</li>
+        <li>Verify a solution using <code>np.allclose(A @ x, b)</code>.</li>
+        <li>The residual <code>A @ x - b</code> measures the discrepancy in a proposed or computed solution.</li>
+        <li>A singular coefficient matrix does not produce a unique solution.</li>
+        <li>Use the direct solver instead of explicitly constructing an inverse.</li>
+        <li>Least squares provides a best-fitting solution when an exact non-square system solution may not exist.</li>
+      </ul>
+    </section>
+
+    <nav class="page-navigation" aria-label="Page navigation">
+      <a href="section-1-4.html">&larr; Previous: Section 1.4</a>
+      <a href="index.html">Course Contents</a>
+      <a href="section-1-6.html">Next: Section 1.6 &rarr;</a>
+    </nav>
+  </main>
+
+  <footer>
+    <p>MATH 1516 Coding Activities — Prepared by Joe Tran</p>
+  </footer>
+</body>
+</html>
