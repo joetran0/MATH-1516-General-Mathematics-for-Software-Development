@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Section 2.1: Defining and Evaluating Functions | MATH 1516</title>
+  <style>
+    body { max-width: 850px; margin: 0 auto; padding: 20px; font-family: Arial, sans-serif; line-height: 1.65; color: #222; }
+    header { border-bottom: 2px solid #8c1d40; margin-bottom: 30px; }
+    nav { margin: 15px 0; }
+    nav a { margin-right: 15px; }
+    h1, h2, h3 { line-height: 1.25; }
+    h2 { margin-top: 40px; color: #8c1d40; border-bottom: 1px solid #ddd; padding-bottom: 5px; }
+    h3 { margin-top: 28px; }
+    .objectives, .steps, .activity, .note, .warning, .example, .summary { padding: 15px 18px; margin: 20px 0; border-radius: 4px; }
+    .objectives, .summary { background: #f7f7f7; border: 1px solid #ccc; }
+    .steps { background: #f4f8fc; border-left: 4px solid #2f6fa3; }
+    .activity { background: #fff8e6; border-left: 4px solid #d18b00; }
+    .note { background: #f3f8f3; border-left: 4px solid #4c8c4a; }
+    .warning { background: #fff3f3; border-left: 4px solid #b64040; }
+    .example { background: #f7f1fa; border-left: 4px solid #7b3f98; }
+    .steps h3, .activity h3, .note h3, .warning h3, .example h3, .summary h2 { margin-top: 0; }
+    pre { overflow-x: auto; padding: 14px; background: #202124; color: #f1f1f1; border-radius: 4px; line-height: 1.5; }
+    code { font-family: Consolas, Monaco, monospace; }
+    p code, li code, td code { background: #f0f0f0; padding: 2px 5px; border-radius: 3px; color: #222; }
+    table { width: 100%; border-collapse: collapse; margin: 20px 0; }
+    th, td { border: 1px solid #bbb; padding: 10px; text-align: left; vertical-align: top; }
+    th { background: #f2f2f2; }
+    details { margin: 12px 0; }
+    summary { cursor: pointer; font-weight: bold; }
+    .equation { text-align: center; font-family: Georgia, serif; font-size: 1.08rem; margin: 18px 0; }
+    .page-navigation { display: flex; justify-content: space-between; gap: 15px; border-top: 1px solid #ccc; margin-top: 45px; padding-top: 20px; }
+    footer { margin-top: 35px; color: #555; font-size: 0.9rem; }
+    @media (max-width: 600px) {
+      body { padding: 14px; }
+      table { font-size: 0.9rem; }
+      .page-navigation { flex-direction: column; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <p><a href="index.html">&larr; Course Home</a></p>
+    <h1>Section 2.1: Defining and Evaluating Functions</h1>
+    <p><strong>Part 2: Differential Calculus</strong></p>
+    <nav aria-label="Section contents">
+      <a href="#define">Define</a>
+      <a href="#evaluate">Evaluate</a>
+      <a href="#domains">Domains</a>
+      <a href="#arrays">Arrays</a>
+      <a href="#composition">Composition</a>
+      <a href="#piecewise">Piecewise</a>
+      <a href="#activity">Activity</a>
+    </nav>
+  </header>
+
+  <main>
+    <section class="objectives">
+      <h2>Learning Objectives</h2>
+      <p>By the end of this section, you should be able to:</p>
+      <ul>
+        <li>interpret a function as an input-output rule;</li>
+        <li>define a mathematical function with Python's <code>def</code> statement;</li>
+        <li>use <code>return</code> to send a value back to the caller;</li>
+        <li>evaluate functions at individual numbers and NumPy arrays;</li>
+        <li>recognize important domain restrictions;</li>
+        <li>build compositions and piecewise-defined functions; and</li>
+        <li>create a table of function values in Google Colab.</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>2.1.1 Begin in Google Colab</h2>
+      <p>Open a new Google Colab notebook. In the first code cell, import NumPy:</p>
+      <pre><code>import numpy as np</code></pre>
+      <p>NumPy gives us mathematical functions that work with both individual values and arrays of values.</p>
+    </section>
+
+    <section>
+      <h2>2.1.2 Functions as Input-Output Rules</h2>
+      <p>A function assigns exactly one output to each allowed input. The notation <em>y</em> = <em>f</em>(<em>x</em>) says that:</p>
+      <ul>
+        <li><em>x</em> is the input, or independent variable;</li>
+        <li><em>f</em> is the name of the function; and</li>
+        <li><em>f</em>(<em>x</em>) is the output, or dependent variable.</li>
+      </ul>
+      <div class="example">
+        <h3>Example: A Polynomial</h3>
+        <p>Consider</p>
+        <div class="equation"><em>f</em>(<em>x</em>) = <em>x</em><sup>2</sup> − 3<em>x</em> + 2.</div>
+        <p>Substituting <em>x</em> = 4 gives <em>f</em>(4) = 4<sup>2</sup> − 3(4) + 2 = 6.</p>
+      </div>
+    </section>
+
+    <section id="define">
+      <h2>2.1.3 Defining a Function in Python</h2>
+      <p>The same polynomial can be written as a Python function:</p>
+      <pre><code>def f(x):
+    return x**2 - 3*x + 2</code></pre>
+      <table>
+        <thead><tr><th>Code</th><th>Meaning</th></tr></thead>
+        <tbody>
+          <tr><td><code>def</code></td><td>Begins a function definition.</td></tr>
+          <tr><td><code>f</code></td><td>Names the function.</td></tr>
+          <tr><td><code>x</code></td><td>Is the parameter that receives an input.</td></tr>
+          <tr><td><code>:</code></td><td>Ends the function header.</td></tr>
+          <tr><td>Indented line</td><td>Forms the function body.</td></tr>
+          <tr><td><code>return</code></td><td>Sends the calculated output back.</td></tr>
+        </tbody>
+      </table>
+      <div class="warning">
+        <h3>Python Multiplication and Powers</h3>
+        <p>Write <code>3*x</code>, not <code>3x</code>. Use <code>**</code> for powers. In Python, <code>^</code> does not mean exponentiation.</p>
+      </div>
+    </section>
+
+    <section id="evaluate">
+      <h2>2.1.4 Evaluating a Function</h2>
+      <p>After running the definition cell, call the function by putting an input in parentheses:</p>
+      <pre><code>print(f(0))   # 2
+print(f(1))   # 0
+print(f(4))   # 6</code></pre>
+      <p>A function call can also be used inside a larger calculation:</p>
+      <pre><code>difference = f(4) - f(1)
+print(difference)   # 6</code></pre>
+
+      <h3><code>return</code> Is Not the Same as <code>print</code></h3>
+      <p><code>print</code> displays information. <code>return</code> produces a result that another calculation can use.</p>
+      <pre><code>def show_square(x):
+    print(x**2)
+
+result = show_square(3)
+print(result)   # None</code></pre>
+      <p>The function displays 9, but it does not return 9. When a function reaches its end without a <code>return</code> statement, its result is <code>None</code>.</p>
+      <div class="note">
+        <h3>Rule of Thumb</h3>
+        <p>For mathematical functions, return the answer. Print it only when you want to display it.</p>
+      </div>
+    </section>
+
+    <section>
+      <h2>2.1.5 Parameters and Local Variables</h2>
+      <p>A function can perform several steps before returning a result. Variables created inside it are local to that function.</p>
+      <pre><code>def average_rate_change(a, b):
+    change_in_output = f(b) - f(a)
+    change_in_input = b - a
+    return change_in_output / change_in_input
+
+print(average_rate_change(1, 4))   # 2.0</code></pre>
+      <p>This function has two parameters, <code>a</code> and <code>b</code>. Their order matters when the function is called.</p>
+
+      <h3>A Function with Several Parameters</h3>
+      <pre><code>def linear(x, m, b):
+    return m*x + b
+
+print(linear(3, 2, -1))   # 5</code></pre>
+      <p>Here, <code>x</code> is the input, <code>m</code> is the slope, and <code>b</code> is the vertical intercept.</p>
+    </section>
+
+    <section>
+      <h2>2.1.6 Common Mathematical Functions</h2>
+      <p>Use NumPy's versions of common mathematical functions so the same definition can later accept arrays.</p>
+      <table>
+        <thead><tr><th>Mathematics</th><th>NumPy</th></tr></thead>
+        <tbody>
+          <tr><td>Square root</td><td><code>np.sqrt(x)</code></td></tr>
+          <tr><td>Absolute value</td><td><code>np.abs(x)</code></td></tr>
+          <tr><td><em>e</em><sup><em>x</em></sup></td><td><code>np.exp(x)</code></td></tr>
+          <tr><td>Natural logarithm</td><td><code>np.log(x)</code></td></tr>
+          <tr><td>Sine and cosine</td><td><code>np.sin(x)</code>, <code>np.cos(x)</code></td></tr>
+        </tbody>
+      </table>
+      <pre><code>def damped_wave(x):
+    return np.exp(-x) * np.cos(x)
+
+print(damped_wave(0))   # 1.0</code></pre>
+      <div class="note">
+        <h3>Angles Use Radians</h3>
+        <p>NumPy's trigonometric functions expect angles in radians. Convert degrees with <code>np.deg2rad</code> when necessary.</p>
+      </div>
+    </section>
+
+    <section id="domains">
+      <h2>2.1.7 Domains and Invalid Inputs</h2>
+      <p>The <strong>domain</strong> is the set of inputs for which a function is defined. Python does not automatically know the intended real-number domain.</p>
+      <table>
+        <thead><tr><th>Function</th><th>Real-number restriction</th></tr></thead>
+        <tbody>
+          <tr><td><code>np.sqrt(x - 2)</code></td><td><em>x</em> ≥ 2</td></tr>
+          <tr><td><code>np.log(x)</code></td><td><em>x</em> &gt; 0</td></tr>
+          <tr><td><code>1 / (x - 3)</code></td><td><em>x</em> ≠ 3</td></tr>
+        </tbody>
+      </table>
+      <pre><code>def reciprocal_shift(x):
+    if x == 3:
+        raise ValueError("x cannot equal 3")
+    return 1 / (x - 3)</code></pre>
+      <div class="warning">
+        <h3>Warnings Can Reveal a Domain Problem</h3>
+        <p>For an invalid NumPy input, Colab may show a warning and produce <code>nan</code> (not a number) or <code>inf</code> (infinity). Do not treat those values as ordinary outputs.</p>
+      </div>
+    </section>
+
+    <section id="arrays">
+      <h2>2.1.8 Evaluating Many Inputs</h2>
+      <p>Our first function uses operations that NumPy applies element by element. We can therefore give it an entire array:</p>
+      <pre><code>x_values = np.array([-2, -1, 0, 1, 2])
+y_values = f(x_values)
+
+print(y_values)   # [12  6  2  0  0]</code></pre>
+      <p><code>np.linspace(start, stop, number)</code> creates evenly spaced inputs, including both endpoints:</p>
+      <pre><code>x_values = np.linspace(-2, 4, 7)
+y_values = f(x_values)
+
+print(x_values)
+print(y_values)</code></pre>
+
+      <h3>Create a Value Table</h3>
+      <pre><code>for x_value, y_value in zip(x_values, y_values):
+    print(f"x = {x_value:4.1f}, f(x) = {y_value:5.1f}")</code></pre>
+      <table>
+        <thead><tr><th><em>x</em></th><th><em>f</em>(<em>x</em>)</th></tr></thead>
+        <tbody>
+          <tr><td>−2</td><td>12</td></tr>
+          <tr><td>−1</td><td>6</td></tr>
+          <tr><td>0</td><td>2</td></tr>
+          <tr><td>1</td><td>0</td></tr>
+          <tr><td>2</td><td>0</td></tr>
+          <tr><td>3</td><td>2</td></tr>
+          <tr><td>4</td><td>6</td></tr>
+        </tbody>
+      </table>
+      <div class="note">
+        <h3>Why NumPy Instead of <code>math</code>?</h3>
+        <p>The standard <code>math</code> module is convenient for single numbers. NumPy functions also accept arrays, which will be useful when we plot functions in Section 2.2.</p>
+      </div>
+    </section>
+
+    <section id="composition">
+      <h2>2.1.9 Composing Functions</h2>
+      <p>The composition (<em>f</em> ∘ <em>g</em>)(<em>x</em>) means <em>f</em>(<em>g</em>(<em>x</em>)). The output of <em>g</em> becomes the input of <em>f</em>.</p>
+      <pre><code>def g(x):
+    return 2*x + 1
+
+def h(x):
+    return f(g(x))
+
+print(h(2))       # f(g(2)) = f(5) = 12
+print(g(f(2)))    # g(f(2)) = g(0) = 1</code></pre>
+      <p>Usually, <em>f</em>(<em>g</em>(<em>x</em>)) and <em>g</em>(<em>f</em>(<em>x</em>)) are different. Read a composition from the inside outward.</p>
+    </section>
+
+    <section id="piecewise">
+      <h2>2.1.10 Piecewise-Defined Functions</h2>
+      <p>A scalar piecewise function can use <code>if</code>:</p>
+      <pre><code>def absolute_value(x):
+    if x &lt; 0:
+        return -x
+    return x
+
+print(absolute_value(-5))   # 5
+print(absolute_value(3))    # 3</code></pre>
+      <p>For an array, use <code>np.where(condition, value_if_true, value_if_false)</code>:</p>
+      <div class="equation">
+        <em>p</em>(<em>x</em>) = { <em>x</em><sup>2</sup> if <em>x</em> &lt; 0; &nbsp; 2<em>x</em> + 1 if <em>x</em> ≥ 0 }
+      </div>
+      <pre><code>def piecewise(x):
+    x = np.asarray(x)
+    return np.where(x &lt; 0, x**2, 2*x + 1)
+
+inputs = np.array([-2, -1, 0, 1, 2])
+print(piecewise(inputs))   # [4 1 1 3 5]</code></pre>
+    </section>
+
+    <section>
+      <h2>2.1.11 An Applied Function</h2>
+      <p>Suppose a printing job has a fixed setup cost of $25 and costs $4.50 per copy.</p>
+      <pre><code>def total_cost(quantity, fixed_cost=25, unit_cost=4.50):
+    return fixed_cost + unit_cost*quantity
+
+print(total_cost(20))           # 115.0
+print(total_cost(20, 30, 4.25)) # 115.0</code></pre>
+      <p>The last two parameters have default values. A caller may use the defaults or provide different values.</p>
+    </section>
+
+    <section id="activity" class="activity">
+      <h2>2.1.12 Tutorial Activity: Function Lab</h2>
+      <p>Create a new Colab notebook and complete the following tasks.</p>
+      <ol>
+        <li>Import NumPy as <code>np</code>.</li>
+        <li>Define <em>p</em>(<em>x</em>) = 2<em>x</em><sup>3</sup> − <em>x</em> + 4.</li>
+        <li>Evaluate <em>p</em>(−2), <em>p</em>(0), and <em>p</em>(3).</li>
+        <li>Create nine evenly spaced inputs from −2 to 2 and evaluate <em>p</em> at all of them.</li>
+        <li>Print the inputs and outputs as a two-column value table.</li>
+        <li>Define <em>q</em>(<em>x</em>) = √(<em>x</em> + 3). State its real-number domain.</li>
+        <li>Define <em>r</em>(<em>x</em>) = <em>q</em>(<em>p</em>(<em>x</em>)) and evaluate <em>r</em>(0).</li>
+        <li>Define a piecewise function that returns <em>x</em> + 2 when <em>x</em> &lt; 1 and <em>x</em><sup>2</sup> otherwise. Test it on an array.</li>
+      </ol>
+      <details>
+        <summary>Show one possible solution</summary>
+        <pre><code>import numpy as np
+
+def p(x):
+    return 2*x**3 - x + 4
+
+print(p(-2))   # -10
+print(p(0))    # 4
+print(p(3))    # 55
+
+x_values = np.linspace(-2, 2, 9)
+y_values = p(x_values)
+
+for x_value, y_value in zip(x_values, y_values):
+    print(f"{x_value:5.2f}  {y_value:7.2f}")
+
+def q(x):
+    return np.sqrt(x + 3)
+
+# Domain of q: x &gt;= -3
+
+def r(x):
+    return q(p(x))
+
+print(r(0))   # sqrt(7)
+
+def s(x):
+    x = np.asarray(x)
+    return np.where(x &lt; 1, x + 2, x**2)
+
+print(s(np.array([-2, 0, 1, 3])))</code></pre>
+      </details>
+    </section>
+
+    <section>
+      <h2>2.1.13 Common Errors</h2>
+      <table>
+        <thead><tr><th>Problem</th><th>Likely cause and fix</th></tr></thead>
+        <tbody>
+          <tr><td>Incorrect powers</td><td>Replace <code>x^2</code> with <code>x**2</code>.</td></tr>
+          <tr><td><code>SyntaxError</code> after the header</td><td>Add the colon after <code>def f(x)</code>.</td></tr>
+          <tr><td><code>IndentationError</code></td><td>Indent every line in the function body consistently.</td></tr>
+          <tr><td>The result is <code>None</code></td><td>The function probably prints but does not return its result.</td></tr>
+          <tr><td><code>NameError</code></td><td>Run the definition cell before calling the function, and check spelling.</td></tr>
+          <tr><td>An array causes <code>TypeError</code></td><td>Use NumPy functions such as <code>np.sqrt</code>, not scalar-only functions.</td></tr>
+          <tr><td><code>nan</code>, <code>inf</code>, or a warning</td><td>Check the function's domain and the supplied inputs.</td></tr>
+          <tr><td>A function is “not callable”</td><td>You may have overwritten its name, for example with <code>f = 3</code>. Rerun the definition.</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section>
+      <h2>2.1.14 Concept Check</h2>
+      <ol>
+        <li>What is the difference between a parameter and an argument?</li>
+        <li>Why is <code>return</code> usually more useful than <code>print</code> inside a mathematical function?</li>
+        <li>What Python operator represents exponentiation?</li>
+        <li>What does <code>np.linspace(-1, 1, 5)</code> create?</li>
+        <li>What is the real-number domain of <code>np.log(x - 4)</code>?</li>
+        <li>In what order should you evaluate <code>f(g(x))</code>?</li>
+      </ol>
+      <details>
+        <summary>Show suggested answers</summary>
+        <ol>
+          <li>A parameter appears in the definition; an argument is the value supplied in a call.</li>
+          <li>A returned value can be stored, composed, or used in another calculation.</li>
+          <li><code>**</code>.</li>
+          <li>The array <code>[-1, -0.5, 0, 0.5, 1]</code>.</li>
+          <li><em>x</em> &gt; 4.</li>
+          <li>Evaluate <em>g</em> first, then use its output as the input to <em>f</em>.</li>
+        </ol>
+      </details>
+    </section>
+
+    <section>
+      <h2>2.1.15 Practice Exercises</h2>
+      <ol>
+        <li>Define and evaluate <em>k</em>(<em>x</em>) = 5<em>x</em><sup>2</sup> − 2<em>x</em> + 1.</li>
+        <li>Write a function that converts Celsius to Fahrenheit.</li>
+        <li>Write a function for the area of a circle in terms of its radius.</li>
+        <li>Create 11 evenly spaced inputs from 0 to 5 and evaluate <em>e</em><sup>−<em>x</em></sup>.</li>
+        <li>Define <em>u</em>(<em>x</em>) = √(10 − <em>x</em>). State its domain and test its boundary.</li>
+        <li>Define two functions and calculate both possible compositions at <em>x</em> = 2.</li>
+        <li>Write a scalar piecewise function for the sign of a number: −1, 0, or 1.</li>
+        <li>Create an applied function with at least two parameters and explain their units.</li>
+      </ol>
+      <details>
+        <summary>Show sample solutions for Exercises 2 and 4</summary>
+        <pre><code>def fahrenheit(celsius):
+    return (9/5)*celsius + 32
+
+print(fahrenheit(20))   # 68.0
+
+x = np.linspace(0, 5, 11)
+y = np.exp(-x)
+print(x)
+print(y)</code></pre>
+      </details>
+    </section>
+
+    <section>
+      <h2>2.1.16 Official References</h2>
+      <ul>
+        <li><a href="https://docs.python.org/3/tutorial/controlflow.html#defining-functions">Python tutorial: defining functions</a></li>
+        <li><a href="https://numpy.org/doc/stable/reference/generated/numpy.linspace.html"><code>numpy.linspace</code></a></li>
+        <li><a href="https://numpy.org/doc/stable/reference/generated/numpy.where.html"><code>numpy.where</code></a></li>
+        <li><a href="https://numpy.org/doc/stable/reference/routines.math.html">NumPy mathematical functions</a></li>
+      </ul>
+    </section>
+
+    <section class="summary">
+      <h2>Section Summary</h2>
+      <ul>
+        <li>A function maps every allowed input to exactly one output.</li>
+        <li>Python functions use <code>def</code>, parameters, an indented body, and usually <code>return</code>.</li>
+        <li>Explicit multiplication and <code>**</code> translate standard algebra into Python.</li>
+        <li>NumPy functions make definitions work naturally with arrays.</li>
+        <li>Every formula must be considered together with its domain.</li>
+        <li>Functions can be composed and defined piecewise.</li>
+        <li>Arrays and value tables prepare us to plot functions in Section 2.2.</li>
+      </ul>
+    </section>
+
+    <nav class="page-navigation" aria-label="Page navigation">
+      <a href="section-1-7.html">&larr; Previous: Section 1.7</a>
+      <a href="index.html">Course Contents</a>
+      <a href="section-2-2.html">Next: Section 2.2 &rarr;</a>
+    </nav>
+  </main>
+
+  <footer>
+    <p>MATH 1516 Coding Activities — Prepared by Joe Tran</p>
+  </footer>
+</body>
+</html>

@@ -1,0 +1,546 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Section 2.2: Plotting Functions | MATH 1516</title>
+  <style>
+    body { max-width: 850px; margin: 0 auto; padding: 20px; font-family: Arial, sans-serif; line-height: 1.65; color: #222; }
+    header { border-bottom: 2px solid #8c1d40; margin-bottom: 30px; }
+    nav { margin: 15px 0; }
+    nav a { margin-right: 15px; }
+    h1, h2, h3 { line-height: 1.25; }
+    h2 { margin-top: 40px; color: #8c1d40; border-bottom: 1px solid #ddd; padding-bottom: 5px; }
+    h3 { margin-top: 28px; }
+    .objectives, .steps, .activity, .note, .warning, .example, .summary { padding: 15px 18px; margin: 20px 0; border-radius: 4px; }
+    .objectives, .summary { background: #f7f7f7; border: 1px solid #ccc; }
+    .steps { background: #f4f8fc; border-left: 4px solid #2f6fa3; }
+    .activity { background: #fff8e6; border-left: 4px solid #d18b00; }
+    .note { background: #f3f8f3; border-left: 4px solid #4c8c4a; }
+    .warning { background: #fff3f3; border-left: 4px solid #b64040; }
+    .example { background: #f7f1fa; border-left: 4px solid #7b3f98; }
+    .steps h3, .activity h3, .note h3, .warning h3, .example h3, .summary h2 { margin-top: 0; }
+    pre { overflow-x: auto; padding: 14px; background: #202124; color: #f1f1f1; border-radius: 4px; line-height: 1.5; }
+    code { font-family: Consolas, Monaco, monospace; }
+    p code, li code, td code { background: #f0f0f0; padding: 2px 5px; border-radius: 3px; color: #222; }
+    table { width: 100%; border-collapse: collapse; margin: 20px 0; }
+    th, td { border: 1px solid #bbb; padding: 10px; text-align: left; vertical-align: top; }
+    th { background: #f2f2f2; }
+    details { margin: 12px 0; }
+    summary { cursor: pointer; font-weight: bold; }
+    .equation { text-align: center; font-family: Georgia, serif; font-size: 1.08rem; margin: 18px 0; }
+    .page-navigation { display: flex; justify-content: space-between; gap: 15px; border-top: 1px solid #ccc; margin-top: 45px; padding-top: 20px; }
+    footer { margin-top: 35px; color: #555; font-size: 0.9rem; }
+    @media (max-width: 600px) {
+      body { padding: 14px; }
+      table { font-size: 0.9rem; }
+      .page-navigation { flex-direction: column; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <p><a href="index.html">&larr; Course Home</a></p>
+    <h1>Section 2.2: Plotting Functions</h1>
+    <p><strong>Part 2: Differential Calculus</strong></p>
+    <nav aria-label="Section contents">
+      <a href="#first-plot">First Plot</a>
+      <a href="#labels">Labels</a>
+      <a href="#windows">Windows</a>
+      <a href="#multiple">Multiple Curves</a>
+      <a href="#domains">Domains</a>
+      <a href="#piecewise">Piecewise</a>
+      <a href="#activity">Activity</a>
+    </nav>
+  </header>
+
+  <main>
+    <section class="objectives">
+      <h2>Learning Objectives</h2>
+      <p>By the end of this section, you should be able to:</p>
+      <ul>
+        <li>generate function inputs with NumPy;</li>
+        <li>create a line graph with Matplotlib;</li>
+        <li>distinguish a Figure from an Axes;</li>
+        <li>add titles, axis labels, grids, and legends;</li>
+        <li>control the viewing window and sampling density;</li>
+        <li>plot several functions on one set of axes;</li>
+        <li>respect domain restrictions and discontinuities; and</li>
+        <li>use graphs to describe important function behaviour.</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>2.2.1 Begin in Google Colab</h2>
+      <p>Open a Google Colab notebook and run:</p>
+      <pre><code>import numpy as np
+import matplotlib.pyplot as plt</code></pre>
+      <p>NumPy will create and evaluate arrays. Matplotlib will turn those numerical values into graphs. Both packages are already available in Colab.</p>
+    </section>
+
+    <section>
+      <h2>2.2.2 From a Function to a Graph</h2>
+      <p>A graph displays ordered pairs of the form (<em>x</em>, <em>f</em>(<em>x</em>)). A computer approximates the curve by:</p>
+      <ol>
+        <li>choosing many input values;</li>
+        <li>evaluating the function at those inputs; and</li>
+        <li>joining the resulting points with short line segments.</li>
+      </ol>
+      <div class="steps">
+        <h3>The Basic Plotting Workflow</h3>
+        <ol>
+          <li>Define the function.</li>
+          <li>Create an array of <em>x</em>-values.</li>
+          <li>Calculate the matching <em>y</em>-values.</li>
+          <li>Create a Figure and Axes.</li>
+          <li>Plot and label the data.</li>
+          <li>Display the figure.</li>
+        </ol>
+      </div>
+    </section>
+
+    <section id="first-plot">
+      <h2>2.2.3 Your First Function Plot</h2>
+      <p>Graph <em>f</em>(<em>x</em>) = <em>x</em><sup>2</sup> − 3<em>x</em> + 2 on −2 ≤ <em>x</em> ≤ 5.</p>
+      <pre><code>def f(x):
+    return x**2 - 3*x + 2
+
+x = np.linspace(-2, 5, 400)
+y = f(x)
+
+fig, ax = plt.subplots()
+ax.plot(x, y)
+plt.show()</code></pre>
+      <p><code>np.linspace(-2, 5, 400)</code> creates 400 evenly spaced inputs. More sample points usually make a smooth function appear smoother.</p>
+      <table>
+        <thead><tr><th>Object or command</th><th>Purpose</th></tr></thead>
+        <tbody>
+          <tr><td><code>fig</code></td><td>The entire Figure, including every graph and its surrounding space.</td></tr>
+          <tr><td><code>ax</code></td><td>The Axes: the region containing the plotted data, scales, ticks, and labels.</td></tr>
+          <tr><td><code>ax.plot(x, y)</code></td><td>Plots the paired coordinates from <code>x</code> and <code>y</code>.</td></tr>
+          <tr><td><code>plt.show()</code></td><td>Displays the completed Figure. Colab often displays it automatically, but this command makes the intention explicit.</td></tr>
+        </tbody>
+      </table>
+      <div class="warning">
+        <h3>Arrays Must Match</h3>
+        <p>The <code>x</code> and <code>y</code> arrays should contain the same number of entries. Defining <code>y = f(x)</code> normally guarantees this.</p>
+      </div>
+    </section>
+
+    <section id="labels">
+      <h2>2.2.4 Make the Graph Readable</h2>
+      <p>A mathematical graph should identify its variables and purpose.</p>
+      <pre><code>fig, ax = plt.subplots(figsize=(7, 4.5))
+
+ax.plot(x, y, color="maroon", linewidth=2, label=r"$f(x)=x^2-3x+2$")
+ax.set_title("Graph of a Quadratic Function")
+ax.set_xlabel("x")
+ax.set_ylabel("f(x)")
+ax.grid(True, alpha=0.3)
+ax.legend()
+
+plt.show()</code></pre>
+      <table>
+        <thead><tr><th>Option</th><th>Example</th><th>Effect</th></tr></thead>
+        <tbody>
+          <tr><td>Colour</td><td><code>color="maroon"</code></td><td>Changes the line colour.</td></tr>
+          <tr><td>Width</td><td><code>linewidth=2</code></td><td>Makes the line thicker.</td></tr>
+          <tr><td>Style</td><td><code>linestyle="--"</code></td><td>Uses a dashed line.</td></tr>
+          <tr><td>Marker</td><td><code>marker="o"</code></td><td>Marks the sampled points.</td></tr>
+          <tr><td>Label</td><td><code>label="f(x)"</code></td><td>Supplies text for the legend.</td></tr>
+          <tr><td>Transparency</td><td><code>alpha=0.5</code></td><td>Makes an object partly transparent.</td></tr>
+        </tbody>
+      </table>
+      <div class="note">
+        <h3>Mathematics in Labels</h3>
+        <p>Text between dollar signs is typeset as mathematics. Prefixing the string with <code>r</code>, as in <code>r"$x^2$"</code>, is useful when the expression contains backslashes.</p>
+      </div>
+    </section>
+
+    <section>
+      <h2>2.2.5 Add Coordinate Axes</h2>
+      <p>Horizontal and vertical reference lines can make intercepts and signs easier to see.</p>
+      <pre><code>fig, ax = plt.subplots(figsize=(7, 4.5))
+ax.plot(x, y, color="maroon", linewidth=2)
+
+ax.axhline(0, color="black", linewidth=1)
+ax.axvline(0, color="black", linewidth=1)
+ax.set_xlabel("x")
+ax.set_ylabel("f(x)")
+ax.set_title("Quadratic with Coordinate Axes")
+ax.grid(True, alpha=0.3)
+
+plt.show()</code></pre>
+      <p><code>ax.axhline(0)</code> draws <em>y</em> = 0, the horizontal axis. <code>ax.axvline(0)</code> draws <em>x</em> = 0, the vertical axis.</p>
+    </section>
+
+    <section id="windows">
+      <h2>2.2.6 Choose the Viewing Window</h2>
+      <p>The viewing window determines which portion of the graph is visible.</p>
+      <pre><code>fig, ax = plt.subplots(figsize=(7, 4.5))
+ax.plot(x, y, color="maroon", linewidth=2)
+
+ax.set_xlim(-2, 5)
+ax.set_ylim(-2, 12)
+ax.grid(True, alpha=0.3)
+
+plt.show()</code></pre>
+      <ul>
+        <li><code>ax.set_xlim(left, right)</code> sets the horizontal window.</li>
+        <li><code>ax.set_ylim(bottom, top)</code> sets the vertical window.</li>
+      </ul>
+      <div class="warning">
+        <h3>A Window Can Mislead</h3>
+        <p>A narrow window may hide intercepts, turning points, asymptotes, or long-term behaviour. A very wide window may flatten important local details. Try more than one window before drawing conclusions.</p>
+      </div>
+
+      <h3>Sampling Density</h3>
+      <pre><code>x_coarse = np.linspace(-2, 5, 8)
+x_smooth = np.linspace(-2, 5, 400)
+
+fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(10, 4))
+ax1.plot(x_coarse, f(x_coarse), marker="o")
+ax1.set_title("8 sample points")
+
+ax2.plot(x_smooth, f(x_smooth))
+ax2.set_title("400 sample points")
+
+plt.show()</code></pre>
+      <p>Sampling does not change the function. It changes how accurately the drawn line represents it.</p>
+    </section>
+
+    <section id="multiple">
+      <h2>2.2.7 Plot Multiple Functions Together</h2>
+      <p>Plotting several functions on the same Axes makes comparisons and intersections visible.</p>
+      <pre><code>def linear(x):
+    return 2*x + 1
+
+def quadratic(x):
+    return x**2 - 3*x + 2
+
+x = np.linspace(-2, 5, 400)
+
+fig, ax = plt.subplots(figsize=(7, 4.5))
+ax.plot(x, linear(x), label=r"$y=2x+1$", linewidth=2)
+ax.plot(x, quadratic(x), label=r"$y=x^2-3x+2$", linewidth=2)
+
+ax.axhline(0, color="black", linewidth=0.8)
+ax.axvline(0, color="black", linewidth=0.8)
+ax.set_xlabel("x")
+ax.set_ylabel("y")
+ax.set_title("Comparing Two Functions")
+ax.grid(True, alpha=0.3)
+ax.legend()
+
+plt.show()</code></pre>
+      <p>An intersection represents an input where the functions have equal outputs. The graph provides an estimate; algebra or numerical methods can produce a more precise value.</p>
+      <div class="note">
+        <h3>Use a Legend</h3>
+        <p>Give every curve a <code>label</code>, then call <code>ax.legend()</code>. Colour alone may be inaccessible or unclear when a graph is printed.</p>
+      </div>
+    </section>
+
+    <section id="domains">
+      <h2>2.2.8 Plot Only the Domain</h2>
+      <p>For <em>g</em>(<em>x</em>) = √(<em>x</em> − 2), the real-number domain is <em>x</em> ≥ 2. Generate inputs from that domain:</p>
+      <pre><code>def g(x):
+    return np.sqrt(x - 2)
+
+x = np.linspace(2, 10, 400)
+
+fig, ax = plt.subplots(figsize=(7, 4.5))
+ax.plot(x, g(x), color="green", linewidth=2)
+ax.set_title(r"$g(x)=\sqrt{x-2}$")
+ax.set_xlabel("x")
+ax.set_ylabel("g(x)")
+ax.grid(True, alpha=0.3)
+
+plt.show()</code></pre>
+      <p>Similarly, use only positive inputs for <code>np.log(x)</code>.</p>
+
+      <h3>Do Not Draw Across a Vertical Asymptote</h3>
+      <p>For <em>h</em>(<em>x</em>) = 1/<em>x</em>, connecting a point just left of zero to a point just right of zero creates a false line across the discontinuity. Plot the two branches separately.</p>
+      <pre><code>def h(x):
+    return 1/x
+
+x_left = np.linspace(-5, -0.05, 400)
+x_right = np.linspace(0.05, 5, 400)
+
+fig, ax = plt.subplots(figsize=(7, 4.5))
+ax.plot(x_left, h(x_left), color="purple")
+ax.plot(x_right, h(x_right), color="purple", label=r"$h(x)=1/x$")
+
+ax.axhline(0, color="black", linewidth=0.8)
+ax.axvline(0, color="black", linewidth=0.8, linestyle="--")
+ax.set_xlim(-5, 5)
+ax.set_ylim(-10, 10)
+ax.grid(True, alpha=0.3)
+ax.legend()
+
+plt.show()</code></pre>
+      <div class="warning">
+        <h3>A Connected Line Is Not Proof of Continuity</h3>
+        <p><code>plot</code> joins consecutive data points. It does not detect every hole, jump, or asymptote automatically.</p>
+      </div>
+    </section>
+
+    <section id="piecewise">
+      <h2>2.2.9 Plot a Piecewise Function</h2>
+      <div class="equation">
+        <em>p</em>(<em>x</em>) = { <em>x</em> + 2 if <em>x</em> &lt; 1; &nbsp; <em>x</em><sup>2</sup> if <em>x</em> ≥ 1 }
+      </div>
+      <pre><code>def p(x):
+    x = np.asarray(x)
+    return np.where(x &lt; 1, x + 2, x**2)
+
+x = np.linspace(-4, 4, 500)
+
+fig, ax = plt.subplots(figsize=(7, 4.5))
+ax.plot(x, p(x), color="darkorange", linewidth=2)
+ax.axhline(0, color="black", linewidth=0.8)
+ax.axvline(0, color="black", linewidth=0.8)
+ax.set_title("A Piecewise-Defined Function")
+ax.set_xlabel("x")
+ax.set_ylabel("p(x)")
+ax.grid(True, alpha=0.3)
+
+plt.show()</code></pre>
+      <p>This function has a jump at <em>x</em> = 1. For a mathematically exact endpoint display, mark excluded values with open circles and included values with filled circles:</p>
+      <pre><code>ax.scatter([1], [3], facecolors="white", edgecolors="darkorange", s=70)
+ax.scatter([1], [1], color="darkorange", s=70)</code></pre>
+      <p>The open circle represents the excluded value from <em>x</em> + 2; the filled circle represents <em>p</em>(1) = 1.</p>
+    </section>
+
+    <section>
+      <h2>2.2.10 Separate Graphs with Subplots</h2>
+      <p>Subplots are useful when curves have different scales or when overlapping lines would be crowded.</p>
+      <pre><code>x = np.linspace(-2*np.pi, 2*np.pi, 500)
+
+fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(11, 4))
+
+ax1.plot(x, np.sin(x), color="royalblue")
+ax1.set_title(r"$y=\sin(x)$")
+ax1.set_xlabel("x")
+ax1.grid(True, alpha=0.3)
+
+ax2.plot(x, np.cos(x), color="crimson")
+ax2.set_title(r"$y=\cos(x)$")
+ax2.set_xlabel("x")
+ax2.grid(True, alpha=0.3)
+
+fig.suptitle("Trigonometric Functions")
+fig.tight_layout()
+plt.show()</code></pre>
+      <p><code>plt.subplots(1, 2)</code> creates one row with two Axes. The variables <code>ax1</code> and <code>ax2</code> control them separately.</p>
+    </section>
+
+    <section>
+      <h2>2.2.11 Read Mathematics from a Graph</h2>
+      <p>A graph can help you estimate:</p>
+      <ul>
+        <li><strong>domain and range:</strong> visible input and output values;</li>
+        <li><strong>intercepts:</strong> where the graph meets an axis;</li>
+        <li><strong>sign:</strong> where the output is positive, zero, or negative;</li>
+        <li><strong>increasing and decreasing intervals:</strong> where outputs rise or fall;</li>
+        <li><strong>local extrema:</strong> visible peaks and valleys;</li>
+        <li><strong>symmetry:</strong> reflections across an axis or the origin;</li>
+        <li><strong>discontinuities:</strong> holes, jumps, or asymptotes; and</li>
+        <li><strong>end behaviour:</strong> what appears to happen for large positive or negative inputs.</li>
+      </ul>
+      <div class="note">
+        <h3>Graphical Evidence Is Approximate</h3>
+        <p>A graph is excellent for exploration and checking. Exact intercepts, extrema, and limits require algebra, calculus, or a reliable numerical method.</p>
+      </div>
+    </section>
+
+    <section>
+      <h2>2.2.12 A Reusable Plotting Helper</h2>
+      <pre><code>def plot_function(function, x_min, x_max, title, label):
+    x = np.linspace(x_min, x_max, 500)
+    y = function(x)
+
+    fig, ax = plt.subplots(figsize=(7, 4.5))
+    ax.plot(x, y, linewidth=2, label=label)
+    ax.axhline(0, color="black", linewidth=0.8)
+    ax.axvline(0, color="black", linewidth=0.8)
+    ax.set_xlabel("x")
+    ax.set_ylabel("y")
+    ax.set_title(title)
+    ax.grid(True, alpha=0.3)
+    ax.legend()
+    plt.show()
+
+def cubic(x):
+    return x**3 - 3*x
+
+plot_function(cubic, -3, 3, "A Cubic Function", r"$x^3-3x$")</code></pre>
+      <p>Passing a function as an argument allows the same plotting code to be reused.</p>
+    </section>
+
+    <section id="activity" class="activity">
+      <h2>2.2.13 Tutorial Activity: Graphing Laboratory</h2>
+      <p>Complete the following tasks in Google Colab.</p>
+      <ol>
+        <li>Import NumPy and Matplotlib.</li>
+        <li>Define <em>f</em>(<em>x</em>) = <em>x</em><sup>3</sup> − 4<em>x</em>.</li>
+        <li>Plot <em>f</em> on [−3, 3] using at least 400 points.</li>
+        <li>Add a title, axis labels, coordinate axes, and a grid.</li>
+        <li>Estimate all <em>x</em>-intercepts from the graph.</li>
+        <li>On the same Axes, plot <em>g</em>(<em>x</em>) = <em>x</em> and add a legend.</li>
+        <li>Adjust the viewing window so every intersection is visible.</li>
+        <li>Create two subplots comparing 12 sample points with 500 sample points.</li>
+        <li>Plot <em>q</em>(<em>x</em>) = ln(<em>x</em>) on a valid domain.</li>
+        <li>In one or two sentences, describe what the graphs show.</li>
+      </ol>
+      <details>
+        <summary>Show one possible solution</summary>
+        <pre><code>import numpy as np
+import matplotlib.pyplot as plt
+
+def f(x):
+    return x**3 - 4*x
+
+def g(x):
+    return x
+
+x = np.linspace(-3, 3, 500)
+
+fig, ax = plt.subplots(figsize=(7, 4.5))
+ax.plot(x, f(x), linewidth=2, label=r"$f(x)=x^3-4x$")
+ax.plot(x, g(x), linewidth=2, linestyle="--", label=r"$g(x)=x$")
+ax.axhline(0, color="black", linewidth=0.8)
+ax.axvline(0, color="black", linewidth=0.8)
+ax.set_xlim(-3, 3)
+ax.set_ylim(-8, 8)
+ax.set_xlabel("x")
+ax.set_ylabel("y")
+ax.set_title("Cubic and Linear Functions")
+ax.grid(True, alpha=0.3)
+ax.legend()
+plt.show()
+
+# The x-intercepts of f appear to be -2, 0, and 2.
+
+x_coarse = np.linspace(-3, 3, 12)
+x_fine = np.linspace(-3, 3, 500)
+fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(10, 4))
+ax1.plot(x_coarse, f(x_coarse), marker="o")
+ax1.set_title("12 points")
+ax2.plot(x_fine, f(x_fine))
+ax2.set_title("500 points")
+plt.show()
+
+x_log = np.linspace(0.05, 5, 500)
+fig, ax = plt.subplots()
+ax.plot(x_log, np.log(x_log))
+ax.set_title(r"$q(x)=\ln(x)$")
+ax.grid(True, alpha=0.3)
+plt.show()</code></pre>
+      </details>
+    </section>
+
+    <section>
+      <h2>2.2.14 Common Errors</h2>
+      <table>
+        <thead><tr><th>Problem</th><th>Likely cause and fix</th></tr></thead>
+        <tbody>
+          <tr><td><code>NameError: plt is not defined</code></td><td>Run <code>import matplotlib.pyplot as plt</code>.</td></tr>
+          <tr><td>The graph is empty</td><td>Check the domain, viewing window, and whether the function produces finite values.</td></tr>
+          <tr><td><code>x</code> and <code>y</code> have different sizes</td><td>Calculate <code>y</code> directly from the same <code>x</code> array.</td></tr>
+          <tr><td>The curve looks angular</td><td>Increase the number of sample points.</td></tr>
+          <tr><td>A legend does not appear</td><td>Add <code>label=...</code> to each curve and call <code>ax.legend()</code>.</td></tr>
+          <tr><td>A false line crosses an asymptote or jump</td><td>Split the domain and plot each continuous branch separately.</td></tr>
+          <tr><td>A square root or logarithm produces warnings</td><td>Generate inputs only from the real-number domain.</td></tr>
+          <tr><td>Several plots overlap unexpectedly</td><td>Create a new Figure with <code>fig, ax = plt.subplots()</code>.</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section>
+      <h2>2.2.15 Concept Check</h2>
+      <ol>
+        <li>Why do we create an array of inputs before plotting a function?</li>
+        <li>What is the difference between a Figure and an Axes?</li>
+        <li>What does increasing the number of sample points change?</li>
+        <li>Why should <code>1/x</code> be plotted in two pieces around zero?</li>
+        <li>What commands set the horizontal and vertical viewing windows?</li>
+        <li>Why should multiple curves have labels and a legend?</li>
+      </ol>
+      <details>
+        <summary>Show suggested answers</summary>
+        <ol>
+          <li>The computer needs numerical coordinates at which to evaluate and draw the function.</li>
+          <li>The Figure is the complete visual object; an Axes is one plotting region inside it.</li>
+          <li>It improves the plotted approximation but does not change the mathematical function.</li>
+          <li>The function is undefined at zero, and joining both sides would draw a false segment.</li>
+          <li><code>ax.set_xlim</code> and <code>ax.set_ylim</code>.</li>
+          <li>They identify each curve without relying only on colour.</li>
+        </ol>
+      </details>
+    </section>
+
+    <section>
+      <h2>2.2.16 Practice Exercises</h2>
+      <ol>
+        <li>Plot <em>y</em> = <em>x</em><sup>2</sup> and <em>y</em> = 2<em>x</em> + 3 together. Estimate their intersections.</li>
+        <li>Plot <em>y</em> = sin(<em>x</em>) on [−2π, 2π] with labelled axes.</li>
+        <li>Compare <em>e</em><sup><em>x</em></sup> and <em>e</em><sup>−<em>x</em></sup> on the same Axes.</li>
+        <li>Plot √(9 − <em>x</em><sup>2</sup>) on its real-number domain. What familiar shape appears?</li>
+        <li>Plot 1/(<em>x</em> − 2) without drawing across its vertical asymptote.</li>
+        <li>Create a two-by-two grid of linear, quadratic, cubic, and exponential graphs.</li>
+        <li>Graph a piecewise function and display its included and excluded endpoints correctly.</li>
+        <li>Find an example where changing the viewing window changes your first impression of the graph.</li>
+      </ol>
+      <details>
+        <summary>Show sample solution for Exercise 4</summary>
+        <pre><code>x = np.linspace(-3, 3, 500)
+y = np.sqrt(9 - x**2)
+
+fig, ax = plt.subplots(figsize=(5, 5))
+ax.plot(x, y, linewidth=2)
+ax.set_aspect("equal")
+ax.set_xlabel("x")
+ax.set_ylabel("y")
+ax.set_title(r"$y=\sqrt{9-x^2}$")
+ax.grid(True, alpha=0.3)
+plt.show()
+
+# This is the upper semicircle of x^2 + y^2 = 9.</code></pre>
+      </details>
+    </section>
+
+    <section>
+      <h2>2.2.17 Official References</h2>
+      <ul>
+        <li><a href="https://matplotlib.org/stable/users/explain/quick_start.html">Matplotlib quick-start guide</a></li>
+        <li><a href="https://matplotlib.org/stable/api/_as_gen/matplotlib.pyplot.plot.html"><code>matplotlib.pyplot.plot</code></a></li>
+        <li><a href="https://matplotlib.org/stable/api/_as_gen/matplotlib.pyplot.subplots.html"><code>matplotlib.pyplot.subplots</code></a></li>
+        <li><a href="https://matplotlib.org/stable/api/_as_gen/matplotlib.pyplot.xlim.html">Matplotlib axis limits</a></li>
+      </ul>
+    </section>
+
+    <section class="summary">
+      <h2>Section Summary</h2>
+      <ul>
+        <li>A function graph is constructed from arrays of input and output values.</li>
+        <li><code>plt.subplots()</code> creates a Figure and one or more Axes.</li>
+        <li>Labels, titles, grids, and legends make a graph interpretable.</li>
+        <li>The viewing window and number of sample points affect what the graph reveals.</li>
+        <li>Multiple curves can show comparisons and approximate intersections.</li>
+        <li>Domains and discontinuities must be handled deliberately.</li>
+        <li>Graphs reveal patterns and motivate the numerical study of limits in Section 2.3.</li>
+      </ul>
+    </section>
+
+    <nav class="page-navigation" aria-label="Page navigation">
+      <a href="section-2-1.html">&larr; Previous: Section 2.1</a>
+      <a href="index.html">Course Contents</a>
+      <a href="section-2-3.html">Next: Section 2.3 &rarr;</a>
+    </nav>
+  </main>
+
+  <footer>
+    <p>MATH 1516 Coding Activities — Prepared by Joe Tran</p>
+  </footer>
+</body>
+</html>

@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Section 2.3: Exploring Limits Numerically | MATH 1516</title>
+  <style>
+    body { max-width: 850px; margin: 0 auto; padding: 20px; font-family: Arial, sans-serif; line-height: 1.65; color: #222; }
+    header { border-bottom: 2px solid #8c1d40; margin-bottom: 30px; }
+    nav { margin: 15px 0; }
+    nav a { margin-right: 15px; }
+    h1, h2, h3 { line-height: 1.25; }
+    h2 { margin-top: 40px; color: #8c1d40; border-bottom: 1px solid #ddd; padding-bottom: 5px; }
+    h3 { margin-top: 28px; }
+    .objectives, .steps, .activity, .note, .warning, .example, .summary { padding: 15px 18px; margin: 20px 0; border-radius: 4px; }
+    .objectives, .summary { background: #f7f7f7; border: 1px solid #ccc; }
+    .steps { background: #f4f8fc; border-left: 4px solid #2f6fa3; }
+    .activity { background: #fff8e6; border-left: 4px solid #d18b00; }
+    .note { background: #f3f8f3; border-left: 4px solid #4c8c4a; }
+    .warning { background: #fff3f3; border-left: 4px solid #b64040; }
+    .example { background: #f7f1fa; border-left: 4px solid #7b3f98; }
+    .steps h3, .activity h3, .note h3, .warning h3, .example h3, .summary h2 { margin-top: 0; }
+    pre { overflow-x: auto; padding: 14px; background: #202124; color: #f1f1f1; border-radius: 4px; line-height: 1.5; }
+    code { font-family: Consolas, Monaco, monospace; }
+    p code, li code, td code { background: #f0f0f0; padding: 2px 5px; border-radius: 3px; color: #222; }
+    table { width: 100%; border-collapse: collapse; margin: 20px 0; }
+    th, td { border: 1px solid #bbb; padding: 10px; text-align: left; vertical-align: top; }
+    th { background: #f2f2f2; }
+    details { margin: 12px 0; }
+    summary { cursor: pointer; font-weight: bold; }
+    .equation { text-align: center; font-family: Georgia, serif; font-size: 1.08rem; margin: 18px 0; }
+    .page-navigation { display: flex; justify-content: space-between; gap: 15px; border-top: 1px solid #ccc; margin-top: 45px; padding-top: 20px; }
+    footer { margin-top: 35px; color: #555; font-size: 0.9rem; }
+    @media (max-width: 600px) {
+      body { padding: 14px; }
+      table { font-size: 0.9rem; }
+      .page-navigation { flex-direction: column; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <p><a href="index.html">&larr; Course Home</a></p>
+    <h1>Section 2.3: Exploring Limits Numerically</h1>
+    <p><strong>Part 2: Differential Calculus</strong></p>
+    <nav aria-label="Section contents">
+      <a href="#meaning">Meaning</a>
+      <a href="#tables">Tables</a>
+      <a href="#one-sided">One-Sided</a>
+      <a href="#infinite">Infinite</a>
+      <a href="#infinity">At Infinity</a>
+      <a href="#pitfalls">Pitfalls</a>
+      <a href="#activity">Activity</a>
+    </nav>
+  </header>
+
+  <main>
+    <section class="objectives">
+      <h2>Learning Objectives</h2>
+      <p>By the end of this section, you should be able to:</p>
+      <ul>
+        <li>interpret a limit as nearby function behaviour;</li>
+        <li>distinguish <em>f</em>(<em>a</em>) from the limit as <em>x</em> approaches <em>a</em>;</li>
+        <li>generate inputs approaching a point from the left and right;</li>
+        <li>use numerical tables to estimate finite and infinite limits;</li>
+        <li>compare one-sided limits to decide whether a two-sided limit exists;</li>
+        <li>investigate limits as <em>x</em> tends to positive or negative infinity;</li>
+        <li>recognize oscillation and other evidence that a limit does not exist; and</li>
+        <li>explain why numerical evidence supports—but does not prove—a limit.</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>2.3.1 Begin in Google Colab</h2>
+      <pre><code>import numpy as np
+import matplotlib.pyplot as plt</code></pre>
+      <p>NumPy will generate inputs and evaluate functions. Matplotlib will help us compare the numerical evidence with a graph.</p>
+    </section>
+
+    <section id="meaning">
+      <h2>2.3.2 What Does a Limit Describe?</h2>
+      <div class="equation">lim<sub><em>x</em>→<em>a</em></sub> <em>f</em>(<em>x</em>) = <em>L</em></div>
+      <p>This notation says that <em>f</em>(<em>x</em>) approaches <em>L</em> when <em>x</em> approaches <em>a</em>. It describes the behaviour <strong>near</strong> <em>a</em>, not necessarily the value at <em>a</em>.</p>
+      <table>
+        <thead><tr><th>Expression</th><th>Question</th></tr></thead>
+        <tbody>
+          <tr><td><em>f</em>(<em>a</em>)</td><td>What is the function's value exactly at <em>x</em> = <em>a</em>?</td></tr>
+          <tr><td>lim<sub><em>x</em>→<em>a</em></sub> <em>f</em>(<em>x</em>)</td><td>What value do the outputs approach when the inputs get close to <em>a</em>?</td></tr>
+        </tbody>
+      </table>
+      <div class="note">
+        <h3>Do Not Substitute Too Early</h3>
+        <p>Direct substitution is useful for continuous functions, but a limit may exist even when the original formula is undefined at the point.</p>
+      </div>
+    </section>
+
+    <section id="tables">
+      <h2>2.3.3 Build a Two-Sided Limit Table</h2>
+      <p>Consider</p>
+      <div class="equation"><em>f</em>(<em>x</em>) = (<em>x</em><sup>2</sup> − 4)/(<em>x</em> − 2).</div>
+      <p>Substituting <em>x</em> = 2 gives 0/0, so the formula is undefined there. We can evaluate it at nearby inputs instead.</p>
+      <pre><code>def f(x):
+    return (x**2 - 4) / (x - 2)
+
+left_x = np.array([1.9, 1.99, 1.999, 1.9999])
+right_x = np.array([2.1, 2.01, 2.001, 2.0001])
+
+print("Approaching from the left")
+for x in left_x:
+    print(f"x = {x:.4f}, f(x) = {f(x):.6f}")
+
+print("Approaching from the right")
+for x in right_x:
+    print(f"x = {x:.4f}, f(x) = {f(x):.6f}")</code></pre>
+      <table>
+        <thead><tr><th>From the left</th><th><em>f</em>(<em>x</em>)</th><th>From the right</th><th><em>f</em>(<em>x</em>)</th></tr></thead>
+        <tbody>
+          <tr><td>1.9</td><td>3.9</td><td>2.1</td><td>4.1</td></tr>
+          <tr><td>1.99</td><td>3.99</td><td>2.01</td><td>4.01</td></tr>
+          <tr><td>1.999</td><td>3.999</td><td>2.001</td><td>4.001</td></tr>
+          <tr><td>1.9999</td><td>3.9999</td><td>2.0001</td><td>4.0001</td></tr>
+        </tbody>
+      </table>
+      <p>Both sides approach 4, so the numerical evidence suggests</p>
+      <div class="equation">lim<sub><em>x</em>→2</sub> (<em>x</em><sup>2</sup> − 4)/(<em>x</em> − 2) = 4.</div>
+      <p>Indeed, for <em>x</em> ≠ 2 the expression simplifies to <em>x</em> + 2. The graph is the line <em>y</em> = <em>x</em> + 2 with a hole at (2, 4).</p>
+    </section>
+
+    <section>
+      <h2>2.3.4 Generate Approaching Inputs Systematically</h2>
+      <p>Instead of typing every input, define shrinking positive distances from the target point.</p>
+      <pre><code>a = 2
+distances = np.geomspace(1e-1, 1e-6, 6)
+
+left_x = a - distances
+right_x = a + distances
+
+print("distance       left x       f(left)      right x      f(right)")
+for d, xl, xr in zip(distances, left_x, right_x):
+    print(f"{d:8.1e}  {xl:12.8f}  {f(xl):12.8f}  "
+          f"{xr:12.8f}  {f(xr):12.8f}")</code></pre>
+      <p><code>np.geomspace(1e-1, 1e-6, 6)</code> produces distances 10<sup>−1</sup>, 10<sup>−2</sup>, …, 10<sup>−6</sup>. Each distance is one-tenth of the previous one.</p>
+      <div class="steps">
+        <h3>Numerical Limit Workflow</h3>
+        <ol>
+          <li>Identify the target input <em>a</em>.</li>
+          <li>Choose shrinking positive distances.</li>
+          <li>Evaluate at <em>a</em> − distance and <em>a</em> + distance.</li>
+          <li>Look for stable output patterns on both sides.</li>
+          <li>Compare the table with a graph.</li>
+          <li>State the conclusion as an estimate, not a proof.</li>
+        </ol>
+      </div>
+    </section>
+
+    <section>
+      <h2>2.3.5 Visualize the Approach</h2>
+      <pre><code>x_left = np.linspace(1, 1.99, 200)
+x_right = np.linspace(2.01, 3, 200)
+
+fig, ax = plt.subplots(figsize=(7, 4.5))
+ax.plot(x_left, f(x_left), color="maroon")
+ax.plot(x_right, f(x_right), color="maroon", label=r"$f(x)$")
+ax.scatter([2], [4], facecolors="white", edgecolors="maroon", s=80)
+ax.axvline(2, color="gray", linestyle="--", alpha=0.6)
+ax.axhline(4, color="gray", linestyle="--", alpha=0.6)
+ax.set_xlabel("x")
+ax.set_ylabel("f(x)")
+ax.set_title("Approaching a Removable Discontinuity")
+ax.grid(True, alpha=0.3)
+ax.legend()
+plt.show()</code></pre>
+      <p>The open circle records that the original formula is undefined at <em>x</em> = 2. It does not prevent nearby outputs from approaching 4.</p>
+    </section>
+
+    <section>
+      <h2>2.3.6 Direct Substitution for Continuous Functions</h2>
+      <p>Polynomials, exponential functions, and trigonometric functions are continuous throughout their usual domains. For such a function, substitution often gives the limit directly.</p>
+      <pre><code>def g(x):
+    return x**3 - 2*x + 1
+
+a = -1
+print(g(a))   # 2</code></pre>
+      <div class="equation">lim<sub><em>x</em>→−1</sub> (<em>x</em><sup>3</sup> − 2<em>x</em> + 1) = 2.</div>
+      <p>A numerical table can confirm the expected behaviour, but it is unnecessary for every continuous formula.</p>
+    </section>
+
+    <section id="one-sided">
+      <h2>2.3.7 One-Sided Limits</h2>
+      <p>The left-hand limit uses inputs less than <em>a</em>; the right-hand limit uses inputs greater than <em>a</em>.</p>
+      <div class="equation">
+        lim<sub><em>x</em>→<em>a</em><sup>−</sup></sub> <em>f</em>(<em>x</em>) &nbsp; and &nbsp;
+        lim<sub><em>x</em>→<em>a</em><sup>+</sup></sub> <em>f</em>(<em>x</em>)
+      </div>
+      <p>A finite two-sided limit exists only when the two one-sided limits exist and are equal.</p>
+
+      <div class="example">
+        <h3>Example: A Jump Discontinuity</h3>
+        <div class="equation">
+          <em>p</em>(<em>x</em>) = { <em>x</em> + 2 if <em>x</em> &lt; 1; &nbsp; <em>x</em><sup>2</sup> if <em>x</em> ≥ 1 }
+        </div>
+        <pre><code>def p(x):
+    x = np.asarray(x)
+    return np.where(x &lt; 1, x + 2, x**2)
+
+distances = np.geomspace(1e-1, 1e-6, 6)
+left_x = 1 - distances
+right_x = 1 + distances
+
+print(p(left_x))
+print(p(right_x))</code></pre>
+        <p>The left outputs approach 3, while the right outputs approach 1. Therefore the two-sided limit at <em>x</em> = 1 does not exist.</p>
+      </div>
+      <div class="warning">
+        <h3>The Function Value Does Not Decide the Limit</h3>
+        <p>Here <em>p</em>(1) = 1, but the unequal one-sided limits are what make the two-sided limit fail to exist.</p>
+      </div>
+    </section>
+
+    <section id="infinite">
+      <h2>2.3.8 Infinite Limits and Vertical Asymptotes</h2>
+      <p>Consider <em>q</em>(<em>x</em>) = 1/(<em>x</em> − 2)<sup>2</sup>. As <em>x</em> approaches 2 from either side, the denominator becomes a small positive number.</p>
+      <pre><code>def q(x):
+    return 1 / (x - 2)**2
+
+distances = np.geomspace(1e-1, 1e-5, 5)
+left_x = 2 - distances
+right_x = 2 + distances
+
+for xl, xr in zip(left_x, right_x):
+    print(f"{xl:.5f}  {q(xl):12.2f}    {xr:.5f}  {q(xr):12.2f}")</code></pre>
+      <p>The outputs grow without bound on both sides. We write</p>
+      <div class="equation">lim<sub><em>x</em>→2</sub> 1/(<em>x</em> − 2)<sup>2</sup> = +∞.</div>
+      <p>This describes unbounded behaviour; +∞ is not an ordinary real-number output. The line <em>x</em> = 2 is a vertical asymptote.</p>
+
+      <h3>Opposite Infinite Behaviour</h3>
+      <p>For <em>r</em>(<em>x</em>) = 1/(<em>x</em> − 2), the left side tends to −∞ and the right side tends to +∞. The two-sided limit therefore does not exist.</p>
+      <pre><code>def r(x):
+    return 1 / (x - 2)
+
+print(r(left_x))
+print(r(right_x))</code></pre>
+    </section>
+
+    <section id="infinity">
+      <h2>2.3.9 Limits at Infinity</h2>
+      <p>A limit at infinity describes long-term behaviour as the magnitude of the input becomes large.</p>
+      <div class="equation">
+        <em>s</em>(<em>x</em>) = (3<em>x</em><sup>2</sup> + 1)/(<em>x</em><sup>2</sup> − 4)
+      </div>
+      <pre><code>def s(x):
+    return (3*x**2 + 1) / (x**2 - 4)
+
+positive_x = np.array([10, 100, 1000, 10000], dtype=float)
+negative_x = -positive_x
+
+for x in positive_x:
+    print(f"x = {x:8.0f}, s(x) = {s(x):.10f}")
+
+for x in negative_x:
+    print(f"x = {x:8.0f}, s(x) = {s(x):.10f}")</code></pre>
+      <p>The outputs approach 3 in both directions, suggesting</p>
+      <div class="equation">
+        lim<sub><em>x</em>→∞</sub> <em>s</em>(<em>x</em>) = 3
+        &nbsp; and &nbsp;
+        lim<sub><em>x</em>→−∞</sub> <em>s</em>(<em>x</em>) = 3.
+      </div>
+      <p>The line <em>y</em> = 3 is a horizontal asymptote.</p>
+    </section>
+
+    <section>
+      <h2>2.3.10 Oscillation and Nonexistent Limits</h2>
+      <p>The function sin(1/<em>x</em>) oscillates increasingly rapidly as <em>x</em> approaches zero.</p>
+      <pre><code>def oscillating(x):
+    return np.sin(1/x)
+
+n = np.arange(1, 8)
+x_to_one = 1 / (np.pi/2 + 2*np.pi*n)
+x_to_minus_one = 1 / (3*np.pi/2 + 2*np.pi*n)
+
+print(oscillating(x_to_one))       # values near 1
+print(oscillating(x_to_minus_one)) # values near -1</code></pre>
+      <p>Both input sequences approach zero, but one set of outputs stays near 1 and the other stays near −1. The function does not approach a single number, so the limit does not exist.</p>
+      <div class="warning">
+        <h3>A Small Table Can Miss Oscillation</h3>
+        <p>Carelessly chosen sample points may suggest a false pattern. Combine numerical tables with a graph and mathematical reasoning.</p>
+      </div>
+    </section>
+
+    <section id="pitfalls">
+      <h2>2.3.11 Floating-Point Limitations</h2>
+      <p>Computers store approximations to real numbers. Extremely small distances can cause rounding or cancellation.</p>
+      <p>For</p>
+      <div class="equation"><em>u</em>(<em>x</em>) = (√(1 + <em>x</em>) − 1)/<em>x</em>,</div>
+      <p>the limit as <em>x</em> approaches zero is 1/2. Compare the original formula with its rationalized form:</p>
+      <pre><code>def u_original(x):
+    return (np.sqrt(1 + x) - 1) / x
+
+def u_stable(x):
+    return 1 / (np.sqrt(1 + x) + 1)
+
+for x in [1e-4, 1e-8, 1e-12, 1e-16]:
+    print(x, u_original(x), u_stable(x))</code></pre>
+      <p>For very small <em>x</em>, subtracting two nearly equal numbers can erase significant digits. The stable formula continues to approach 0.5.</p>
+      <div class="note">
+        <h3>Closer Is Not Always Better</h3>
+        <p>Use several sensible distances and look for a stable trend. Do not assume the smallest representable distance gives the best estimate.</p>
+      </div>
+    </section>
+
+    <section>
+      <h2>2.3.12 A Reusable Limit-Table Helper</h2>
+      <pre><code>def limit_table(function, a, distances=None):
+    if distances is None:
+        distances = np.geomspace(1e-1, 1e-6, 6)
+
+    left_x = a - distances
+    right_x = a + distances
+
+    print("     left x        f(left)       right x       f(right)")
+    for xl, xr in zip(left_x, right_x):
+        print(f"{xl:12.8f}  {function(xl):12.8f}  "
+              f"{xr:12.8f}  {function(xr):12.8f}")
+
+limit_table(f, 2)</code></pre>
+      <p>This helper organizes evidence. It does not automatically determine or prove the limit.</p>
+    </section>
+
+    <section id="activity" class="activity">
+      <h2>2.3.13 Tutorial Activity: Limit Detective</h2>
+      <p>For each function, create a left-right table, draw an appropriate graph, and state what the evidence suggests.</p>
+      <ol>
+        <li><em>f</em>(<em>x</em>) = (<em>x</em><sup>2</sup> − 9)/(<em>x</em> − 3) as <em>x</em> → 3.</li>
+        <li><em>g</em>(<em>x</em>) = |<em>x</em>|/<em>x</em> as <em>x</em> → 0.</li>
+        <li><em>h</em>(<em>x</em>) = 1/(<em>x</em> + 1)<sup>2</sup> as <em>x</em> → −1.</li>
+        <li><em>p</em>(<em>x</em>) = (5<em>x</em><sup>2</sup> − 2)/(<em>x</em><sup>2</sup> + 7) as <em>x</em> → ∞.</li>
+      </ol>
+      <p>For every conclusion, identify whether it is a finite limit, an infinite limit, or a limit that does not exist.</p>
+      <details>
+        <summary>Show one possible solution</summary>
+        <pre><code>import numpy as np
+import matplotlib.pyplot as plt
+
+distances = np.geomspace(1e-1, 1e-6, 6)
+
+def f(x):
+    return (x**2 - 9) / (x - 3)
+
+def g(x):
+    return np.abs(x) / x
+
+def h(x):
+    return 1 / (x + 1)**2
+
+def p(x):
+    return (5*x**2 - 2) / (x**2 + 7)
+
+# 1: both sides approach 6
+print(f(3 - distances))
+print(f(3 + distances))
+
+# 2: left approaches -1, right approaches 1; DNE
+print(g(-distances))
+print(g(distances))
+
+# 3: both sides grow toward positive infinity
+print(h(-1 - distances))
+print(h(-1 + distances))
+
+# 4: outputs approach 5
+large_x = np.array([10, 100, 1000, 10000], dtype=float)
+print(p(large_x))</code></pre>
+      </details>
+    </section>
+
+    <section>
+      <h2>2.3.14 Common Errors</h2>
+      <table>
+        <thead><tr><th>Problem</th><th>Why it happens and what to do</th></tr></thead>
+        <tbody>
+          <tr><td>Evaluating only at <em>x</em> = <em>a</em></td><td>A limit concerns nearby inputs. Use values on both sides.</td></tr>
+          <tr><td>Including the undefined target in an array</td><td>Exclude it and approach with nonzero distances.</td></tr>
+          <tr><td>Checking only one side</td><td>A two-sided limit needs matching left- and right-hand behaviour.</td></tr>
+          <tr><td>Reporting a large number as “the limit”</td><td>Determine whether outputs are unbounded rather than approaching a finite value.</td></tr>
+          <tr><td>Treating <code>inf</code> as a real-number answer</td><td>It represents overflow or unbounded behaviour, not an ordinary function value.</td></tr>
+          <tr><td>Trusting one or two rows</td><td>Use several shrinking distances and inspect the trend.</td></tr>
+          <tr><td>Using distances that are too small</td><td>Floating-point rounding can overwhelm the calculation.</td></tr>
+          <tr><td>Claiming the table proves the limit</td><td>Finite numerical evidence can support a conjecture but cannot check every nearby input.</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section>
+      <h2>2.3.15 Concept Check</h2>
+      <ol>
+        <li>Can a limit exist when the function is undefined at the target point?</li>
+        <li>What must be true of the left- and right-hand limits for a two-sided finite limit to exist?</li>
+        <li>What numerical pattern suggests a positive infinite limit?</li>
+        <li>How is <em>x</em> → ∞ different from <em>x</em> → <em>a</em>?</li>
+        <li>Why can sin(1/<em>x</em>) fool a small numerical table near zero?</li>
+        <li>Why should extremely small input distances be treated cautiously?</li>
+      </ol>
+      <details>
+        <summary>Show suggested answers</summary>
+        <ol>
+          <li>Yes. Limits describe nearby behaviour, not necessarily the value at the point.</li>
+          <li>Both one-sided limits must exist and be equal.</li>
+          <li>The outputs remain positive and grow without apparent bound as the inputs approach the target.</li>
+          <li>The first studies long-term behaviour for increasingly large inputs; the second studies behaviour near a finite point.</li>
+          <li>It oscillates infinitely often, and selected sample points may hide the oscillation.</li>
+          <li>Floating-point rounding and cancellation may make the computed outputs less accurate.</li>
+        </ol>
+      </details>
+    </section>
+
+    <section>
+      <h2>2.3.16 Practice Exercises</h2>
+      <ol>
+        <li>Estimate lim<sub><em>x</em>→1</sub> (<em>x</em><sup>3</sup> − 1)/(<em>x</em> − 1).</li>
+        <li>Investigate lim<sub><em>x</em>→0</sub> sin(<em>x</em>)/<em>x</em>.</li>
+        <li>Compare the one-sided limits of 1/|<em>x</em>| and 1/<em>x</em> at zero.</li>
+        <li>Investigate lim<sub><em>x</em>→4<sup>+</sup></sub> √(<em>x</em> − 4).</li>
+        <li>Estimate the limits of (2<em>x</em> + 1)/(<em>x</em> − 3) as <em>x</em> → ±∞.</li>
+        <li>Construct a piecewise function whose left-hand and right-hand limits at zero are both 2 but whose value at zero is 10.</li>
+        <li>Find two input sequences approaching zero that demonstrate why cos(1/<em>x</em>) has no limit.</li>
+        <li>Find a formula that experiences cancellation near its limit and rewrite it more stably.</li>
+      </ol>
+      <details>
+        <summary>Show sample solution for Exercise 1</summary>
+        <pre><code>def f(x):
+    return (x**3 - 1) / (x - 1)
+
+distances = np.geomspace(1e-1, 1e-6, 6)
+print(f(1 - distances))
+print(f(1 + distances))
+
+# Both sides approach 3.</code></pre>
+      </details>
+    </section>
+
+    <section>
+      <h2>2.3.17 Official References</h2>
+      <ul>
+        <li><a href="https://numpy.org/doc/stable/reference/generated/numpy.array.html"><code>numpy.array</code></a></li>
+        <li><a href="https://numpy.org/doc/stable/reference/generated/numpy.geomspace.html"><code>numpy.geomspace</code></a></li>
+        <li><a href="https://numpy.org/doc/stable/reference/generated/numpy.seterr.html">NumPy floating-point error handling</a></li>
+        <li><a href="https://matplotlib.org/stable/api/_as_gen/matplotlib.axes.Axes.scatter.html"><code>Axes.scatter</code></a></li>
+      </ul>
+    </section>
+
+    <section class="summary">
+      <h2>Section Summary</h2>
+      <ul>
+        <li>A limit describes nearby behaviour and may differ from the function value.</li>
+        <li>Shrinking distances generate systematic left- and right-hand input sequences.</li>
+        <li>A two-sided finite limit requires equal one-sided limits.</li>
+        <li>Unbounded output suggests an infinite limit and often a vertical asymptote.</li>
+        <li>Large positive and negative inputs reveal limits at infinity and horizontal asymptotes.</li>
+        <li>Oscillation can prevent a function from approaching one value.</li>
+        <li>Numerical tables and graphs provide evidence, but floating-point effects and limited sampling require caution.</li>
+      </ul>
+    </section>
+
+    <nav class="page-navigation" aria-label="Page navigation">
+      <a href="section-2-2.html">&larr; Previous: Section 2.2</a>
+      <a href="index.html">Course Contents</a>
+      <span>Next: Section 2.4 &mdash; Approximating Derivatives</span>
+    </nav>
+  </main>
+
+  <footer>
+    <p>MATH 1516 Coding Activities — Prepared by Joe Tran</p>
+  </footer>
+</body>
+</html>
